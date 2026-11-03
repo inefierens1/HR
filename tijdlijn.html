@@ -1,0 +1,597 @@
+<title>Tijdlijn personeelspraktijken</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700&display=swap">
+<style>
+/* Layout: intranet-app met tabbalk; tijdlijn als hexagonketen (horizontaal op desktop, verticaal op gsm), POP als spinnenweb naast zelfreflectie. */
+:root{
+  --bg:#f7f8f6; --surface:#ffffff; --surface-2:#eef0ed; --line:#dfe3df;
+  --fg:#1b1f1e; --fg-soft:#5b6362; --title:#4d5554;
+  --accent:#4d5554; --accent-fg:#ffffff;
+  --hex:#ced7d2; --roze:#dacfd3; --rood:#b91818;
+  --ok:#2f7a4f; --ok-bg:#dff0e5; --warn:#8a5a00; --warn-bg:#fbefd1; --info:#245d86; --info-bg:#dcebf6; --neutral-bg:#ebedeb; --bad:#9b2c2c; --bad-bg:#f6dddd;
+  --s-zelf:#2f6f9f; --s-gesprek:#2f7a4f; --s-vorig:#8b8f8e; --grid:#d5dad6;
+  --font:'Calibri','Segoe UI','Open Sans',system-ui,sans-serif;
+  --r:8px;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#171a19; --surface:#202423; --surface-2:#2a2f2d; --line:#363c3a;
+  --fg:#eceeed; --fg-soft:#a8b0ae; --title:#d7dcda; --accent:#ced7d2; --accent-fg:#171a19;
+  --hex:#55635c; --roze:#5a4a50; --rood:#ff8a80;
+  --ok:#8fd6a8; --ok-bg:#1f3a2a; --warn:#f2c86b; --warn-bg:#3d3017; --info:#9ccbef; --info-bg:#1c3446; --neutral-bg:#2e3331; --bad:#f2a3a3; --bad-bg:#432222;
+  --s-zelf:#7db8e6; --s-gesprek:#7fd3a0; --s-vorig:#8d9492; --grid:#3d4442;
+  color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#171a19; --surface:#202423; --surface-2:#2a2f2d; --line:#363c3a;
+  --fg:#eceeed; --fg-soft:#a8b0ae; --title:#d7dcda; --accent:#ced7d2; --accent-fg:#171a19;
+  --hex:#55635c; --roze:#5a4a50; --rood:#ff8a80;
+  --ok:#8fd6a8; --ok-bg:#1f3a2a; --warn:#f2c86b; --warn-bg:#3d3017; --info:#9ccbef; --info-bg:#1c3446; --neutral-bg:#2e3331; --bad:#f2a3a3; --bad-bg:#432222;
+  --s-zelf:#7db8e6; --s-gesprek:#7fd3a0; --s-vorig:#8d9492; --grid:#3d4442;
+  color-scheme:dark}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{background:var(--bg);color:var(--fg);font-family:var(--font);font-size:15px;line-height:1.5}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--surface)}
+.wrap{max-width:1240px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+h1,h2,h3{color:var(--title);text-wrap:balance;margin:0;line-height:1.2}
+h2{font-size:1.45rem} h3{font-size:1.05rem}
+p{margin:0}
+a{color:var(--info)}
+header.top{background:var(--surface);border-bottom:1px solid var(--line);position:sticky;top:env(safe-area-inset-top,0px);z-index:5}
+.brand{display:flex;align-items:center;gap:8px 12px;padding-block:12px 4px;flex-wrap:wrap}
+.brand svg{width:30px;height:34px;flex:none}
+.brand b{font-size:1.05rem;color:var(--title)}
+.brand span{color:var(--fg-soft);font-size:.85rem}
+.demo{margin-left:auto;font-size:.75rem;text-transform:uppercase;letter-spacing:.08em;background:var(--roze);color:var(--fg);padding:3px 9px;border-radius:999px;white-space:nowrap}
+nav.tabs{display:flex;gap:2px;overflow-x:auto;scrollbar-width:none}
+nav.tabs a{padding:10px 14px;text-decoration:none;color:var(--fg-soft);border-bottom:3px solid transparent;white-space:nowrap;font-weight:600}
+nav.tabs a[aria-current="page"]{color:var(--title);border-color:var(--rood)}
+:focus-visible{outline:2px solid var(--info);outline-offset:2px}
+main{padding-block:24px 64px}
+.intro{display:flex;flex-direction:column;gap:6px;margin-bottom:20px;max-width:80ch}
+.intro p{color:var(--fg-soft)}
+.who{font-size:.75rem;text-transform:uppercase;letter-spacing:.1em;color:var(--fg-soft);font-weight:700}
+button{font:inherit;cursor:pointer;border-radius:var(--r);border:1px solid var(--line);background:var(--surface);color:var(--fg);padding:8px 14px;font-weight:600}
+button.primary{background:var(--accent);color:var(--accent-fg);border-color:var(--accent)}
+label{font-weight:600;font-size:.92rem}
+.hint{font-weight:400;color:var(--fg-soft);font-size:.82rem}
+input[type=text],select,textarea{font:inherit;width:100%;padding:8px 10px;border:1px solid var(--line);border-radius:6px;background:var(--surface);color:var(--fg)}
+textarea{min-height:64px;resize:vertical}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:999px;overflow:hidden;background:var(--surface);flex-wrap:wrap}
+.seg button{border:0;border-radius:0;padding:6px 14px;font-size:.88rem}
+.seg button[aria-pressed="true"]{background:var(--accent);color:var(--accent-fg)}
+.pill{display:inline-block;font-size:.74rem;font-weight:700;padding:2px 8px;border-radius:999px;white-space:nowrap}
+.s-ok{background:var(--ok-bg);color:var(--ok)}
+.s-proto{background:var(--info-bg);color:var(--info)}
+.s-dev{background:var(--warn-bg);color:var(--warn)}
+.s-todo{background:var(--bad-bg);color:var(--bad)}
+.tag{display:inline-flex;align-items:center;font-size:.76rem;padding:2px 8px;border-radius:999px;background:var(--surface-2);white-space:nowrap;border:1px solid var(--line)}
+ul.hex{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:6px}
+ul.hex li{padding-left:20px;position:relative}
+ul.hex li::before{content:"";position:absolute;left:0;top:.38em;width:11px;height:12px;background:var(--hex);clip-path:polygon(50% 0,100% 25%,100% 75%,50% 100%,0 75%,0 25%)}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:18px;display:flex;flex-direction:column;gap:12px;min-width:0}
+.two{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:20px;align-items:start}
+@media (max-width:900px){.two{grid-template-columns:1fr}}
+.scroll{overflow-x:auto}
+table.simple{border-collapse:collapse;width:100%;font-size:.88rem}
+table.simple th{text-align:left;font-size:.74rem;text-transform:uppercase;letter-spacing:.06em;color:var(--fg-soft);padding:6px 8px;border-bottom:1px solid var(--line)}
+table.simple td{padding:7px 8px;border-bottom:1px solid var(--line);vertical-align:top}
+.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(20px + env(safe-area-inset-bottom,0px));background:var(--accent);color:var(--accent-fg);padding:10px 18px;border-radius:999px;z-index:30;font-weight:600;max-width:calc(100% - 32px)}
+.callout{border-left:4px solid var(--rood);background:var(--surface);padding:12px 16px;border-radius:0 var(--r) var(--r) 0;font-size:.92rem;display:flex;flex-direction:column;gap:6px}
+
+/* visieband */
+.vision{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:14px 18px;display:flex;gap:10px 22px;flex-wrap:wrap;align-items:center;margin-bottom:18px;font-size:.9rem}
+.vision b{color:var(--title)}
+.vision .vals{display:flex;gap:6px;flex-wrap:wrap}
+
+/* tijdlijn */
+.tlbar{display:flex;gap:10px 18px;flex-wrap:wrap;align-items:center;margin-bottom:16px}
+.legend{display:flex;gap:6px;flex-wrap:wrap;margin-left:auto}
+.timeline{position:relative;display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:8px;padding-top:6px}
+.timeline::before{content:"";position:absolute;left:7%;right:7%;top:38px;height:3px;background:var(--line);border-radius:2px}
+.stage{position:relative;background:transparent;border:0;padding:0;display:flex;flex-direction:column;align-items:center;gap:6px;text-align:center;font-weight:400}
+.stage .hx{width:64px;height:72px;display:grid;place-items:center;background:var(--hex);clip-path:polygon(50% 0,100% 25%,100% 75%,50% 100%,0 75%,0 25%);font-weight:700;font-size:1.25rem;color:var(--fg);transition:transform .15s}
+.stage[aria-pressed="true"] .hx{background:var(--accent);color:var(--accent-fg);transform:scale(1.08)}
+.stage .txt{display:flex;flex-direction:column;gap:2px;align-items:center}
+.stage .nm{font-weight:700;color:var(--title);font-size:.92rem;line-height:1.2}
+.stage .pr{font-size:.74rem;color:var(--fg-soft)}
+.stage .cnt{display:flex;gap:3px;justify-content:center;flex-wrap:wrap}
+.stage .cnt i{width:9px;height:10px;clip-path:polygon(50% 0,100% 25%,100% 75%,50% 100%,0 75%,0 25%)}
+.cnt i.ok{background:var(--ok)} .cnt i.proto{background:var(--info)} .cnt i.dev{background:var(--warn)} .cnt i.todo{background:var(--bad)}
+.stage .me{font-size:.72rem;font-weight:700}
+@media (max-width:820px){
+  .timeline{grid-template-columns:1fr;gap:0}
+  .timeline::before{left:31px;right:auto;top:20px;bottom:20px;width:3px;height:auto}
+  .stage{flex-direction:row;text-align:left;align-items:center;gap:14px;padding:6px 0}
+  .stage .txt{align-items:flex-start}
+  .stage .cnt{justify-content:flex-start}
+}
+.waard{margin:14px 0 0;border:1px dashed var(--line);border-radius:999px;padding:6px 14px;font-size:.84rem;color:var(--fg-soft);text-align:center}
+.stagepanel{margin-top:18px}
+.sphead{display:flex;gap:10px 16px;flex-wrap:wrap;align-items:baseline}
+.sphead .why{color:var(--fg-soft);font-size:.9rem;max-width:80ch}
+.forms{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:12px}
+.fcard{border:1px solid var(--line);border-radius:var(--r);padding:12px 14px;display:flex;flex-direction:column;gap:8px;background:var(--surface)}
+.fcard .t{font-weight:700;display:flex;gap:8px;align-items:flex-start;justify-content:space-between}
+.fcard .meta{display:flex;gap:5px;flex-wrap:wrap}
+.fcard .d{font-size:.86rem;color:var(--fg-soft)}
+.fcard .link{font-size:.86rem;font-weight:600;margin-top:auto}
+.fcard .mine{font-size:.8rem;font-weight:700;border-top:1px solid var(--line);padding-top:6px}
+.mine.done{color:var(--ok)} .mine.plan{color:var(--info)} .mine.na{color:var(--fg-soft)}
+
+/* jaarkalender */
+.year{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:4px;min-width:900px}
+.year .m{font-size:.74rem;text-transform:uppercase;letter-spacing:.06em;color:var(--fg-soft);font-weight:700;text-align:center;padding:4px 0;border-bottom:2px solid var(--line)}
+.ev{border-radius:6px;padding:6px 8px;font-size:.8rem;font-weight:600;line-height:1.25;border-left:4px solid var(--accent);background:var(--surface)}
+.ev.p1{border-left-color:#40acb6} .ev.p2{border-left-color:#a28790} .ev.p3{border-left-color:#889a91} .ev.p4{border-left-color:#e0a030}
+.ev small{display:block;font-weight:400;color:var(--fg-soft)}
+.ylegend{display:flex;gap:14px;flex-wrap:wrap;font-size:.82rem;color:var(--fg-soft);margin-top:10px}
+.ylegend span{display:inline-flex;gap:6px;align-items:center}
+.ylegend i{width:12px;height:12px;border-radius:2px;display:inline-block}
+
+/* POP */
+.popgrid{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:20px;align-items:start}
+@media (max-width:950px){.popgrid{grid-template-columns:1fr}}
+.radarwrap{position:sticky;top:110px}
+.radar svg{width:100%;height:auto;display:block;max-width:560px;margin:0 auto}
+.radar .ring{fill:none;stroke:var(--grid)}
+.radar .spoke{stroke:var(--grid)}
+.radar .lvl{fill:var(--fg-soft);font-size:10px}
+.radar .ax{fill:var(--fg);font-size:12.5px;font-weight:600;cursor:pointer}
+.radar .ax.sel{fill:var(--ok);font-weight:700}
+.radar .goalmark{fill:var(--ok)}
+.series-zelf{fill:color-mix(in srgb,var(--s-zelf) 18%,transparent);stroke:var(--s-zelf);stroke-width:2.2}
+.series-gesprek{fill:color-mix(in srgb,var(--s-gesprek) 14%,transparent);stroke:var(--s-gesprek);stroke-width:2.2;stroke-dasharray:6 4}
+.series-vorig{fill:none;stroke:var(--s-vorig);stroke-width:1.6;stroke-dasharray:2 4}
+.pt-zelf{fill:var(--s-zelf)} .pt-gesprek{fill:var(--s-gesprek)} .pt-vorig{fill:var(--s-vorig)}
+.chips{display:flex;gap:6px;flex-wrap:wrap;justify-content:center}
+.chips label{font-weight:500;display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);border-radius:999px;padding:4px 12px;cursor:pointer;font-size:.85rem}
+.chips input{margin:0;accent-color:var(--accent)}
+.sw{width:18px;height:0;border-top:3px solid}
+.sw.zelf{border-color:var(--s-zelf)} .sw.gesprek{border-color:var(--s-gesprek);border-top-style:dashed} .sw.vorig{border-color:var(--s-vorig);border-top-style:dotted}
+.scale{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;font-size:.78rem}
+.scale div{background:var(--surface-2);border-radius:6px;padding:6px 8px}
+.scale b{display:block;font-size:.82rem}
+.axrow{border:1px solid var(--line);border-radius:var(--r);padding:10px 12px;display:flex;flex-direction:column;gap:6px;background:var(--surface)}
+.axrow.goal{border-color:var(--ok);box-shadow:0 0 0 1px var(--ok)}
+.axrow .h{display:flex;gap:8px;align-items:baseline;flex-wrap:wrap}
+.axrow .h b{color:var(--title)}
+.axrow .h .val{margin-left:auto;font-variant-numeric:tabular-nums;font-weight:700;color:var(--s-zelf);white-space:nowrap}
+.axrow input[type=range]{width:100%;accent-color:var(--s-zelf)}
+.axrow .goalchk{font-weight:500;font-size:.82rem;display:inline-flex;gap:6px;align-items:center}
+.axlist{display:flex;flex-direction:column;gap:8px}
+.goalbox{border-left:4px solid var(--ok);background:var(--surface);border-radius:0 var(--r) var(--r) 0;padding:12px 14px;display:flex;flex-direction:column;gap:10px}
+.goalbox .row2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+@media (max-width:600px){.goalbox .row2{grid-template-columns:1fr}}
+.lv{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:4px}
+.lv label{font-weight:500;font-size:.78rem;border:1px solid var(--line);border-radius:6px;padding:5px 6px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:1px;text-align:center;line-height:1.2}
+.lv label b{font-size:.95rem}
+.lv input{position:absolute;opacity:0;pointer-events:none}
+.lv label:has(input:checked){background:var(--s-zelf);color:var(--surface);border-color:var(--s-zelf)}
+.lv label:has(input:focus-visible){outline:2px solid var(--info)}
+.ind{font-size:.85rem;color:var(--fg);background:var(--surface-2);border-radius:6px;padding:6px 10px}
+@media (max-width:480px){.lv{grid-template-columns:repeat(2,minmax(0,1fr))}}
+:root{--l3:color-mix(in srgb,var(--ok) 55%,var(--surface))}
+.series-team{fill:color-mix(in srgb,var(--s-zelf) 20%,transparent);stroke:var(--s-zelf);stroke-width:2.4}
+.series-centrum{fill:none;stroke:var(--s-vorig);stroke-width:1.8;stroke-dasharray:5 4}
+.pt-team{fill:var(--s-zelf)}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px}
+.kpi{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:12px 14px;display:flex;flex-direction:column;gap:2px}
+.kpi span{font-size:.74rem;text-transform:uppercase;letter-spacing:.06em;color:var(--fg-soft);font-weight:700}
+.kpi b{font-size:1.3rem;color:var(--title);font-variant-numeric:tabular-nums}
+.kpi small{color:var(--fg-soft);font-size:.82rem}
+.kpi.warn{border-left:4px solid var(--warn)}
+.dist{display:flex;flex-direction:column;gap:10px}
+.drow{display:grid;grid-template-columns:170px minmax(0,1fr) 36px;gap:10px;align-items:center;font-size:.88rem}
+@media (max-width:600px){.drow{grid-template-columns:110px minmax(0,1fr) 32px}}
+.dname{font-weight:600;min-width:0}
+.star{color:var(--warn);font-weight:700;font-size:.8rem}
+.dbar{display:flex;height:16px;border-radius:4px;overflow:hidden;background:var(--surface-2)}
+.dbar i{display:block;height:100%}
+.dval{font-variant-numeric:tabular-nums;font-weight:700;text-align:right}
+.dlegend{display:flex;gap:12px;flex-wrap:wrap;font-size:.8rem;color:var(--fg-soft);margin-top:6px}
+.dlegend span{display:inline-flex;gap:5px;align-items:center}
+.dlegend i{width:12px;height:12px;border-radius:2px;display:inline-block}
+table.heat{border-collapse:collapse;width:100%;font-size:.85rem;min-width:760px}
+table.heat th{font-size:.72rem;text-transform:uppercase;letter-spacing:.04em;color:var(--fg-soft);padding:6px;border-bottom:1px solid var(--line);text-align:left;white-space:nowrap}
+table.heat td{padding:6px;border-bottom:1px solid var(--line);vertical-align:middle}
+td.hc{text-align:center;font-weight:700;font-variant-numeric:tabular-nums;width:56px}
+td.l1{background:var(--bad-bg);color:var(--bad)} td.l2{background:var(--warn-bg);color:var(--warn)} td.l3{background:var(--ok-bg);color:var(--ok)} td.l4{background:var(--ok);color:var(--surface)}
+.steps{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}
+.steps span{font-size:.8rem;font-weight:700;padding:4px 10px;border-radius:999px;background:var(--surface-2);color:var(--fg-soft)}
+.steps span.on{background:var(--accent);color:var(--accent-fg)}
+</style>
+
+<header class="top">
+  <div class="wrap">
+    <div class="brand">
+      <svg viewBox="0 0 100 115" aria-hidden="true"><polygon points="50,2 95,28 95,87 50,113 5,87 5,28" fill="#4a4247"/><polygon points="50,2 95,28 50,54 5,28" fill="#a28790"/><polygon points="50,54 95,28 95,87 50,113" fill="#889a91"/></svg>
+      <div><b>Crescendo CVO</b><br><span>Personeelsdatabank · Tijdlijn personeelspraktijken</span></div>
+      <span class="demo">Prototype · voorbeelddata</span>
+    </div>
+    <nav class="tabs" aria-label="Schermen">
+      <a href="#tijdlijn">1 · Tijdlijn</a>
+      <a href="#jaarkalender">2 · Schooljaar</a>
+      <a href="#pop">3 · POP</a>
+      <a href="#teamnoden">4 · Teamnoden</a>
+      <a href="#specificatie">5 · Specificatie ICT</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+
+<!-- ============ 1. TIJDLIJN ============ -->
+<section id="v-tijdlijn" hidden>
+  <div class="intro">
+    <span class="who">Zone in de personeelsdatabank · voor medewerkers en leidinggevenden</span>
+    <h2>De loopbaan van een medewerker, van vacature tot afscheid</h2>
+    <p>De tijdlijn volgt de vijf personeelspraktijken uit onze visietekst. Klik op een stap om de formulieren te zien die erbij horen: waar je ze vindt, wie ze invult en hoe ver ze staan. Kies "Loopbaan van een medewerker" om te zien wat één collega al doorliep.</p>
+  </div>
+  <div class="vision">
+    <b>Visietekst personeelsbeleid</b>
+    <span class="hint">Kernwaarden</span>
+    <div class="vals"><span class="tag">gelijkwaardigheid</span><span class="tag">eerlijkheid</span><span class="tag">betrokkenheid</span><span class="tag">openheid</span><span class="tag">respect</span><span class="tag">engagement</span></div>
+  </div>
+  <div class="tlbar">
+    <div class="seg" role="group" aria-label="Weergave">
+      <button data-view="centrum" aria-pressed="true">Alle formulieren</button>
+      <button data-view="mw" aria-pressed="false">Loopbaan van een medewerker</button>
+    </div>
+    <div class="legend"><span class="pill s-ok">bestaat</span><span class="pill s-proto">prototype klaar</span><span class="pill s-dev">in ontwikkeling</span><span class="pill s-todo">nog te ontwikkelen</span></div>
+  </div>
+  <div class="timeline" id="timeline"></div>
+  <div class="waard"><b>5 · Waardering</b> loopt doorheen elke stap: niet alleen prestaties, ook inzet en betrokkenheid erkennen.</div>
+  <div class="panel stagepanel" id="stagePanel"></div>
+</section>
+
+<!-- ============ 2. JAARKALENDER ============ -->
+<section id="v-jaarkalender" hidden>
+  <div class="intro">
+    <span class="who">Dezelfde formulieren, per schooljaar</span>
+    <h2>Wanneer gebeurt wat?</h2>
+    <p>Sommige formulieren hangen aan een moment in de loopbaan, andere komen elk schooljaar terug. Dit is een voorstel voor de vaste momenten. Wat nog niet vastligt, staat als voorstel aangeduid.</p>
+  </div>
+  <div class="scroll panel" style="padding:14px"><div class="year" id="year"></div></div>
+  <div class="ylegend"><span><i style="background:#40acb6"></i>P1 werving en personeelsinzet</span><span><i style="background:#a28790"></i>P2 loopbaanbegeleiding</span><span><i style="background:#889a91"></i>P3 aanvangsbegeleiding</span><span><i style="background:#e0a030"></i>P4 professionalisering</span><span>* = voorstel, nog te beslissen</span></div>
+</section>
+
+<!-- ============ 3. POP ============ -->
+<section id="v-pop" hidden>
+  <div class="intro">
+    <span class="who">Persoonlijk ontwikkelingsplan · in de personeelsdatabank</span>
+    <h2>POP: waar sta ik, waar wil ik naartoe?</h2>
+    <p>De medewerker scoort zichzelf op de zes bouwstenen of op de competenties. Het spinnenweb toont die zelfreflectie naast de inschatting uit het gesprek en de score van vorig jaar. Kies één of twee groeidoelen en koppel ze aan het traject van die bouwsteen, op jouw niveau. Per bouwsteen kies je het niveau dat het best bij je praktijk past; elk niveau heeft een eigen ik-uitspraak.</p>
+  </div>
+  <div class="steps" aria-label="Verloop POP"><span class="on">1 Zelfreflectie</span><span class="on">2 Groeidoelen</span><span>3 POP-gesprek</span><span>4 Acties en opvolging</span><span>5 Terugblik einde schooljaar</span></div>
+  <div class="tlbar">
+    <div class="seg" role="group" aria-label="Kader">
+      <button data-frame="bouw" aria-pressed="true">6 bouwstenen</button>
+      <button data-frame="comp" aria-pressed="false">Competenties</button>
+    </div>
+    <span class="hint">Voorbeeld: Sofie Van Damme, lesgever NT2 · schooljaar 2026-2027</span>
+  </div>
+  <div class="popgrid">
+    <div class="panel radarwrap">
+      <div class="radar" id="radar"></div>
+      <div class="chips" id="seriesChips">
+        <label><input type="checkbox" data-s="zelf" checked><span class="sw zelf"></span>Zelfreflectie</label>
+        <label><input type="checkbox" data-s="gesprek" checked><span class="sw gesprek"></span>Na het POP-gesprek</label>
+        <label><input type="checkbox" data-s="vorig" checked><span class="sw vorig"></span>Vorig schooljaar</label>
+      </div>
+      <div class="scale" id="scale"></div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:14px;min-width:0">
+      <div class="axlist" id="axlist"></div>
+      <div id="goals" style="display:flex;flex-direction:column;gap:12px"></div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center"><button class="primary" id="popSave">Bewaar en plan POP-gesprek</button><span class="hint">Zichtbaar voor jou en je leidinggevende of coach.</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 4. TEAMNODEN ============ -->
+<section id="v-teamnoden" hidden>
+  <div class="intro">
+    <span class="who">Voor de adjunct en de directie · uit alle POP's samen</span>
+    <h2>Waar liggen de grootste professionaliseringsnoden?</h2>
+    <p>De POP's van een cluster of van het hele centrum samen. Het spinnenweb toont het gemiddelde naast dat van het centrum. De balken tonen hoeveel lesgevers op elk niveau staan. Zo zie je meteen welke bouwsteen het meest aandacht vraagt en welk traject daarop antwoordt.</p>
+  </div>
+  <div class="tlbar">
+    <div class="f" style="min-width:220px"><label for="tCl">Bekijk</label><select id="tCl"></select></div>
+    <div class="seg" role="group" aria-label="Kader teamnoden">
+      <button data-tframe="bouw" aria-pressed="true">6 bouwstenen</button>
+      <button data-tframe="comp" aria-pressed="false">Competenties</button>
+    </div>
+    <div class="f" style="min-width:200px"><label for="tBron">Scores</label><select id="tBron"><option value="zelf">Zelfreflectie</option><option value="gesprek">Na het POP-gesprek</option></select></div>
+  </div>
+  <div class="kpis" id="tKpi"></div>
+  <div class="two" style="margin-top:16px">
+    <div class="panel"><div class="radar" id="tRadar"></div><div class="chips" id="tLegend"></div></div>
+    <div class="panel">
+      <h3>Verdeling per niveau <span class="hint">· gesorteerd op nood</span></h3>
+      <div class="dist" id="tDist"></div>
+      <div class="dlegend"><span><i style="background:var(--bad)"></i>1 Ontdekken</span><span><i style="background:var(--warn)"></i>2 Ontwikkelen</span><span><i style="background:var(--l3)"></i>3 Beheersen</span><span><i style="background:var(--ok)"></i>4 Inspireren</span><span>★ = gekozen als groeidoel</span></div>
+    </div>
+  </div>
+  <div class="panel" style="margin-top:20px" id="tConcl"></div>
+  <div class="panel" style="margin-top:20px" id="tPeople"></div>
+</section>
+
+<!-- ============ 5. SPECIFICATIE ============ -->
+<section id="v-specificatie" hidden>
+  <div class="intro">
+    <span class="who">Voor de collega ICT</span>
+    <h2>Specificatie: zone tijdlijn en POP</h2>
+    <p>De tijdlijn is een startpagina in de personeelsdatabank die verwijst naar formulieren op drie plekken. Het POP wordt nieuw gebouwd in de personeelsdatabank.</p>
+  </div>
+  <div style="display:flex;flex-direction:column;gap:20px">
+    <div class="panel">
+      <h3>Waar staat welk formulier?</h3>
+      <div class="scroll"><table class="simple" id="whereTbl"></table></div>
+    </div>
+    <div class="two">
+      <div class="panel">
+        <h3>Zone tijdlijn</h3>
+        <ul class="hex">
+          <li>Eén pagina met de zeven stappen; per stap de formulieren als tegels met link.</li>
+          <li>Status per formulier (bestaat, in ontwikkeling, …) beheerd in een kleine lijst, zodat de directie die zelf bijwerkt.</li>
+          <li><b>Weergave medewerker:</b> per formulier de datum van invullen of het geplande moment, opgehaald uit de onderliggende lijsten (wervingsreserve, onboarding, desiderata, POP).</li>
+          <li>Formulieren in de HR-tool: enkel een link en het feit dat een gesprek plaatsvond, nooit de inhoud. Die blijft in de HR-tool.</li>
+        </ul>
+      </div>
+      <div class="panel">
+        <h3>POP: gegevens</h3>
+        <ul class="hex">
+          <li>Per medewerker per schooljaar één POP-item.</li>
+          <li>Scores 1–4 per bouwsteen en per competentie, telkens twee keer: zelfreflectie en na het gesprek. De score van vorig jaar komt uit het vorige item.</li>
+          <li>Per groeidoel: as, doel, acties met leervorm (leerpad van de bouwsteen, vakgroep-intervisie, externe nascholing, collegiaal leren), timing.</li>
+          <li>Spinnenweb als grafiek op het item (bv. een radargrafiek in Power Apps, of een webonderdeel).</li>
+          <li><b>Toegang:</b> de medewerker en zijn leidinggevende of coach. De adjunct ziet in Teamnoden de POP's van de lesgevers van zijn eigen cluster(s). Andere adjuncten zien die niet.</li>
+          <li><b>Teamnoden op centrumniveau:</b> enkel gemiddelden en verdelingen, nooit namen. Een groep van minder dan 5 ingevulde POP's wordt niet apart getoond.</li>
+          <li>Ik-uitspraken per niveau en per bouwsteen in een aparte lijst, zodat de trekkers ze zelf kunnen bijwerken.</li>
+          <li>Anonieme optelling per team (gemiddelde per bouwsteen, gekozen groeidoelen) voedt het professionaliseringsplan (P4).</li>
+        </ul>
+      </div>
+    </div>
+    <div class="panel">
+      <h3>Open vragen</h3>
+      <ul class="hex">
+        <li><b>Schaal 1–4.</b> Ik stel ontdekken, ontwikkelen, beheersen, inspireren voor, in lijn met de ontwikkelingsschalen van de inspectie. Akkoord, of een eigen schaal?</li>
+        <li><b>Omschrijving per bouwsteen.</b> Nu kort, op basis van de thema's van de bouwsteenteams. Best laten nalezen door de trekkers.</li>
+        <li><b>Competenties.</b> Nu de vaste selectie uit de VDAB-vacature (persoonsgebonden en jobgerelateerd). Een aparte set voor administratieve medewerkers en ICT nodig?</li>
+        <li><b>Wanneer het POP-gesprek?</b> Voorstel: zelfreflectie in september en oktober, gesprek voor de herfstvakantie, terugblik in juni. Te bespreken op de directiedag van 5 januari (P4).</li>
+        <li><b>Verhouding POP en functioneringsgesprek.</b> Het POP is van de medewerker en gaat over groei; functioneren en evalueren gebeurt in de HR-tool. Mag de HR-tool naar het POP verwijzen?</li>
+      </ul>
+    </div>
+  </div>
+</section>
+</main>
+<div class="toast" id="toast" hidden role="status"></div>
+
+<script>
+(()=>{
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+const esc=s=>String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+function toast(t){const el=$("#toast");el.textContent=t;el.hidden=false;clearTimeout(toast.t);toast.t=setTimeout(()=>el.hidden=true,2600)}
+const GH="https://inefierens1.github.io/HR/";
+const ST={ok:["s-ok","bestaat"],proto:["s-proto","prototype klaar"],dev:["s-dev","in ontwikkeling"],todo:["s-todo","nog te ontwikkelen"]};
+
+// ---------------- tijdlijn ----------------
+const STAGES=[
+ {n:"Werving en selectie",pr:"Praktijk 1 · P1",why:"Een transparant en objectief aanwervingsbeleid. We omarmen talent en diversiteit en hebben duidelijke criteria voor diploma, ervaring, motivatie en competenties.",
+  f:[{t:"Vacature via VDAB",st:"dev",w:"VDAB + website",who:"Adjunct, Team Communicatie",d:"Draaiboek met standaardteksten vanuit de 6 bouwstenen.",own:"Ariane",me:["na","Kwam via spontane sollicitatie"]},
+     {t:"Formulier wervingsreserve",st:"proto",w:"Personeelsdatabank",who:"Kandidaat, adjunct",d:"Spontane sollicitatie of reactie op vacature, met CV en motivatiebrief en melding aan de juiste adjunct.",own:"Ine & Marijke",link:"wervingsreserve/",me:["done","Ingediend 17 aug 2026"]},
+     {t:"Leidraad sollicitatiegesprek lesgevers",st:"dev",w:"SharePoint",who:"Twee adjuncten",d:"Minstens één vraag per bouwsteen, heldere criteria.",own:"Anja & Nathalie",me:["done","Gesprek 4 sept 2026"]},
+     {t:"Leidraad andere profielen",st:"dev",w:"SharePoint",who:"Adjunct",d:"Voor administratieve en ICT-profielen en zij-instromers.",own:"Marijke",me:["na","Niet van toepassing"]}]},
+ {n:"Onthaal en start",pr:"Praktijk 2 · P1 + P3",why:"Elke nieuwe medewerker wordt aangeworven voor een bepaalde opdracht en krijgt een warm onthaal en begeleiding.",
+  f:[{t:"Nieuwe onboarding (startformulier)",st:"proto",w:"Personeelsdatabank",who:"Adjunct",d:"Met opdracht over meerdere opleidingen, CV en motivatiebrief.",own:"Ine & Marijke",link:"onboarding/",me:["done","Gestart 10 sept 2026"]},
+     {t:"Welkom-link persoonlijke gegevens",st:"ok",w:"Personeelsdatabank",who:"Nieuwe medewerker, Team Personeel",d:"Personeelsdossier, daarna review door Team Personeel.",me:["done","Goedgekeurd 18 sept 2026"]},
+     {t:"Aanvangsbegeleiding",st:"ok",w:"Team Aanvangsbegeleiding",who:"Starter, coach",d:"P3 staat volgens de verwachting.",me:["plan","Loopt tot juni 2027"]}]},
+ {n:"Opdracht",pr:"Praktijk 2 · P1",why:"Elk schooljaar de desiderata opvragen. De juiste mensen op de juiste plaats, met oog voor sterke punten en talenten.",
+  f:[{t:"Desiderata",st:"proto",w:"Personeelsdatabank",who:"Lesgever, adjunct",d:"Eén formulier voor alle clusters, elk jaar in maart.",own:"Ine & Marijke",link:"desiderata/",me:["plan","Open in maart 2027"]},
+     {t:"Aanbodbevraging NT2",st:"ok",w:"Forms",who:"Lesgevers NT2",d:"Extra bevraging in april, enkel voor NT2.",me:["plan","April 2027"]},
+     {t:"Afsprakenkader afwezigheden en vervangingen",st:"todo",w:"SharePoint",who:"Directie",d:"Principes: kwaliteit, talenten, samenwerking, eerlijke verdeling, continuïteit.",me:["na","–"]},
+     {t:"Functiebeschrijving",st:"dev",w:"SharePoint",who:"Directie",d:"Bestaande actualiseren, ontbrekende (ICT-profielen) aanvullen.",own:"Martine",me:["done","Functiebeschrijving lesgever"]}]},
+ {n:"Functioneren en coaching",pr:"Praktijk 3 · P2",why:"Formele gesprekken én een actieve feedbackcultuur, met tweerichtingsverkeer. Evaluaties zijn geen momentopname maar een kans om te groeien.",
+  f:[{t:"Functioneringsgesprek",st:"dev",w:"HR-tool",who:"Medewerker, leidinggevende",d:"Formulier in de HR-tool; uitwerking op de directiedag P2 (24 nov).",me:["plan","Gepland mei 2027"]},
+     {t:"Coachings- en begeleidingsgesprek",st:"dev",w:"HR-tool",who:"Medewerker, coach",d:"Informeel en ontwikkelingsgericht.",me:["done","Gesprek 20 okt 2026"]},
+     {t:"Evaluatiegesprek",st:"dev",w:"HR-tool",who:"Medewerker, evaluatoren",d:"Indien nodig; transparant, rechtvaardig en stimulerend.",me:["na","Niet van toepassing"]}]},
+ {n:"Professionele ontwikkeling",pr:"Praktijk 4 · P4",why:"Leren met impact: geen losse druppels, maar trajecten vanuit de 6 bouwstenen, volgens de SILVER-aanpak, op drie niveaus en verankerd in de vakgroep.",
+  f:[{t:"POP",st:"proto",w:"Personeelsdatabank",who:"Medewerker, leidinggevende of coach",d:"Zelfreflectie op de 6 bouwstenen en competenties, met spinnenweb en groeidoelen.",own:"Ine",link:"tijdlijn/#pop",me:["plan","Zelfreflectie ingevuld, gesprek 5 nov"]},
+     {t:"Leerpaden per bouwsteen (SILVER)",st:"dev",w:"SharePoint + Teams",who:"Lesgevers, begeleiders, directie",d:"Poolstervisie en Kwaliteitsvol uitgewerkt; de andere bouwstenen volgen het meerjarenplan 2026-2029.",own:"Bouwsteenteams",me:["plan","Poolstervisie vanaf feb 2027"]},
+     {t:"Aanvraag externe nascholing",st:"ok",w:"HR-tool",who:"Medewerker, directie",d:"Gekozen vanuit een traject of een groeidoel in het POP.",me:["done","Nascholing NT2 alfa, 2 dec"]},
+     {t:"Vakgroep-intervisie",st:"dev",w:"Vakgroep + Teams",who:"Vakgroep, opleidingscoördinator",d:"Met de intervisiekaart van het lopende traject, 20 tot 30 minuten, geen verslagplicht.",me:["plan","Na blok 2 Kwaliteitsvol"]},
+     {t:"Feedback op het traject",st:"dev",w:"Forms (eindscherm leerpad)",who:"Deelnemers, anoniem",d:"Max. 3 vragen; voedt de jaarlijkse zelfscan van de directie.",me:["plan","Einde traject"]}]},
+ {n:"Waardering en welzijn",pr:"Praktijk 5 · P2",why:"Waarderen van prestaties, inzet en betrokkenheid. Aandacht voor welzijn, deconnectie en re-integratie.",
+  f:[{t:"Waarderingsmomenten",st:"todo",w:"Nog te bepalen",who:"Directie",d:"Bv. jubilea, bedankmoment einde schooljaar. Uitwerking op directiedag P2.",me:["na","–"]},
+     {t:"Re-integratie na langdurige afwezigheid",st:"todo",w:"Nog te bepalen",who:"Medewerker, directie, Team Personeel",d:"Afsprakenkader volgens P2.",me:["na","Niet van toepassing"]}]},
+ {n:"Afscheid",pr:"Praktijk 3 · P2",why:"Exitgesprekken leveren waardevolle inzichten op om ons personeelsbeleid te verbeteren.",
+  f:[{t:"Exitgesprek",st:"todo",w:"HR-tool",who:"Vertrekkende medewerker, directie",d:"Vaste vragen, anoniem samengevat voor het beleid.",me:["na","–"]}]}];
+let view="centrum",cur=0;
+function renderTimeline(){
+  $("#timeline").innerHTML=STAGES.map((s,i)=>{
+    const done=s.f.filter(f=>f.me[0]==="done").length,rel=s.f.filter(f=>f.me[0]!=="na").length;
+    return `<button class="stage" data-i="${i}" aria-pressed="${i===cur}"><span class="hx">${i+1}</span><span class="txt"><span class="nm">${esc(s.n)}</span><span class="pr">${esc(s.pr)}</span>
+     ${view==="centrum"?`<span class="cnt">${s.f.map(f=>`<i class="${f.st}" title="${esc(f.t)}"></i>`).join("")}</span>`:`<span class="me" style="color:${rel&&done===rel?"var(--ok)":rel?"var(--info)":"var(--fg-soft)"}">${rel?`${done}/${rel} afgerond`:"nog niet aan de orde"}</span>`}</span></button>`}).join("");
+  $$(".stage").forEach(b=>b.onclick=()=>{cur=+b.dataset.i;renderTimeline()});
+  const s=STAGES[cur];
+  $("#stagePanel").innerHTML=`<div class="sphead"><h3>${cur+1} · ${esc(s.n)}</h3><span class="tag">${esc(s.pr)}</span></div>
+   <p class="sphead"><span class="why"><b>Uit onze visie:</b> ${esc(s.why)}</span></p>
+   ${view==="mw"?`<p class="hint">Weergave voor <b>Sofie Van Damme</b> (voorbeeld), lesgever NT2 sinds september 2026.</p>`:""}
+   <div class="forms">${s.f.map(f=>`<div class="fcard"><div class="t"><span>${esc(f.t)}</span><span class="pill ${ST[f.st][0]}">${ST[f.st][1]}</span></div>
+     <div class="meta"><span class="tag">${esc(f.w)}</span></div>
+     <div class="d">${esc(f.d)}</div>
+     <div class="d"><b>Wie:</b> ${esc(f.who)}${f.own?` · <b>uitwerking:</b> ${esc(f.own)}`:""}</div>
+     ${f.link?(f.link==="tijdlijn/#pop"?`<a class="link" href="#pop">Open het POP →</a>`:`<a class="link" href="${GH+f.link}" target="_blank" rel="noopener">Open het prototype →</a>`):""}
+     ${view==="mw"?`<div class="mine ${f.me[0]}">${f.me[0]==="done"?"✓ ":f.me[0]==="plan"?"◷ ":""}${esc(f.me[1])}</div>`:""}</div>`).join("")}</div>`;
+}
+$$("[data-view]").forEach(b=>b.onclick=()=>{view=b.dataset.view;$$("[data-view]").forEach(x=>x.setAttribute("aria-pressed",x===b));renderTimeline()});
+
+// ---------------- jaarkalender ----------------
+const MONTHS=["sep","okt","nov","dec","jan","feb","mrt","apr","mei","jun","jul","aug"];
+const EV=[
+ [0,"p3","Start aanvangsbegeleiding","nieuwe collega's"],[0,"p4","POP: zelfreflectie*","sept – okt"],[1,"p4","POP-gesprek*","voor herfstvakantie"],
+ [1,"p2","Coachingsgesprekken","doorlopend"],[2,"p4","Professionaliseringsplan","noden uit POP's"],[5,"p4","Start trajecten bouwstenen*","directie en begeleiders eerst"],[9,"p4","Zelfscan directie","effecten en keuze trajecten"],
+ [6,"p1","Desiderata","1 – 31 maart"],[7,"p1","Aanbodbevraging NT2","april"],[7,"p1","Opdrachten verdelen","na desiderata"],
+ [8,"p2","Functioneringsgesprekken*","mei – juni"],[9,"p4","POP: terugblik*","juni"],[9,"p2","Waarderingsmoment*","einde schooljaar"],
+ [10,"p1","Wervingsreserve nakijken","voor nieuwe opdrachten"],[11,"p1","Onboarding nieuwe collega's","aug – sept"]];
+$("#year").innerHTML=MONTHS.map(m=>`<div class="m">${m}</div>`).join("")+MONTHS.map((m,i)=>`<div style="display:flex;flex-direction:column;gap:4px">${EV.filter(e=>e[0]===i).map(e=>`<div class="ev ${e[1]}">${esc(e[2])}<small>${esc(e[3])}</small></div>`).join("")}</div>`).join("");
+
+// ---------------- POP ----------------
+const FRAMES={
+ bouw:[
+  {k:"Kwaliteitsvol",d:"Doelgericht werken: heldere lesdoelen, evaluatie afgestemd op de doelen.",z:3,g:3,v:2},
+  {k:"Zorgzaam",d:"Oog voor elke cursist; gegevens over cursisten gebruiken om te ondersteunen.",z:2,g:3,v:2},
+  {k:"Levensecht",d:"Link met de praktijk: werkplekleren, soft skills, 21e-eeuwse vaardigheden.",z:3,g:3,v:3},
+  {k:"Betrokken",d:"Zelfregulerend leren: cursisten sturen mee hun eigen leerproces.",z:2,g:2,v:1},
+  {k:"Samen",d:"Vakgroepwerking: expertise delen, horizontaal en verticaal.",z:3,g:4,v:3},
+  {k:"Innovatief",d:"Digitale didactiek: digitale middelen doelgericht inzetten.",z:1,g:2,v:1}],
+ comp:[
+  {k:"Coachen",d:"Persoonsgebonden",z:3,g:3,v:2},{k:"Digitaal denken",d:"Persoonsgebonden",z:2,g:2,v:1},{k:"Inleving",d:"Persoonsgebonden",z:4,g:4,v:3},
+  {k:"Samenwerken",d:"Persoonsgebonden",z:3,g:3,v:3},{k:"Klantgericht",d:"Persoonsgebonden",z:3,g:3,v:3},{k:"Plannen en organiseren",d:"Persoonsgebonden",z:2,g:2,v:2},
+  {k:"Leermiddelen uitwerken",d:"Jobgerelateerd",z:2,g:3,v:2},{k:"Lessen voorbereiden",d:"Jobgerelateerd",z:3,g:3,v:3},{k:"Leerprocessen differentiëren",d:"Jobgerelateerd",z:2,g:2,v:1},
+  {k:"Leerresultaten evalueren",d:"Jobgerelateerd",z:2,g:3,v:2},{k:"Werkadministratie bijhouden",d:"Jobgerelateerd",z:3,g:3,v:3}]};
+const LVL=["Ontdekken","Ontwikkelen","Beheersen","Inspireren"];
+const LVLD=["Ik maak er kennis mee","Ik pas het soms toe","Ik pas het vlot en bewust toe","Ik inspireer collega's"];
+const IND={
+ "Kwaliteitsvol":["Ik werk vooral vanuit de leerstof; doelen blijven impliciet.","Ik benoem soms het lesdoel; mijn evaluatie sluit er niet altijd bij aan.","Ik formuleer doelen in cursistentaal, verwijs ernaar en stem mijn evaluatie erop af.","Ik help collega's in de vakgroep om doelgericht te werken."],
+ "Zorgzaam":["Ik merk vooral achteraf welke cursist extra steun nodig had.","Ik gebruik soms informatie over cursisten om bij te sturen.","Ik gebruik gegevens over cursisten bewust om tijdig te ondersteunen.","Ik denk mee over de zorgaanpak van de opleiding of het centrum."],
+ "Levensecht":["Mijn lessen staan nog los van de beroeps- of leefwereld.","Ik breng af en toe voorbeelden uit de praktijk binnen.","Mijn opdrachten vertrekken vanuit echte situaties; ik werk ook aan soft skills.","Ik bouw mee aan werkplekleren of partnerschappen."],
+ "Betrokken":["Ik stuur het leerproces van mijn cursisten volledig zelf.","Ik laat cursisten soms reflecteren op hun leren.","Mijn cursisten plannen, reflecteren en sturen structureel mee bij.","Ik inspireer collega's rond zelfregulerend leren."],
+ "Samen":["Ik werk vooral alleen aan mijn lessen.","Ik deel soms materiaal of ervaringen in de vakgroep.","Ik draag actief bij aan vakgroepoverleg en intervisie.","Ik trek samenwerking binnen of over vakgroepen heen."],
+ "Innovatief":["Ik gebruik digitale middelen vooral om informatie te tonen.","Ik zet soms een digitale tool in om te oefenen of te checken.","Ik kies digitale tools doelgericht voor feedback en differentiatie.","Ik deel digitale praktijken en help collega's op weg."]};
+const indText=(a,v)=>IND[a.k]?IND[a.k][v-1]:LVLD[v-1]+".";
+$("#scale").innerHTML=LVL.map((l,i)=>`<div><b>${i+1} · ${l}</b>${LVLD[i]}</div>`).join("");
+let frame="bouw";const goals={bouw:new Set(["Innovatief"]),comp:new Set()};const show={zelf:true,gesprek:true,vorig:true};
+const goalData={};
+function renderRadar(){
+  const A=FRAMES[frame],n=A.length,W=560,H=500,cx=W/2,cy=H/2+4,R=frame==="bouw"?170:160;
+  const pt=(i,v)=>{const a=-Math.PI/2+i*2*Math.PI/n,r=R*v/4;return[cx+r*Math.cos(a),cy+r*Math.sin(a)]};
+  let s=`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Spinnenweb ${frame==="bouw"?"bouwstenen":"competenties"}">`;
+  for(let l=1;l<=4;l++)s+=`<polygon class="ring" points="${A.map((_,i)=>pt(i,l).join(",")).join(" ")}"/>`;
+  A.forEach((_,i)=>{const[x,y]=pt(i,4);s+=`<line class="spoke" x1="${cx}" y1="${cy}" x2="${x}" y2="${y}"/>`});
+  for(let l=1;l<=4;l++){const[x,y]=pt(0,l);s+=`<text class="lvl" x="${x+5}" y="${y+3}">${l}</text>`}
+  [["vorig","v"],["gesprek","g"],["zelf","z"]].forEach(([k,f])=>{if(!show[k])return;
+    s+=`<polygon class="series-${k}" points="${A.map((a,i)=>pt(i,a[f]).join(",")).join(" ")}"/>`;
+    if(k!=="vorig")A.forEach((a,i)=>{const[x,y]=pt(i,a[f]);s+=`<circle class="pt-${k}" cx="${x}" cy="${y}" r="3.5"/>`});});
+  A.forEach((a,i)=>{const ang=-Math.PI/2+i*2*Math.PI/n,[x,y]=[cx+(R+22)*Math.cos(ang),cy+(R+22)*Math.sin(ang)];
+    const c=Math.cos(ang),anchor=Math.abs(c)<.2?"middle":c>0?"start":"end",dy=Math.sin(ang)>.5?12:Math.sin(ang)<-.5?-2:4;
+    const g=goals[frame].has(a.k),words=a.k.length>16?a.k.split(" "):[a.k];
+    const lines=words.length>1?[words.slice(0,Math.ceil(words.length/2)).join(" "),words.slice(Math.ceil(words.length/2)).join(" ")]:words;
+    s+=`<text class="ax ${g?"sel":""}" data-ax="${esc(a.k)}" x="${x}" y="${y+dy}" text-anchor="${anchor}">${lines.map((l,j)=>`<tspan x="${x}" dy="${j?14:0}">${esc(l)}</tspan>`).join("")}${g?" ★":""}</text>`;});
+  s+=`</svg>`;$("#radar").innerHTML=s;
+  $$("#radar .ax").forEach(t=>t.onclick=()=>toggleGoal(t.dataset.ax));
+}
+function renderAxes(){
+  const A=FRAMES[frame];let lastGrp="";
+  $("#axlist").innerHTML=A.map((a,i)=>{const g=goals[frame].has(a.k);let head="";
+    if(frame==="comp"&&a.d!==lastGrp){lastGrp=a.d;head=`<div class="who" style="margin-top:${i?8:0}px">${esc(a.d)}e competenties</div>`}
+    return head+`<div class="axrow ${g?"goal":""}"><div class="h"><b>${esc(a.k)}</b>${frame==="bouw"?`<span class="hint">${esc(a.d)}</span>`:""}<span class="val" id="val${i}">${a.z} · ${LVL[a.z-1]}</span></div>
+     <div class="lv" role="radiogroup" aria-label="Zelfreflectie ${esc(a.k)}">${LVL.map((l,j)=>`<label><input type="radio" name="lv${i}" value="${j+1}" data-i="${i}" ${a.z===j+1?"checked":""}><b>${j+1}</b>${l}</label>`).join("")}</div>
+     <div class="ind" id="ind${i}">${esc(indText(a,a.z))}</div>
+     <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center"><label class="goalchk"><input type="checkbox" data-goal="${esc(a.k)}" ${g?"checked":""}> Groeidoel</label><span class="hint">gesprek: ${a.g} · vorig jaar: ${a.v}</span></div></div>`}).join("");
+  $$("#axlist .lv input").forEach(r=>r.onchange=()=>{const i=+r.dataset.i,a=FRAMES[frame][i];a.z=+r.value;$("#val"+i).textContent=`${a.z} · ${LVL[a.z-1]}`;$("#ind"+i).textContent=indText(a,a.z);renderRadar()});
+  $$("#axlist [data-goal]").forEach(c=>c.onchange=()=>toggleGoal(c.dataset.goal,c));
+}
+function toggleGoal(k,cb){
+  const G=goals[frame];
+  if(G.has(k))G.delete(k);else{if(G.size>=2){toast("Kies maximaal 2 groeidoelen");if(cb)cb.checked=false;return}G.add(k)}
+  renderAll();
+}
+const PIJLERS=["Leerpad van de bouwsteen","Vakgroep-intervisie","Externe nascholing","Collegiaal leren (bv. lesbezoek)","Andere"];
+function renderGoals(){
+  const G=[...goals[frame]];
+  $("#goals").innerHTML=G.length?G.map((k,i)=>{const d=goalData[k]||(goalData[k]=k==="Innovatief"?{doel:"Ik zet digitale tools doelgericht in om cursisten te laten oefenen buiten de les.",actie:"Leerpad Innovatief (digitale didactiek); praktijkopdracht delen in de vakgroep",pijler:"Leerpad van de bouwsteen",wanneer:"Schooljaar 2027-2028"}:{doel:"",actie:"",pijler:"Leerpad van de bouwsteen",wanneer:""});
+    return `<div class="goalbox"><h3>Groeidoel ${i+1}: ${esc(k)}</h3>
+     <div class="f"><label for="gd${i}">Wat wil ik bereiken?</label><textarea id="gd${i}" data-k="${esc(k)}" data-f="doel">${esc(d.doel)}</textarea></div>
+     <div class="f"><label for="ga${i}">Welke acties?</label><input type="text" id="ga${i}" data-k="${esc(k)}" data-f="actie" value="${esc(d.actie)}"></div>
+     <div class="row2"><div class="f"><label for="gp${i}">Hoe leer je dit?</label><select id="gp${i}" data-k="${esc(k)}" data-f="pijler">${PIJLERS.map(p=>`<option ${p===d.pijler?"selected":""}>${p}</option>`).join("")}</select></div>
+     <div class="f"><label for="gw${i}">Wanneer?</label><input type="text" id="gw${i}" data-k="${esc(k)}" data-f="wanneer" value="${esc(d.wanneer)}" placeholder="bv. tegen de paasvakantie"></div></div>
+     <p class="hint">Wat je leert, probeer je uit in je les en deel je in de vakgroep-intervisie.</p></div>`}).join(""):`<div class="goalbox"><p>Nog geen groeidoel gekozen. Vink bij één of twee ${frame==="bouw"?"bouwstenen":"competenties"} "Groeidoel" aan, of klik op een naam in het spinnenweb.</p></div>`;
+  $$("#goals [data-k]").forEach(el=>el.addEventListener("input",()=>{goalData[el.dataset.k][el.dataset.f]=el.value}));
+}
+function renderAll(){renderRadar();renderAxes();renderGoals()}
+$$("[data-frame]").forEach(b=>b.onclick=()=>{frame=b.dataset.frame;$$("[data-frame]").forEach(x=>x.setAttribute("aria-pressed",x===b));renderAll()});
+$$("#seriesChips input").forEach(c=>c.onchange=()=>{show[c.dataset.s]=c.checked;renderRadar()});
+$("#popSave").onclick=()=>toast("POP bewaard · uitnodiging voor gesprek verstuurd");
+
+// ---------------- teamnoden ----------------
+let sd=11;const rnd=()=>{sd=(sd*16807)%2147483647;return(sd-1)/2147483646};
+const clamp=v=>Math.max(1,Math.min(4,Math.round(v)));
+const TEAMS={
+ "NT2":{n:["Sofie Van Damme","Ana Ferreira","Youssef El Amrani","Sara Mertens","Inès Bouzid","Karel Goossens","Leen Willems","Nadia Haddou"],b:[2.9,2.6,2.7,2.3,3.2,1.7],c:{1:-0.6,8:-0.2}},
+ "Talen":{n:["Pieter Claes","Marie Dubois","Jens Verhoeven","Lotte Smets","Carlos Ruiz","Hilde Peeters"],b:[3.1,2.7,2.0,2.4,2.9,2.6],c:{6:-0.3}},
+ "Diploma Secundair":{n:["Lien Peeters","Jonas Verbeeck","Fatima Amrani","Bart Janssens","Eva De Wit","Tine Maes","Koen Raes"],b:[2.6,2.9,2.6,1.8,3.0,2.5],c:{8:-0.6,9:-0.3}},
+ "Techniek":{n:["Marc Janssens","Dirk Wouters","Stijn Lambrechts","Rik Vermeulen","Gert Mattheus"],b:[2.7,1.9,3.3,2.2,2.6,1.8],c:{1:-0.7,6:-0.5}}};
+const CB=[2.9,2.4,3.2,3.0,3.0,2.5,2.5,3.0,2.4,2.6,2.9];
+const PEOPLE=[];
+Object.entries(TEAMS).forEach(([cl,t])=>t.n.forEach((n,j)=>{
+  const z={bouw:t.b.map(b=>clamp(b+(rnd()-.5)*1.6)),comp:CB.map((b,i)=>clamp(b+(t.c[i]||0)+(rnd()-.5)*1.6))};
+  const g={bouw:z.bouw.map(v=>clamp(v+(rnd()<.25?(rnd()<.5?-1:1):0))),comp:z.comp.map(v=>clamp(v+(rnd()<.25?(rnd()<.5?-1:1):0)))};
+  const r=rnd(),st=r<.12?"open":r<.62?"gesprek":"ingevuld";
+  const low=(fr,arr)=>FRAMES[fr].map((a,i)=>[a.k,arr[i]+rnd()*.9]).sort((x,y)=>x[1]-y[1]).slice(0,rnd()<.5?1:2).map(x=>x[0]);
+  PEOPLE.push({n,cl,st,z,g,goals:{bouw:low("bouw",z.bouw),comp:low("comp",z.comp)}});
+}));
+const TRAJ={"Kwaliteitsvol":"Het leerpad loopt in 2026-2027.","Betrokken":"Het traject staat gepland in 2027-2028.","Innovatief":"Het traject staat gepland in 2027-2028.","Zorgzaam":"Het traject staat gepland in 2028-2029.","Levensecht":"Het traject staat gepland in 2028-2029.","Samen":"Dit loopt via de vakgroep-intervisie."};
+{const s=PEOPLE[0];s.st="ingevuld";s.z.bouw=FRAMES.bouw.map(a=>a.z);s.goals.bouw=["Innovatief"];}
+let tframe="bouw";
+$("#tCl").innerHTML=`<option value="">Hele centrum (anoniem)</option>`+Object.keys(TEAMS).map(c=>`<option value="${esc(c)}">Cluster ${esc(c)}</option>`).join("");
+$("#tCl").value="NT2";
+function drawRadar(labels,series){
+  const n=labels.length,W=560,H=480,cx=W/2,cy=H/2,R=n>8?150:165;
+  const pt=(i,v)=>{const a=-Math.PI/2+i*2*Math.PI/n,r=R*v/4;return[cx+r*Math.cos(a),cy+r*Math.sin(a)]};
+  let s=`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Spinnenweb teamgemiddelde">`;
+  for(let l=1;l<=4;l++)s+=`<polygon class="ring" points="${labels.map((_,i)=>pt(i,l).join(",")).join(" ")}"/>`;
+  labels.forEach((_,i)=>{const[x,y]=pt(i,4);s+=`<line class="spoke" x1="${cx}" y1="${cy}" x2="${x}" y2="${y}"/>`});
+  for(let l=1;l<=4;l++){const[x,y]=pt(0,l);s+=`<text class="lvl" x="${x+5}" y="${y+3}">${l}</text>`}
+  series.forEach(se=>{s+=`<polygon class="series-${se.cls}" points="${se.vals.map((v,i)=>pt(i,v).join(",")).join(" ")}"/>`;if(se.pts)se.vals.forEach((v,i)=>{const[x,y]=pt(i,v);s+=`<circle class="pt-${se.cls}" cx="${x}" cy="${y}" r="3.5"/>`})});
+  labels.forEach((k,i)=>{const ang=-Math.PI/2+i*2*Math.PI/n,x=cx+(R+20)*Math.cos(ang),y=cy+(R+20)*Math.sin(ang),c=Math.cos(ang);
+    const anchor=Math.abs(c)<.2?"middle":c>0?"start":"end",dy=Math.sin(ang)>.5?12:Math.sin(ang)<-.5?-2:4;
+    const w=k.length>16?k.split(" "):[k],lines=w.length>1?[w.slice(0,Math.ceil(w.length/2)).join(" "),w.slice(Math.ceil(w.length/2)).join(" ")]:w;
+    s+=`<text class="ax" style="cursor:default" x="${x}" y="${y+dy}" text-anchor="${anchor}">${lines.map((l,j)=>`<tspan x="${x}" dy="${j?14:0}">${esc(l)}</tspan>`).join("")}</text>`});
+  return s+`</svg>`;
+}
+function renderTeam(){
+  const cl=$("#tCl").value,fr=tframe,bron=$("#tBron").value,A=FRAMES[fr].map(a=>a.k);
+  const sel=PEOPLE.filter(p=>!cl||p.cl===cl),done=sel.filter(p=>p.st!=="open"),all=PEOPLE.filter(p=>p.st!=="open");
+  const src=p=>bron==="gesprek"&&p.st==="gesprek"?p.g[fr]:p.z[fr];
+  const mean=(arr,i)=>arr.reduce((s,p)=>s+src(p)[i],0)/arr.length;
+  const S=A.map((k,i)=>{const d=[0,0,0,0];done.forEach(p=>d[src(p)[i]-1]++);return{k,i,m:mean(done,i),c:mean(all,i),d,nood:(d[0]+d[1])/done.length,goals:done.filter(p=>p.goals[fr].includes(k)).length}});
+  const sorted=[...S].sort((a,b)=>b.nood-a.nood||a.m-b.m);
+  const goalTop=[...S].sort((a,b)=>b.goals-a.goals)[0];
+  const scope=cl?`cluster ${cl}`:"het centrum";
+  $("#tKpi").innerHTML=`<div class="kpi"><span>POP's ingevuld</span><b>${done.length}/${sel.length}</b><small>${sel.length-done.length} nog open</small></div>
+   <div class="kpi"><span>POP-gesprek gevoerd</span><b>${sel.filter(p=>p.st==="gesprek").length}</b><small>van ${sel.length} lesgevers</small></div>
+   <div class="kpi warn"><span>Grootste nood</span><b>${esc(sorted[0].k)}</b><small>${Math.round(sorted[0].nood*100)}% op niveau 1 of 2</small></div>
+   <div class="kpi"><span>Meest gekozen groeidoel</span><b>${esc(goalTop.k)}</b><small>${goalTop.goals} ${goalTop.goals===1?"lesgever":"lesgevers"}</small></div>`;
+  const series=cl?[{cls:"centrum",vals:S.map(s=>s.c)},{cls:"team",vals:S.map(s=>s.m),pts:true}]:[{cls:"team",vals:S.map(s=>s.m),pts:true}];
+  $("#tRadar").innerHTML=drawRadar(A,series);
+  $("#tLegend").innerHTML=`<label style="cursor:default"><span class="sw zelf"></span>Gemiddelde ${esc(scope)}</label>`+(cl?`<label style="cursor:default"><span class="sw vorig"></span>Gemiddelde centrum</label>`:"");
+  const cols=["var(--bad)","var(--warn)","var(--l3)","var(--ok)"];
+  $("#tDist").innerHTML=sorted.map(s=>`<div class="drow"><span class="dname">${esc(s.k)}${s.goals?` <span class="star">★${s.goals}</span>`:""}</span><div class="dbar">${s.d.map((c,j)=>c?`<i style="width:${c/done.length*100}%;background:${cols[j]}" title="${c} op niveau ${j+1}"></i>`:"").join("")}</div><span class="dval">${s.m.toFixed(1)}</span></div>`).join("");
+  const top=sorted.slice(0,2);
+  $("#tConcl").innerHTML=`<h3>Wat betekent dit voor ${esc(scope)}?</h3><ul class="hex">${top.map(s=>`<li><b>${esc(s.k)}</b>: ${Math.round(s.nood*100)}% staat op niveau 1 of 2, gemiddelde ${s.m.toFixed(1)}${cl?` (centrum ${s.c.toFixed(1)})`:""}. ${s.goals} ${s.goals===1?"lesgever koos":"lesgevers kozen"} dit als groeidoel.${fr==="bouw"&&TRAJ[s.k]?` ${esc(TRAJ[s.k])}`:""}</li>`).join("")}
+   ${fr==="bouw"&&top.some(s=>/2028-2029/.test(TRAJ[s.k]||""))?`<li>Een grote nood bij een traject dat pas in 2028-2029 gepland staat, is een signaal om de volgorde in het meerjarenplan te herbekijken.</li>`:""}
+   <li>Lesgevers op niveau 4 kunnen collega's inspireren, bijvoorbeeld als begeleider in de vakgroep-intervisie.</li></ul>`;
+  if(!cl){$("#tPeople").innerHTML=`<h3>Individuele POP's</h3><p class="hint">Op centrumniveau toont de databank enkel anonieme cijfers. Kies een cluster om de POP's van jouw lesgevers te zien.</p>`;return}
+  const lv=v=>`<td class="hc l${v}">${v}</td>`;
+  $("#tPeople").innerHTML=`<h3>Lesgevers cluster ${esc(cl)}</h3><p class="hint">Zichtbaar voor de adjunct van deze cluster als leidinggevende. Scores: ${bron==="gesprek"?"na het POP-gesprek, of zelfreflectie als het gesprek nog niet plaatsvond":"zelfreflectie"}.</p>
+   <div class="scroll"><table class="heat"><tr><th>Lesgever</th><th>Status</th>${A.map(k=>`<th title="${esc(k)}">${esc(k.length>12?k.slice(0,11)+"…":k)}</th>`).join("")}<th>Groeidoelen</th></tr>
+   ${sel.map(p=>`<tr><td><b>${esc(p.n)}</b></td><td><span class="pill ${p.st==="gesprek"?"s-ok":p.st==="ingevuld"?"s-proto":"s-dev"}">${p.st==="gesprek"?"gesprek gevoerd":p.st==="ingevuld"?"zelfreflectie ingevuld":"nog niet ingevuld"}</span></td>${p.st==="open"?A.map(()=>`<td class="hc">–</td>`).join(""):src(p).map(lv).join("")}<td>${p.st==="open"?"–":p.goals[fr].map(esc).join(", ")}</td></tr>`).join("")}</table></div>`;
+}
+$("#tCl").onchange=renderTeam;$("#tBron").onchange=renderTeam;
+$$("[data-tframe]").forEach(b=>b.onclick=()=>{tframe=b.dataset.tframe;$$("[data-tframe]").forEach(x=>x.setAttribute("aria-pressed",x===b));renderTeam()});
+
+// ---------------- specificatie ----------------
+const where=[];STAGES.forEach((s,i)=>s.f.forEach(f=>where.push([`${i+1} · ${s.n}`,f.t,f.w,ST[f.st][1]])));
+$("#whereTbl").innerHTML=`<tr><th>Stap</th><th>Formulier</th><th>Waar</th><th>Status</th></tr>`+where.map(r=>`<tr><td>${esc(r[0])}</td><td>${esc(r[1])}</td><td>${esc(r[2])}</td><td>${esc(r[3])}</td></tr>`).join("");
+
+// ---------------- routing ----------------
+const V=["tijdlijn","jaarkalender","pop","teamnoden","specificatie"];
+function route(){const h=(location.hash||"#tijdlijn").slice(1),v=V.includes(h)?h:"tijdlijn";
+  V.forEach(x=>$("#v-"+x).hidden=x!==v);
+  $$("nav.tabs a").forEach(a=>a.getAttribute("href")==="#"+v?a.setAttribute("aria-current","page"):a.removeAttribute("aria-current"));
+  window.scrollTo(0,0)}
+renderTimeline();renderAll();renderTeam();
+window.addEventListener("hashchange",route);route();
+})();
+</script>
