@@ -1,0 +1,723 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Wervingsreserve Crescendo CVO</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700&display=swap">
+<style>
+/* Layout: intranet-app met tabbalk; per scherm één werkvlak, hexagon als merkteken en bullet. */
+:root{
+  --bg:#f7f8f6; --surface:#ffffff; --surface-2:#eef0ed; --line:#dfe3df;
+  --fg:#1b1f1e; --fg-soft:#5b6362; --title:#4d5554;
+  --accent:#4d5554; --accent-fg:#ffffff;
+  --hex:#ced7d2; --roze:#dacfd3; --paars:#c8c6c7;
+  --rood:#b91818;
+  --ok:#2f7a4f; --ok-bg:#dff0e5; --warn:#8a5a00; --warn-bg:#fbefd1; --info:#245d86; --info-bg:#dcebf6; --neutral-bg:#ebedeb; --bad:#9b2c2c; --bad-bg:#f6dddd;
+  --font:'Calibri','Segoe UI','Open Sans',system-ui,sans-serif;
+  --mono:ui-monospace,'Cascadia Mono',Consolas,monospace;
+  --r:8px;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#171a19; --surface:#202423; --surface-2:#2a2f2d; --line:#363c3a;
+  --fg:#eceeed; --fg-soft:#a8b0ae; --title:#d7dcda; --accent:#ced7d2; --accent-fg:#171a19;
+  --hex:#55635c; --roze:#5a4a50; --paars:#4c464a; --rood:#ff8a80;
+  --ok:#8fd6a8; --ok-bg:#1f3a2a; --warn:#f2c86b; --warn-bg:#3d3017; --info:#9ccbef; --info-bg:#1c3446; --neutral-bg:#2e3331; --bad:#f2a3a3; --bad-bg:#432222;
+  color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#171a19; --surface:#202423; --surface-2:#2a2f2d; --line:#363c3a;
+  --fg:#eceeed; --fg-soft:#a8b0ae; --title:#d7dcda; --accent:#ced7d2; --accent-fg:#171a19;
+  --hex:#55635c; --roze:#5a4a50; --paars:#4c464a; --rood:#ff8a80;
+  --ok:#8fd6a8; --ok-bg:#1f3a2a; --warn:#f2c86b; --warn-bg:#3d3017; --info:#9ccbef; --info-bg:#1c3446; --neutral-bg:#2e3331; --bad:#f2a3a3; --bad-bg:#432222;
+  color-scheme:dark}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{background:var(--bg);color:var(--fg);font-family:var(--font);font-size:15px;line-height:1.5}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--surface)}
+.wrap{max-width:1240px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+h1,h2,h3{color:var(--title);text-wrap:balance;margin:0;line-height:1.2}
+h2{font-size:1.45rem;font-weight:700}
+h3{font-size:1.05rem;font-weight:700}
+p{margin:0}
+a{color:inherit}
+header.top{background:var(--surface);border-bottom:1px solid var(--line);position:sticky;top:env(safe-area-inset-top,0px);z-index:5}
+.brand{display:flex;align-items:center;gap:8px 12px;padding-block:12px 4px;flex-wrap:wrap}
+.brand svg{width:30px;height:34px;flex:none}
+.brand b{font-size:1.05rem;color:var(--title);letter-spacing:.02em}
+.brand span{color:var(--fg-soft);font-size:.85rem}
+.demo{margin-left:auto;font-size:.75rem;text-transform:uppercase;letter-spacing:.08em;background:var(--roze);color:var(--fg);padding:3px 9px;border-radius:999px;white-space:nowrap}
+nav.tabs{display:flex;gap:2px;overflow-x:auto;scrollbar-width:none}
+nav.tabs a{padding:10px 14px;text-decoration:none;color:var(--fg-soft);border-bottom:3px solid transparent;white-space:nowrap;font-weight:600}
+nav.tabs a[aria-current="page"]{color:var(--title);border-color:var(--rood)}
+nav.tabs a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px solid var(--info);outline-offset:2px}
+main{padding-block:24px 64px}
+.intro{display:flex;flex-direction:column;gap:6px;margin-bottom:20px;max-width:75ch}
+.intro p{color:var(--fg-soft)}
+.who{font-size:.75rem;text-transform:uppercase;letter-spacing:.1em;color:var(--fg-soft);font-weight:700}
+
+/* knoppen & velden */
+button,.btn{font:inherit;cursor:pointer;border-radius:var(--r);border:1px solid var(--line);background:var(--surface);color:var(--fg);padding:8px 14px;font-weight:600}
+button.primary{background:var(--accent);color:var(--accent-fg);border-color:var(--accent)}
+button.ghost{background:transparent}
+button.small{padding:4px 10px;font-size:.85rem}
+label{font-weight:600;font-size:.92rem}
+.hint{font-weight:400;color:var(--fg-soft);font-size:.82rem}
+input[type=text],input[type=email],input[type=tel],input[type=date],input[type=search],input[type=number],select,textarea{font:inherit;width:100%;padding:8px 10px;border:1px solid var(--line);border-radius:6px;background:var(--surface);color:var(--fg)}
+textarea{min-height:80px;resize:vertical}
+
+/* formulier */
+.formgrid{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:24px;align-items:start}
+@media (max-width:900px){.formgrid{grid-template-columns:1fr}}
+form.cand{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);overflow:hidden}
+.fhead{background:var(--accent);color:var(--accent-fg);padding:20px 24px;clip-path:polygon(0 0,100% 0,100% 82%,0 100%);padding-bottom:30px}
+.fhead h2{color:var(--accent-fg)}
+.fhead p{opacity:.9;max-width:60ch}
+fieldset{border:0;border-top:1px solid var(--line);margin:0;padding:20px 24px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px 18px}
+fieldset:first-of-type{border-top:0}
+legend{float:left;width:100%;font-weight:700;color:var(--title);font-size:1rem;display:flex;align-items:center;gap:8px;margin-bottom:4px;grid-column:1/-1}
+legend .n{display:inline-grid;place-items:center;width:24px;height:27px;background:var(--hex);color:var(--fg);clip-path:polygon(50% 0,100% 25%,100% 75%,50% 100%,0 75%,0 25%);font-size:.8rem}
+.f{display:flex;flex-direction:column;gap:4px;min-width:0}
+.f.full{grid-column:1/-1}
+@media (max-width:600px){fieldset{grid-template-columns:1fr}}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chips label{font-weight:400;display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);border-radius:999px;padding:4px 11px 4px 8px;background:var(--surface);cursor:pointer;font-size:.88rem}
+.chips input{accent-color:var(--accent);margin:0}
+.chips label:has(input:checked){background:var(--hex);border-color:transparent}
+.dot{width:10px;height:10px;border-radius:50%;flex:none;border:1px solid rgba(0,0,0,.15)}
+.avail{border-collapse:collapse;font-size:.85rem;width:100%}
+.avail th,.avail td{border:1px solid var(--line);padding:4px;text-align:center}
+.avail th{font-weight:600;color:var(--fg-soft)}
+.avail td input{accent-color:var(--accent);width:18px;height:18px}
+.drop{border:1.5px dashed var(--line);border-radius:var(--r);padding:14px;display:flex;flex-direction:column;gap:6px;background:var(--surface-2)}
+.drop input{font-size:.85rem;max-width:100%}
+.consent{display:flex;gap:10px;align-items:flex-start;font-weight:400}
+.formfoot{padding:16px 24px;border-top:1px solid var(--line);display:flex;gap:12px;align-items:center;flex-wrap:wrap;background:var(--surface-2)}
+aside.note{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:16px;display:flex;flex-direction:column;gap:10px;font-size:.9rem;position:sticky;top:110px}
+aside.note h3{font-size:.95rem}
+ul.hex{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:6px}
+ul.hex li{padding-left:20px;position:relative}
+ul.hex li::before{content:"";position:absolute;left:0;top:.38em;width:11px;height:12px;background:var(--hex);clip-path:polygon(50% 0,100% 25%,100% 75%,50% 100%,0 75%,0 25%)}
+.ok-box{border-radius:var(--r);background:var(--ok-bg);color:var(--fg);padding:14px 16px;display:flex;flex-direction:column;gap:6px}
+
+/* databank */
+.toolbar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:12px}
+.toolbar .search{flex:1 1 320px;position:relative}
+.toolbar .search input{padding-left:34px;font-size:1rem}
+.toolbar .search svg{position:absolute;left:10px;top:50%;transform:translateY(-50%);width:16px;height:16px;color:var(--fg-soft)}
+.views{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}
+.views button{border-radius:999px;font-weight:600;font-size:.85rem;padding:5px 12px}
+.views button[aria-pressed="true"]{background:var(--accent);color:var(--accent-fg);border-color:var(--accent)}
+.views button[aria-pressed="true"] .sub{color:inherit;opacity:.8}
+.dbgrid{display:grid;grid-template-columns:250px minmax(0,1fr);gap:18px;align-items:start}
+@media (max-width:900px){.dbgrid{grid-template-columns:1fr}}
+.filters{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:14px;display:flex;flex-direction:column;gap:14px}
+.filters .grp{display:flex;flex-direction:column;gap:6px}
+.filters .grp>span{font-size:.75rem;text-transform:uppercase;letter-spacing:.08em;color:var(--fg-soft);font-weight:700}
+.filters .chips label{font-size:.8rem;padding:3px 9px 3px 7px}
+.stats{display:flex;gap:16px;flex-wrap:wrap;font-size:.88rem;color:var(--fg-soft);margin-bottom:8px}
+.stats b{color:var(--fg);font-variant-numeric:tabular-nums}
+.tablewrap{overflow-x:auto;background:var(--surface);border:1px solid var(--line);border-radius:var(--r)}
+table.db{border-collapse:collapse;width:100%;min-width:820px;font-size:.9rem}
+table.db th{text-align:left;font-size:.75rem;text-transform:uppercase;letter-spacing:.06em;color:var(--fg-soft);padding:10px 12px;border-bottom:1px solid var(--line);white-space:nowrap;background:var(--surface-2)}
+table.db td{padding:10px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+table.db tr.row{cursor:pointer}
+table.db tr.row:hover td{background:var(--surface-2)}
+table.db tr.row:focus-visible{outline:2px solid var(--info);outline-offset:-2px}
+.name{font-weight:700}
+.sub{color:var(--fg-soft);font-size:.8rem}
+.tag{display:inline-flex;align-items:center;gap:5px;font-size:.78rem;padding:2px 8px;border-radius:999px;background:var(--neutral-bg);white-space:nowrap;margin:0 3px 3px 0}
+.pill{display:inline-block;font-size:.78rem;font-weight:700;padding:2px 9px;border-radius:999px;white-space:nowrap}
+.s-nieuw{background:var(--info-bg);color:var(--info)}
+.s-reserve{background:var(--warn-bg);color:var(--warn)}
+.s-gesprek{background:var(--roze);color:var(--fg)}
+.s-aangeworven{background:var(--ok-bg);color:var(--ok)}
+.s-niet{background:var(--bad-bg);color:var(--bad)}
+.s-archief{background:var(--neutral-bg);color:var(--fg-soft)}
+.yn{font-weight:700;font-size:.8rem}
+.yn.ja{color:var(--ok)} .yn.nee{color:var(--fg-soft)} .yn.bezig{color:var(--warn)}
+.score{font-variant-numeric:tabular-nums;font-weight:700}
+.bar{height:5px;background:var(--surface-2);border-radius:3px;margin-top:3px;width:64px}
+.bar i{display:block;height:100%;background:var(--ok);border-radius:3px}
+.empty{padding:30px;text-align:center;color:var(--fg-soft)}
+.flag{color:var(--rood);font-weight:700;font-size:.78rem}
+.matchbox{background:var(--surface);border:1px solid var(--line);border-left:4px solid var(--ok);border-radius:var(--r);padding:12px 14px;margin-bottom:12px;display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;align-items:end}
+.matchbox p{grid-column:1/-1;font-size:.88rem;color:var(--fg-soft)}
+
+/* detailpaneel */
+.drawer{position:fixed;top:0;right:0;bottom:0;width:min(520px,100%);background:var(--surface);border-left:1px solid var(--line);box-shadow:-12px 0 30px rgba(0,0,0,.15);z-index:20;display:flex;flex-direction:column;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);padding-right:env(safe-area-inset-right,0px)}
+.drawer .dh{padding:16px 20px;border-bottom:1px solid var(--line);display:flex;gap:10px;align-items:flex-start}
+.drawer .db{padding:16px 20px;overflow-y:auto;display:flex;flex-direction:column;gap:16px}
+.kv{display:grid;grid-template-columns:150px minmax(0,1fr);gap:6px 12px;font-size:.9rem}
+.kv dt{color:var(--fg-soft)} .kv dd{margin:0}
+.files{display:flex;gap:8px;flex-wrap:wrap}
+.file{display:flex;align-items:center;gap:8px;border:1px solid var(--line);border-radius:6px;padding:6px 10px;font-size:.85rem;background:var(--surface-2)}
+.log{list-style:none;margin:0;padding:0;font-size:.85rem;display:flex;flex-direction:column;gap:6px;border-left:2px solid var(--line);padding-left:12px}
+.log time{color:var(--fg-soft);font-variant-numeric:tabular-nums;margin-right:6px}
+.scrim{position:fixed;inset:0;background:rgba(0,0,0,.3);z-index:15}
+
+/* meldingen */
+.two{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:20px;align-items:start}
+@media (max-width:900px){.two{grid-template-columns:1fr}}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:18px;display:flex;flex-direction:column;gap:12px;min-width:0}
+table.simple{border-collapse:collapse;width:100%;font-size:.88rem}
+table.simple th{text-align:left;font-size:.75rem;text-transform:uppercase;letter-spacing:.06em;color:var(--fg-soft);padding:6px 8px;border-bottom:1px solid var(--line)}
+table.simple td{padding:6px 8px;border-bottom:1px solid var(--line);vertical-align:top}
+table.simple input{padding:4px 8px;font-size:.85rem}
+.mail{border:1px solid var(--line);border-radius:var(--r);overflow:hidden;font-size:.9rem}
+.mail .mh{background:var(--surface-2);padding:10px 14px;display:grid;grid-template-columns:70px minmax(0,1fr);gap:2px 8px;font-size:.82rem}
+.mail .mh span{color:var(--fg-soft)}
+.mail .mb{padding:14px;display:flex;flex-direction:column;gap:10px}
+.mail .cta{align-self:flex-start;background:var(--accent);color:var(--accent-fg);padding:7px 14px;border-radius:6px;font-weight:700}
+.flowsteps{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:0}
+.flowsteps li{display:grid;grid-template-columns:34px minmax(0,1fr);gap:10px;padding-bottom:14px;position:relative}
+.flowsteps li::after{content:"";position:absolute;left:16px;top:30px;bottom:0;width:2px;background:var(--line)}
+.flowsteps li:last-child::after{display:none}
+.flowsteps .hx{width:34px;height:38px;display:grid;place-items:center;background:var(--hex);clip-path:polygon(50% 0,100% 25%,100% 75%,50% 100%,0 75%,0 25%);font-weight:700;font-size:.85rem}
+.flowsteps b{display:block}
+.flowsteps span{color:var(--fg-soft);font-size:.88rem}
+
+/* spec */
+.spec{display:flex;flex-direction:column;gap:22px}
+.spec .panel h3{display:flex;gap:8px;align-items:center}
+code{font-family:var(--mono);font-size:.85em;background:var(--surface-2);padding:1px 5px;border-radius:4px}
+.callout{border-left:4px solid var(--rood);background:var(--surface);padding:12px 16px;border-radius:0 var(--r) var(--r) 0;font-size:.92rem;display:flex;flex-direction:column;gap:6px}
+.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(20px + env(safe-area-inset-bottom,0px));background:var(--accent);color:var(--accent-fg);padding:10px 18px;border-radius:999px;z-index:30;font-weight:600;max-width:calc(100% - 32px)}
+@media (prefers-reduced-motion:no-preference){.drawer{animation:slide .18s ease-out}@keyframes slide{from{transform:translateX(30px);opacity:.6}}}
+</style>
+
+<header class="top">
+  <div class="wrap">
+    <div class="brand">
+      <svg viewBox="0 0 100 115" aria-hidden="true"><polygon points="50,2 95,28 95,87 50,113 5,87 5,28" fill="#4a4247"/><polygon points="50,2 95,28 50,54 5,28" fill="#a28790"/><polygon points="50,54 95,28 95,87 50,113" fill="#889a91"/></svg>
+      <div><b>Crescendo CVO</b><br><span>Personeelsdatabank · Wervingsreserve</span></div>
+      <span class="demo">Prototype · voorbeelddata</span>
+    </div>
+    <nav class="tabs" aria-label="Schermen">
+      <a href="#formulier">1 · Formulier kandidaat</a>
+      <a href="#databank">2 · Databank adjunct</a>
+      <a href="#meldingen">3 · Meldingen</a>
+      <a href="#specificatie">4 · Specificatie ICT</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+
+<!-- ===================== 1. FORMULIER ===================== -->
+<section id="v-formulier" hidden>
+  <div class="intro">
+    <span class="who">Wat de kandidaat ziet · link op website en onderaan elke VDAB-vacature</span>
+    <h2>Eén formulier voor spontane sollicitaties én reacties op een vacature</h2>
+    <p>Elke inzending komt als één item in de databank, met CV en motivatiebrief als bijlage. De adjunct van de gekozen cluster krijgt meteen een melding. Probeer het: verstuur het formulier en bekijk het resultaat in de databank.</p>
+  </div>
+  <div class="formgrid">
+    <form class="cand" id="candForm" novalidate>
+      <div class="fhead">
+        <h2>Werken bij Crescendo CVO</h2>
+        <p>Wil je lesgeven aan volwassenen of mee ons centrum ondersteunen? Laat je gegevens achter. We nemen contact op zodra er een opdracht is die bij je past.</p>
+      </div>
+
+      <fieldset>
+        <legend><span class="n">1</span>Over jou</legend>
+        <div class="f"><label for="fVoornaam">Voornaam *</label><input id="fVoornaam" type="text" required autocomplete="given-name"></div>
+        <div class="f"><label for="fNaam">Familienaam *</label><input id="fNaam" type="text" required autocomplete="family-name"></div>
+        <div class="f"><label for="fMail">E-mail *</label><input id="fMail" type="email" required autocomplete="email"></div>
+        <div class="f"><label for="fTel">Gsm</label><input id="fTel" type="tel" autocomplete="tel"></div>
+        <div class="f"><label for="fWoon">Woonplaats</label><input id="fWoon" type="text" placeholder="bv. Mechelen"></div>
+        <div class="f"><label for="fBron">Waarom solliciteer je? *</label>
+          <select id="fBron"><option value="spontaan">Spontane sollicitatie</option><option value="vacature">Ik reageer op een vacature</option></select></div>
+        <div class="f full" id="vacWrap" hidden><label for="fVac">Welke vacature?</label><input id="fVac" type="text" placeholder="Wordt automatisch ingevuld als je via de vacaturelink komt"></div>
+      </fieldset>
+
+      <fieldset>
+        <legend><span class="n">2</span>Wat wil je doen?</legend>
+        <div class="f full"><label>Functie *</label><div class="chips" id="fFunctie"></div></div>
+        <div class="f full"><label>Opleidingsdomein(en) * <span class="hint">· meerdere mogelijk, bepaalt welke adjunct je sollicitatie krijgt</span></label><div class="chips" id="fCluster"></div></div>
+        <div class="f full"><label for="fVakken">Vakken of modules die je kan geven</label><input id="fVakken" type="text" placeholder="bv. Engels B1, Excel gevorderd, Wiskunde 2e graad"></div>
+      </fieldset>
+
+      <fieldset>
+        <legend><span class="n">3</span>Diploma en ervaring</legend>
+        <div class="f"><label for="fDiploma">Hoogste diploma *</label><input id="fDiploma" type="text" placeholder="bv. master Taal- en letterkunde"></div>
+        <div class="f"><label for="fPed">Pedagogisch diploma? *</label>
+          <select id="fPed"><option value="">Kies…</option><option>Ja</option><option>Bezig</option><option>Nee</option></select></div>
+        <div class="f"><label for="fErv">Ervaring in onderwijs</label>
+          <select id="fErv"><option>Geen</option><option>Minder dan 2 jaar</option><option>2 tot 5 jaar</option><option>Meer dan 5 jaar</option></select></div>
+        <div class="f"><label for="fVwo">Ervaring met volwassenen?</label>
+          <select id="fVwo"><option>Nee</option><option>Ja</option></select></div>
+      </fieldset>
+
+      <fieldset>
+        <legend><span class="n">4</span>Waar en wanneer?</legend>
+        <div class="f full"><label>Campussen waar je kan werken *</label><div class="chips" id="fCampus"></div></div>
+        <div class="f"><label for="fVanaf">Beschikbaar vanaf *</label><input id="fVanaf" type="date"></div>
+        <div class="f"><label for="fUren">Gewenste opdracht</label>
+          <select id="fUren"><option>Enkele uren per week</option><option>Halftijds</option><option>Voltijds</option><option>Enkel vervangingen</option></select></div>
+        <div class="f full"><label>Wanneer kan je lesgeven? <span class="hint">· vink aan wat kan</span></label>
+          <div style="overflow-x:auto"><table class="avail" id="fAvail"></table></div></div>
+        <div class="f full"><div class="chips"><label><input type="checkbox" id="fOnline"> Ik kan ook online lesgeven</label></div></div>
+      </fieldset>
+
+      <fieldset>
+        <legend><span class="n">5</span>Documenten</legend>
+        <div class="f"><label for="fCV">CV *</label><div class="drop"><input id="fCV" type="file" accept=".pdf,.doc,.docx"><span class="hint">PDF of Word, max. 5 MB</span></div></div>
+        <div class="f"><label for="fMot">Motivatiebrief</label><div class="drop"><input id="fMot" type="file" accept=".pdf,.doc,.docx"><span class="hint">Mag ook kort. Wat spreekt je aan in werken met volwassenen?</span></div></div>
+        <div class="f full"><label class="consent"><input type="checkbox" id="fGdpr"> <span>Ik geef Crescendo CVO toestemming om mijn gegevens 2 jaar te bewaren in de wervingsreserve. Daarna vragen we of je wil blijven. Je kan je gegevens altijd laten verwijderen. *</span></label></div>
+      </fieldset>
+
+      <div class="formfoot">
+        <button type="submit" class="primary">Verstuur sollicitatie</button>
+        <button type="button" class="ghost" id="fill">Vul voorbeeld in</button>
+        <span class="hint" id="formErr" role="alert"></span>
+      </div>
+    </form>
+
+    <aside class="note" id="formAside">
+      <h3>Ontwerpkeuzes</h3>
+      <ul class="hex">
+        <li>Kort: 5 blokken, ongeveer 4 minuten. Een vacature mag niet afschrikken, het formulier ook niet.</li>
+        <li>Beschikbaarheid zit vooraan in het proces, zodat niemand op gesprek komt die niet kan.</li>
+        <li>Campus is één keuzelijst met meerdere opties, in plaats van de kolommen Campus, Campus_2 en Campus_3.</li>
+        <li>Het opleidingsdomein bepaalt automatisch naar welke adjunct de melding gaat.</li>
+        <li>Toestemming voor bewaartermijn is verplicht (GDPR).</li>
+      </ul>
+    </aside>
+  </div>
+</section>
+
+<!-- ===================== 2. DATABANK ===================== -->
+<section id="v-databank" hidden>
+  <div class="intro">
+    <span class="who">Wat de adjunct ziet · personeelsdatabank</span>
+    <h2>Zoeken in de wervingsreserve</h2>
+    <p>Zoek vrij op naam, vak of opmerking, of filter op domein, campus, moment en status. Met <b>Kandidaat zoeken voor een opdracht</b> rangschikt de databank wie het best past. Klik op een rij voor het volledige profiel.</p>
+  </div>
+
+  <div class="views" id="views" role="group" aria-label="Opgeslagen weergaven"></div>
+
+  <div class="toolbar">
+    <div class="search">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="7" cy="7" r="5"/><path d="m11 11 3.5 3.5"/></svg>
+      <input type="search" id="q" placeholder="Zoek op naam, vak, diploma, opmerking…" aria-label="Zoeken">
+    </div>
+    <button id="matchBtn" aria-pressed="false">Kandidaat zoeken voor een opdracht</button>
+    <button class="ghost" id="resetBtn">Wis filters</button>
+  </div>
+
+  <div class="matchbox" id="matchBox" hidden>
+    <p>Geef de opdracht in. Domein is verplicht; de rest verhoogt de score. Kandidaten met status Aangeworven, Niet weerhouden of Gearchiveerd vallen weg.</p>
+    <div class="f"><label for="mCluster">Domein</label><select id="mCluster"></select></div>
+    <div class="f"><label for="mCampus">Campus</label><select id="mCampus"></select></div>
+    <div class="f"><label for="mMoment">Moment</label><select id="mMoment"></select></div>
+    <div class="f"><label for="mStart">Start opdracht</label><input type="date" id="mStart"></div>
+    <div class="f"><label class="consent" style="font-weight:600"><input type="checkbox" id="mPed"> Pedagogisch diploma vereist</label></div>
+  </div>
+
+  <div class="dbgrid">
+    <div class="filters" id="filters" aria-label="Filters"></div>
+    <div style="min-width:0">
+      <div class="stats" id="stats"></div>
+      <div class="tablewrap"><table class="db" id="tbl"></table></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== 3. MELDINGEN ===================== -->
+<section id="v-meldingen" hidden>
+  <div class="intro">
+    <span class="who">Wat er automatisch gebeurt</span>
+    <h2>Meldingen en opvolging</h2>
+    <p>Per domein ligt vast welke adjunct de melding krijgt. Zo komt geen sollicitatie meer in een algemene mailbox terecht. De adressen hieronder zijn invulvelden: vul de echte verdeling in voor je dit doorgeeft.</p>
+  </div>
+  <div class="two">
+    <div class="panel">
+      <h3>Routering per opleidingsdomein</h3>
+      <div style="overflow-x:auto"><table class="simple" id="routing"></table></div>
+      <p class="hint">Kiest een kandidaat meerdere domeinen, dan krijgt elke betrokken adjunct een melding en ziet iedereen hetzelfde item.</p>
+    </div>
+    <div class="panel">
+      <h3>Wat er gebeurt na een inzending</h3>
+      <ol class="flowsteps">
+        <li><span class="hx">1</span><div><b>Item in de databank</b><span>Status <i>Nieuw</i>, bijlagen opgeslagen, schooljaar en bewaartermijn (+2 jaar) automatisch ingevuld.</span></div></li>
+        <li><span class="hx">2</span><div><b>Ontvangstbevestiging naar kandidaat</b><span>Vriendelijke mail met wat er nu gebeurt. Geen beloftes over een opdracht.</span></div></li>
+        <li><span class="hx">3</span><div><b>Melding naar de adjunct(en)</b><span>Mail en Teams-bericht met kernprofiel en rechtstreekse link naar het item.</span></div></li>
+        <li><span class="hx">4</span><div><b>Herinnering na 10 werkdagen</b><span>Staat het item nog op <i>Nieuw</i>? Dan volgt één herinnering naar de adjunct.</span></div></li>
+        <li><span class="hx">5</span><div><b>Bewaartermijn bijna om</b><span>30 dagen voor het einde vraagt een mail aan de kandidaat of die in de reserve wil blijven. Geen reactie: gegevens en bijlagen worden verwijderd.</span></div></li>
+        <li><span class="hx">6</span><div><b>Status Aangeworven</b><span>Start het onboardingformulier, al ingevuld met naam, mail, functie, domeinen, CV en motivatiebrief.</span></div></li>
+      </ol>
+    </div>
+    <div class="panel" style="grid-column:1/-1">
+      <h3>Voorbeeld van de melding aan de adjunct</h3>
+      <div class="two">
+        <div class="mail" id="mailPreview"></div>
+        <div class="mail">
+          <div class="mh"><span>Aan</span><b>kandidaat</b><span>Onderwerp</span><b>We hebben je sollicitatie goed ontvangen</b></div>
+          <div class="mb">
+            <p>Dag Sofie,</p>
+            <p>Bedankt voor je interesse in Crescendo CVO. Je sollicitatie zit in onze wervingsreserve voor <b>NT2</b>. De adjunct-directeur van dat domein bekijkt je profiel en neemt contact op wanneer er een opdracht is die bij je past.</p>
+            <p>We bewaren je gegevens 2 jaar. Wil je ze eerder laten verwijderen of iets aanpassen? Antwoord gewoon op deze mail.</p>
+            <p>Hartelijke groet,<br>Crescendo CVO, centrum voor volwassenenonderwijs</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== 4. SPECIFICATIE ===================== -->
+<section id="v-specificatie" hidden>
+  <div class="intro">
+    <span class="who">Voor de collega ICT</span>
+    <h2>Specificatie om uit te bouwen in de personeelsdatabank</h2>
+    <p>Dit prototype is een klikbaar voorbeeld, geen eindproduct. Hieronder staat wat er nodig is om het in de personeelsdatabank na te bouwen: velden, keuzelijsten, statussen, automatisaties en de beslissingen die nog open liggen.</p>
+  </div>
+  <div class="spec">
+    <div class="callout">
+      <b>Eerst beslissen: hoe komt een extern bestand binnen?</b>
+      <p>Microsoft Forms laat bestanden opladen enkel toe voor mensen binnen de eigen organisatie. Een externe kandidaat kan daar dus geen CV opladen. Opties: (a) een formulier op de website dat via Power Automate (HTTP-trigger, premium) in de lijst schrijft, (b) Power Pages, (c) een formulierdienst die naar SharePoint kan schrijven, of (d) Forms zonder bijlage, gevolgd door een automatische mail met een uploadlink. Graag afstemmen met ICT en Team Communicatie (website).</p>
+    </div>
+
+    <div class="panel">
+      <h3>Velden in de lijst <span class="hint">· één lijst voor alle domeinen, vervangt de aparte NT2-databank</span></h3>
+      <div style="overflow-x:auto"><table class="simple" id="fieldsTbl"></table></div>
+    </div>
+
+    <div class="two">
+      <div class="panel">
+        <h3>Statussen</h3>
+        <div style="overflow-x:auto"><table class="simple" id="statusTbl"></table></div>
+      </div>
+      <div class="panel">
+        <h3>Weergaven voor adjuncten</h3>
+        <ul class="hex">
+          <li><b>Mijn nieuwe sollicitaties</b>: domein = mijn domein(en), status = Nieuw, nieuwste eerst.</li>
+          <li><b>Mijn werfreserve</b>: domein = mijn domein(en), status = Werfreserve.</li>
+          <li><b>Nu beschikbaar</b>: beschikbaar vanaf ≤ vandaag, status Nieuw of Werfreserve.</li>
+          <li><b>Bewaartermijn verloopt</b>: bewaren tot binnen 60 dagen.</li>
+          <li><b>Alles</b>: voor directie en Team Personeel.</li>
+        </ul>
+        <p class="hint">"Mijn domein" kan via een aparte lijst <code>Routering</code> (domein → adjunct) die zowel de meldingen als de weergaven voedt. Eén plek om te wijzigen als een adjunct van domein wisselt.</p>
+      </div>
+    </div>
+
+    <div class="two">
+      <div class="panel">
+        <h3>Automatisaties (Power Automate)</h3>
+        <div style="overflow-x:auto"><table class="simple">
+          <tr><th>Trigger</th><th>Actie</th></tr>
+          <tr><td>Nieuw item</td><td>Schooljaar, bewaartermijn en verantwoordelijke adjunct(en) invullen uit <code>Routering</code>; bevestigingsmail naar kandidaat; mail + Teams-melding naar adjunct(en).</td></tr>
+          <tr><td>Dagelijks</td><td>Status Nieuw en ouder dan 10 werkdagen: herinnering aan adjunct.</td></tr>
+          <tr><td>Dagelijks</td><td>Bewaren tot = vandaag + 30: mail aan kandidaat met verlengvraag. Bewaren tot verstreken: item en bijlagen verwijderen of anonimiseren.</td></tr>
+          <tr><td>Status → Aangeworven</td><td>Onboardingflow starten met overgenomen velden (sluit aan bij het herwerkte onboardingformulier).</td></tr>
+          <tr><td>Statuswijziging</td><td>Regel toevoegen aan de historiek (wie, wanneer, van → naar).</td></tr>
+        </table></div>
+      </div>
+      <div class="panel">
+        <h3>Privacy en toegang</h3>
+        <ul class="hex">
+          <li>Leesrechten: directie, adjuncten, Team Personeel. Geen toegang voor coördinatoren tenzij afgesproken.</li>
+          <li>Bewaartermijn 2 jaar, met expliciete toestemming in het formulier. Laat dit nakijken door de DPO van het centrum.</li>
+          <li>Bijlagen in een afgeschermde documentbibliotheek, niet als losse link naar een gedeelde map zoals nu in de NT2-lijst.</li>
+          <li>Opmerkingen van adjuncten zijn feitelijk en professioneel: een kandidaat heeft inzagerecht.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="panel">
+      <h3>Wat verandert ten opzichte van de huidige NT2-lijst</h3>
+      <div style="overflow-x:auto"><table class="simple">
+        <tr><th>Nu (Werfreserve NT2)</th><th>Voorstel</th></tr>
+        <tr><td>Aparte lijst per domein, manueel aangevuld</td><td>Eén lijst voor alle domeinen, gevuld door het formulier</td></tr>
+        <tr><td>Campus, Campus_2, Campus_3</td><td>Eén keuzekolom met meerdere waarden</td></tr>
+        <tr><td>NT2 ervaring / NT2 potentieel</td><td>Algemeen: ervaring onderwijs, ervaring volwassenen, potentieel (inschatting adjunct)</td></tr>
+        <tr><td>Beschikbaar vanaf als tekst ("sept 26")</td><td>Datumveld, zodat je kan filteren en sorteren</td></tr>
+        <tr><td>Documenten als link naar een map</td><td>CV en motivatiebrief als bijlage bij het item</td></tr>
+        <tr><td>Opmerkingen als één tekstveld</td><td>Opmerkingen + automatische historiek van statuswijzigingen</td></tr>
+        <tr><td>Geen melding bij nieuwe kandidaat</td><td>Automatische melding naar de juiste adjunct</td></tr>
+      </table></div>
+    </div>
+
+    <div class="panel">
+      <h3>Open vragen voor directie</h3>
+      <ul class="hex">
+        <li>Welke adjunct hoort bij welk domein (tabel op scherm 3)?</li>
+        <li>Welk algemeen adres gebruiken we als afzender en voor antwoorden (bv. jobs@ of een no-reply)?</li>
+        <li>Komen administratieve en ICT-profielen in dezelfde lijst, met Team Personeel als ontvanger?</li>
+        <li>Bewaartermijn: 2 jaar zoals in het voorstel, of korter?</li>
+        <li>Mogen collega's elkaars kandidaten zien over domeinen heen? (Aanbevolen: ja, zo benut je talent breder.)</li>
+      </ul>
+    </div>
+  </div>
+</section>
+</main>
+
+<div class="scrim" id="scrim" hidden></div>
+<aside class="drawer" id="drawer" hidden aria-label="Kandidaatprofiel"></aside>
+<div class="toast" id="toast" hidden role="status"></div>
+
+<script>
+(()=>{
+const CLUSTERS=[
+ ["NT2","#ed6c71"],["Talen","#e2d193"],["Diploma Secundair","#40acb6"],["Administratie","#bb9682"],["ICT","#85cee4"],
+ ["Zorg & Welzijn","#c8b7cd"],["Koken","#abb47c"],["Techniek","#5e91a5"],["Ambachten","#b16b5c"],["Mode","#b3cdc5"],
+ ["Ecologie & Groen","#87946f"],["Verkoop & Logistiek","#4783a5"],["Toerisme","#f8c7c8"],["Fotografie & Grafisch","#f5f0e0"],["Politie","#cae8f3"]];
+const CCOL=Object.fromEntries(CLUSTERS);
+const CAMPUS=["Mechelen","Lier","Halle","Rode","Online"];
+const FUNCTIE=["Lesgever","Administratief","ICT-ondersteuning","Andere"];
+const DAGEN=["ma","di","wo","do","vr","za"];
+const DEEL=[["vm","Voormiddag"],["nm","Namiddag"],["av","Avond"]];
+const STATUS=[
+ ["Nieuw","s-nieuw","Net binnen, nog niet bekeken door de adjunct."],
+ ["Werfreserve","s-reserve","Bekeken en interessant; wacht op een geschikte opdracht."],
+ ["Uitgenodigd","s-gesprek","Gesprek of proefles gepland."],
+ ["Aangeworven","s-aangeworven","Opdracht gekregen; onboarding gestart."],
+ ["Niet weerhouden","s-niet","Profiel past niet; kandidaat is op de hoogte gebracht."],
+ ["Gearchiveerd","s-archief","Bewaartermijn verlopen of kandidaat heeft afgehaakt."]];
+const SCLS=Object.fromEntries(STATUS.map(s=>[s[0],s[1]]));
+const ACTIVE=["Nieuw","Werfreserve","Uitgenodigd"];
+const ROUTE_DEFAULT={"NT2":"adjunct.nt2@…","Talen":"adjunct.talen@…","Diploma Secundair":"adjunct.dso@…","Administratie":"adjunct.economie@…","ICT":"adjunct.ict@…"};
+const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
+const esc=s=>String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const TODAY=new Date("2026-11-03");
+const fmt=d=>d?new Date(d).toLocaleDateString("nl-BE",{day:"numeric",month:"short",year:"numeric"}):"–";
+const addY=(d,y)=>{const x=new Date(d);x.setFullYear(x.getFullYear()+y);return x.toISOString().slice(0,10)};
+const sj=d=>{const x=new Date(d);const y=x.getMonth()>=8?x.getFullYear():x.getFullYear()-1;return `${String(y).slice(2)}-${String(y+1).slice(2)}`};
+const allMom=(dagen,delen)=>dagen.flatMap(d=>delen.map(p=>d+"-"+p));
+
+// ---------- voorbeelddata (fictief) ----------
+const seed=[
+ {voornaam:"Sofie",naam:"Van Damme",email:"sofie.vandamme@voorbeeld.be",woon:"Mechelen",bron:"spontaan",functie:"Lesgever",clusters:["NT2"],vakken:"NT2 richtgraad 1 en 2, alfa",diploma:"Bachelor lager onderwijs",ped:"Ja",erv:"2 tot 5 jaar",vwo:"Nee",campus:["Mechelen","Lier"],vanaf:"2026-09-01",uren:"Halftijds",mom:allMom(["ma","di","do"],["vm","av"]),online:false,cv:true,mot:true,ingediend:"2026-08-17",status:"Werfreserve",pot:"Ja",opm:"Gedreven, wil graag een vaste opdracht. Ook interesse in Talen (Frans).",adj:"adjunct.nt2@…"},
+ {voornaam:"Youssef",naam:"El Amrani",email:"y.elamrani@voorbeeld.be",woon:"Vilvoorde",bron:"vacature",vac:"Lesgever NT2 avond Halle",functie:"Lesgever",clusters:["NT2","Talen"],vakken:"NT2, Frans, Arabisch",diploma:"Master Taal- en letterkunde",ped:"Bezig",erv:"Minder dan 2 jaar",vwo:"Ja",campus:["Halle","Rode"],vanaf:"2026-11-15",uren:"Enkele uren per week",mom:allMom(["di","wo","do"],["av"]),online:true,cv:true,mot:true,ingediend:"2026-10-28",status:"Nieuw",pot:"",opm:""},
+ {voornaam:"Lien",naam:"Peeters",email:"lien.peeters@voorbeeld.be",woon:"Lier",bron:"spontaan",functie:"Lesgever",clusters:["Diploma Secundair"],vakken:"Wiskunde, Fysica",diploma:"Master Industriële wetenschappen",ped:"Nee",erv:"Geen",vwo:"Nee",campus:["Lier","Mechelen"],vanaf:"2027-02-01",uren:"Enkele uren per week",mom:allMom(["ma","wo"],["av"]),online:true,cv:true,mot:false,ingediend:"2026-10-30",status:"Nieuw",pot:"",opm:""},
+ {voornaam:"Marc",naam:"Janssens",email:"marc.janssens@voorbeeld.be",woon:"Bonheiden",bron:"spontaan",functie:"Lesgever",clusters:["Techniek","Ambachten"],vakken:"Elektriciteit, lassen",diploma:"Bachelor Elektromechanica",ped:"Ja",erv:"Meer dan 5 jaar",vwo:"Ja",campus:["Mechelen"],vanaf:"2026-09-01",uren:"Halftijds",mom:allMom(["ma","di","wo","do"],["av"]),online:false,cv:true,mot:true,ingediend:"2026-05-04",status:"Werfreserve",pot:"Ja",opm:"Ervaren, 20 jaar in de industrie. Proefles was sterk."},
+ {voornaam:"Hanne",naam:"Wouters",email:"hanne.w@voorbeeld.be",woon:"Halle",bron:"vacature",vac:"Administratief medewerker Halle",functie:"Administratief",clusters:["Administratie"],vakken:"",diploma:"Bachelor Office management",ped:"Nee",erv:"Geen",vwo:"Nee",campus:["Halle"],vanaf:"2026-12-01",uren:"Voltijds",mom:allMom(DAGEN.slice(0,5),["vm","nm"]),online:false,cv:true,mot:true,ingediend:"2026-10-12",status:"Uitgenodigd",pot:"Misschien",opm:"Gesprek op 6 november met 2 adjuncten."},
+ {voornaam:"Ana",naam:"Ferreira",email:"ana.ferreira@voorbeeld.be",woon:"Mechelen",bron:"spontaan",functie:"Lesgever",clusters:["NT2"],vakken:"NT2 richtgraad 3, Portugees",diploma:"Master Vertalen",ped:"Ja",erv:"Meer dan 5 jaar",vwo:"Ja",campus:["Mechelen","Online"],vanaf:"2026-10-01",uren:"Halftijds",mom:allMom(["ma","di","wo","do","vr"],["vm"]),online:true,cv:true,mot:true,ingediend:"2025-03-14",status:"Werfreserve",pot:"Ja",opm:"Beperkte beschikbaarheid 's avonds."},
+ {voornaam:"Tom",naam:"De Smet",email:"tom.desmet@voorbeeld.be",woon:"Rode",bron:"spontaan",functie:"ICT-ondersteuning",clusters:["ICT"],vakken:"M365, netwerkbeheer",diploma:"Bachelor Toegepaste informatica",ped:"Nee",erv:"Geen",vwo:"Nee",campus:["Rode","Halle"],vanaf:"2026-11-01",uren:"Voltijds",mom:allMom(DAGEN.slice(0,5),["vm","nm"]),online:false,cv:true,mot:false,ingediend:"2026-09-22",status:"Werfreserve",pot:"Misschien",opm:""},
+ {voornaam:"Elif",naam:"Kaya",email:"elif.kaya@voorbeeld.be",woon:"Mechelen",bron:"spontaan",functie:"Lesgever",clusters:["Zorg & Welzijn"],vakken:"Zorgkundige, EHBO",diploma:"Bachelor Verpleegkunde",ped:"Bezig",erv:"Minder dan 2 jaar",vwo:"Nee",campus:["Mechelen","Lier"],vanaf:"2026-09-01",uren:"Enkele uren per week",mom:allMom(["za"],["vm","nm"]).concat(allMom(["wo"],["av"])),online:false,cv:true,mot:true,ingediend:"2026-06-10",status:"Aangeworven",pot:"Ja",opm:"Aangeworven voor module EHBO, sept 2026."},
+ {voornaam:"Pieter",naam:"Claes",email:"pieter.claes@voorbeeld.be",woon:"Lier",bron:"spontaan",functie:"Lesgever",clusters:["Talen"],vakken:"Engels B1-B2, Spaans A1",diploma:"Master Taal- en letterkunde",ped:"Ja",erv:"2 tot 5 jaar",vwo:"Ja",campus:["Lier"],vanaf:"2026-09-01",uren:"Halftijds",mom:allMom(["ma","di","wo","do"],["av"]),online:true,cv:true,mot:true,ingediend:"2026-02-20",status:"Werfreserve",pot:"Ja",opm:"Zou ook TB (technisch-pedagogische begeleiding) willen opnemen."},
+ {voornaam:"Nora",naam:"Hermans",email:"nora.hermans@voorbeeld.be",woon:"Keerbergen",bron:"spontaan",functie:"Lesgever",clusters:["Koken"],vakken:"Patisserie",diploma:"Graduaat Hotelbeheer",ped:"Nee",erv:"Geen",vwo:"Nee",campus:["Mechelen"],vanaf:"2026-09-01",uren:"Enkele uren per week",mom:allMom(["za"],["vm"]),online:false,cv:true,mot:false,ingediend:"2024-11-25",status:"Werfreserve",pot:"Misschien",opm:""},
+ {voornaam:"Jonas",naam:"Verbeeck",email:"jonas.verbeeck@voorbeeld.be",woon:"Mechelen",bron:"vacature",vac:"Lesgever Diploma Secundair Nederlands",functie:"Lesgever",clusters:["Diploma Secundair","Talen"],vakken:"Nederlands, Geschiedenis",diploma:"Master Geschiedenis",ped:"Ja",erv:"Meer dan 5 jaar",vwo:"Nee",campus:["Mechelen"],vanaf:"2026-09-01",uren:"Voltijds",mom:allMom(DAGEN.slice(0,5),["vm","nm"]),online:false,cv:true,mot:true,ingediend:"2026-07-02",status:"Niet weerhouden",pot:"Nee",opm:"Zoekt voltijds overdag; past niet bij huidige avondopdrachten. Kandidaat op de hoogte."},
+ {voornaam:"Sara",naam:"Mertens",email:"sara.mertens@voorbeeld.be",woon:"Halle",bron:"spontaan",functie:"Lesgever",clusters:["NT2"],vakken:"NT2 richtgraad 1",diploma:"Bachelor Sociaal werk",ped:"Nee",erv:"Geen",vwo:"Ja",campus:["Halle"],vanaf:"2026-11-01",uren:"Enkele uren per week",mom:allMom(["ma","wo"],["av"]),online:false,cv:true,mot:true,ingediend:"2026-10-31",status:"Nieuw",pot:"",opm:""}
+];
+let data=seed.map((c,i)=>({id:i+1,...c,sj:sj(c.ingediend),tot:addY(c.ingediend,2),
+  log:[[c.ingediend,"Formulier ingediend · status Nieuw"]].concat(c.status!=="Nieuw"?[[c.ingediend,"Status → "+c.status]]:[])}));
+// routering
+var ROUTE={};CLUSTERS.forEach(([k])=>ROUTE[k]=ROUTE_DEFAULT[k]||"");
+data.forEach(c=>{c.adj=c.clusters.map(k=>ROUTE[k]||"(nog toe te wijzen)").join(", ")});
+
+// ---------- formulier ----------
+const chipHtml=(name,items,type="checkbox",color)=>items.map(it=>`<label><input type="${type}" name="${name}" value="${esc(it)}">${color?`<span class="dot" style="background:${CCOL[it]}"></span>`:""}${esc(it)}</label>`).join("");
+$("#fFunctie").innerHTML=chipHtml("functie",FUNCTIE,"radio");
+$("#fCluster").innerHTML=chipHtml("cluster",CLUSTERS.map(c=>c[0]),"checkbox",true);
+$("#fCampus").innerHTML=chipHtml("campus",CAMPUS);
+$("#fAvail").innerHTML=`<tr><th></th>${DAGEN.map(d=>`<th>${d}</th>`).join("")}</tr>`+DEEL.map(([k,l])=>`<tr><th style="text-align:left">${l}</th>${DAGEN.map(d=>`<td><input type="checkbox" name="mom" value="${d}-${k}" aria-label="${d} ${l}"></td>`).join("")}</tr>`).join("");
+$("#fBron").addEventListener("change",e=>$("#vacWrap").hidden=e.target.value!=="vacature");
+const vals=n=>$$(`[name="${n}"]:checked`).map(i=>i.value);
+
+$("#fill").addEventListener("click",()=>{
+  $("#fVoornaam").value="Inès";$("#fNaam").value="Bouzid";$("#fMail").value="ines.bouzid@voorbeeld.be";$("#fTel").value="0470 12 34 56";$("#fWoon").value="Mechelen";
+  $$('[name=functie]')[0].checked=true;["NT2","Talen"].forEach(v=>$(`[name=cluster][value="${v}"]`).checked=true);
+  $("#fVakken").value="NT2 richtgraad 2, Frans A2";$("#fDiploma").value="Master Taalkunde";$("#fPed").value="Ja";$("#fErv").value="2 tot 5 jaar";$("#fVwo").value="Ja";
+  ["Mechelen","Lier"].forEach(v=>$(`[name=campus][value="${v}"]`).checked=true);$("#fVanaf").value="2026-12-01";$("#fUren").value="Halftijds";
+  ["ma-av","di-av","do-av","za-vm"].forEach(v=>$(`[name=mom][value="${v}"]`).checked=true);$("#fGdpr").checked=true;
+  $("#formErr").textContent="Voorbeeld ingevuld. Een CV mag je hier overslaan.";
+});
+
+$("#candForm").addEventListener("submit",e=>{
+  e.preventDefault();
+  const miss=[];
+  if(!$("#fVoornaam").value.trim())miss.push("voornaam");
+  if(!$("#fNaam").value.trim())miss.push("familienaam");
+  if(!/^\S+@\S+\.\S+$/.test($("#fMail").value))miss.push("geldig e-mailadres");
+  if(!vals("functie").length)miss.push("functie");
+  if(!vals("cluster").length)miss.push("opleidingsdomein");
+  if(!vals("campus").length)miss.push("campus");
+  if(!$("#fGdpr").checked)miss.push("toestemming bewaartermijn");
+  if(miss.length){$("#formErr").textContent="Nog in te vullen: "+miss.join(", ")+".";return}
+  const today=TODAY.toISOString().slice(0,10);
+  const c={id:data.length+1,voornaam:$("#fVoornaam").value.trim(),naam:$("#fNaam").value.trim(),email:$("#fMail").value.trim(),tel:$("#fTel").value,woon:$("#fWoon").value,
+    bron:$("#fBron").value,vac:$("#fVac").value,functie:vals("functie")[0],clusters:vals("cluster"),vakken:$("#fVakken").value,diploma:$("#fDiploma").value,
+    ped:$("#fPed").value||"Nee",erv:$("#fErv").value,vwo:$("#fVwo").value,campus:vals("campus"),vanaf:$("#fVanaf").value||today,uren:$("#fUren").value,
+    mom:vals("mom"),online:$("#fOnline").checked,cv:!!$("#fCV").files.length||true,mot:!!$("#fMot").files.length,ingediend:today,status:"Nieuw",pot:"",opm:"",
+    sj:sj(today),tot:addY(today,2),log:[[today,"Formulier ingediend · status Nieuw"]]};
+  c.adj=c.clusters.map(k=>ROUTE[k]||"(nog toe te wijzen)").join(", ");
+  data.unshift(c);
+  $("#candForm").reset();$("#vacWrap").hidden=true;$("#formErr").textContent="";
+  $("#formAside").innerHTML=`<div class="ok-box"><h3>Verstuurd</h3><p>Dit is er net gebeurd:</p>
+   <ul class="hex"><li>Item aangemaakt voor <b>${esc(c.voornaam)} ${esc(c.naam)}</b>, status Nieuw.</li><li>Bevestigingsmail naar ${esc(c.email)}.</li><li>Melding naar ${esc(c.adj)}.</li></ul>
+   <button class="primary" id="goDb">Bekijk in de databank</button></div>`;
+  $("#goDb").onclick=()=>{state.view="nieuw";location.hash="databank"};
+  renderMail(c);toast("Sollicitatie ontvangen");
+});
+
+// ---------- databank ----------
+const state={q:"",view:"alle",f:{cluster:[],campus:[],status:[],ped:[],functie:[],dag:[]},match:false};
+const VIEWS=[["alle","Alles"],["nieuw","Nieuwe sollicitaties"],["reserve","Werfreserve"],["nu","Nu beschikbaar"],["termijn","Bewaartermijn verloopt"]];
+function renderViews(){$("#views").innerHTML=VIEWS.map(([k,l])=>`<button data-v="${k}" aria-pressed="${state.view===k}">${l} <span class="sub">${applyView(data,k).length}</span></button>`).join("");
+  $$("#views button").forEach(b=>b.onclick=()=>{state.view=b.dataset.v;render()});}
+function applyView(list,v){
+  const in60=new Date(TODAY);in60.setDate(in60.getDate()+60);
+  return list.filter(c=>v==="alle"||(v==="nieuw"&&c.status==="Nieuw")||(v==="reserve"&&c.status==="Werfreserve")||
+   (v==="nu"&&ACTIVE.includes(c.status)&&new Date(c.vanaf)<=TODAY)||(v==="termijn"&&new Date(c.tot)<=in60&&c.status!=="Gearchiveerd"));
+}
+const FGROUPS=[["cluster","Domein",CLUSTERS.map(c=>c[0]),true],["campus","Campus",CAMPUS],["status","Status",STATUS.map(s=>s[0])],["functie","Functie",FUNCTIE],["ped","Pedagogisch diploma",["Ja","Bezig","Nee"]],["dag","Kan lesgeven op",["Overdag","Avond","Zaterdag"]]];
+function renderFilters(){
+  $("#filters").innerHTML=FGROUPS.map(([k,l,items,col])=>{
+    const shown=k==="cluster"?items.filter(it=>data.some(c=>c.clusters.includes(it))):items;
+    return `<div class="grp"><span>${l}</span><div class="chips">${shown.map(it=>`<label><input type="checkbox" data-f="${k}" value="${esc(it)}" ${state.f[k].includes(it)?"checked":""}>${col?`<span class="dot" style="background:${CCOL[it]}"></span>`:""}${esc(it)}</label>`).join("")}</div></div>`}).join("");
+  $$("#filters input").forEach(i=>i.onchange=()=>{const a=state.f[i.dataset.f];i.checked?a.push(i.value):a.splice(a.indexOf(i.value),1);render(false)});
+}
+const dagMatch=(c,d)=>d==="Overdag"?c.mom.some(m=>!m.startsWith("za")&&!m.endsWith("av")):d==="Avond"?c.mom.some(m=>m.endsWith("av")):c.mom.some(m=>m.startsWith("za"));
+function score(c){
+  const m={cl:$("#mCluster").value,ca:$("#mCampus").value,mo:$("#mMoment").value,st:$("#mStart").value,ped:$("#mPed").checked};
+  if(!c.clusters.includes(m.cl)||!ACTIVE.includes(c.status))return -1;
+  if(m.ped&&c.ped!=="Ja")return -1;
+  let s=40,why=[];
+  if(m.ca){if(c.campus.includes(m.ca)||c.online&&m.ca==="Online"){s+=20}else why.push("andere campus")}else s+=20;
+  if(m.mo){if(c.mom.includes(m.mo))s+=20;else why.push("niet op dit moment")}else s+=20;
+  if(m.st){if(new Date(c.vanaf)<=new Date(m.st))s+=10;else why.push("pas later beschikbaar")}else s+=10;
+  s+=c.pot==="Ja"?10:c.pot==="Misschien"?5:0;
+  c._why=why;return s;
+}
+function filtered(){
+  const q=state.q.toLowerCase().trim();
+  let list=applyView(data,state.view).filter(c=>{
+    const f=state.f;
+    if(f.cluster.length&&!f.cluster.some(x=>c.clusters.includes(x)))return false;
+    if(f.campus.length&&!f.campus.some(x=>c.campus.includes(x)))return false;
+    if(f.status.length&&!f.status.includes(c.status))return false;
+    if(f.functie.length&&!f.functie.includes(c.functie))return false;
+    if(f.ped.length&&!f.ped.includes(c.ped))return false;
+    if(f.dag.length&&!f.dag.some(d=>dagMatch(c,d)))return false;
+    if(q){const hay=[c.voornaam,c.naam,c.email,c.woon,c.vakken,c.diploma,c.opm,c.vac,c.clusters.join(" "),c.campus.join(" ")].join(" ").toLowerCase();if(!q.split(/\s+/).every(w=>hay.includes(w)))return false}
+    return true});
+  if(state.match){list.forEach(c=>c._s=score(c));list=list.filter(c=>c._s>=0).sort((a,b)=>b._s-a._s)}
+  else list.sort((a,b)=>b.ingediend.localeCompare(a.ingediend));
+  return list;
+}
+const momTxt=c=>{const p=[];if(dagMatch(c,"Overdag"))p.push("overdag");if(dagMatch(c,"Avond"))p.push("avond");if(dagMatch(c,"Zaterdag"))p.push("zaterdag");return p.join(", ")||"–"};
+function render(full=true){
+  if(full)renderFilters();renderViews();
+  const list=filtered();
+  const all=data.length,act=data.filter(c=>ACTIVE.includes(c.status)).length,nw=data.filter(c=>c.status==="Nieuw").length;
+  $("#stats").innerHTML=`<span><b>${list.length}</b> getoond</span><span><b>${act}</b> actief in de reserve</span><span><b>${nw}</b> nieuw, nog te bekijken</span><span><b>${all}</b> in totaal</span>`;
+  const head=`<tr>${state.match?"<th>Match</th>":""}<th>Kandidaat</th><th>Domein</th><th>Campus</th><th>Ped. dipl.</th><th>Beschikbaar</th><th>Status</th><th>Ingediend</th></tr>`;
+  $("#tbl").innerHTML=head+(list.length?list.map(c=>{
+    const exp=new Date(c.tot)<=new Date(TODAY.getTime()+60*864e5)&&c.status!=="Gearchiveerd";
+    return `<tr class="row" tabindex="0" data-id="${c.id}">
+    ${state.match?`<td><span class="score">${c._s}%</span><div class="bar"><i style="width:${c._s}%"></i></div>${c._why.length?`<div class="sub">${c._why.join(", ")}</div>`:""}</td>`:""}
+    <td><div class="name">${esc(c.naam)}, ${esc(c.voornaam)}</div><div class="sub">${esc(c.functie)}${c.vakken?" · "+esc(c.vakken):""}</div></td>
+    <td>${c.clusters.map(k=>`<span class="tag"><span class="dot" style="background:${CCOL[k]}"></span>${esc(k)}</span>`).join("")}</td>
+    <td>${c.campus.map(k=>`<span class="tag">${esc(k)}</span>`).join("")}</td>
+    <td><span class="yn ${c.ped.toLowerCase()}">${esc(c.ped)}</span></td>
+    <td>${new Date(c.vanaf)<=TODAY?"nu":fmt(c.vanaf)}<div class="sub">${momTxt(c)}</div></td>
+    <td><span class="pill ${SCLS[c.status]}">${c.status}</span>${exp?`<div class="flag">termijn ${fmt(c.tot)}</div>`:""}</td>
+    <td style="font-variant-numeric:tabular-nums">${fmt(c.ingediend)}<div class="sub">sj ${c.sj}</div></td></tr>`}).join("")
+    :`<tr><td colspan="9" class="empty">Geen kandidaten gevonden. Verruim je filters of zoekterm.</td></tr>`);
+  $$("#tbl tr.row").forEach(r=>{r.onclick=()=>openDrawer(+r.dataset.id);r.onkeydown=e=>{if(e.key==="Enter")openDrawer(+r.dataset.id)}});
+}
+$("#q").addEventListener("input",e=>{state.q=e.target.value;render(false)});
+$("#resetBtn").onclick=()=>{state.q="";$("#q").value="";Object.keys(state.f).forEach(k=>state.f[k]=[]);state.view="alle";render()};
+$("#matchBtn").onclick=()=>{state.match=!state.match;$("#matchBtn").setAttribute("aria-pressed",state.match);$("#matchBox").hidden=!state.match;$("#matchBtn").classList.toggle("primary",state.match);render(false)};
+$("#mCluster").innerHTML=CLUSTERS.map(c=>`<option>${c[0]}</option>`).join("");
+$("#mCampus").innerHTML=`<option value="">Maakt niet uit</option>`+CAMPUS.map(c=>`<option>${c}</option>`).join("");
+$("#mMoment").innerHTML=`<option value="">Maakt niet uit</option>`+DAGEN.flatMap(d=>DEEL.map(([k,l])=>`<option value="${d}-${k}">${d} ${l.toLowerCase()}</option>`)).join("");
+$("#mStart").value="2026-11-16";$("#mMoment").value="di-av";
+["#mCluster","#mCampus","#mMoment","#mStart","#mPed"].forEach(s=>$(s).addEventListener("change",()=>render(false)));
+
+// ---------- detail ----------
+function openDrawer(id){
+  const c=data.find(x=>x.id===id);if(!c)return;
+  const avail=`<table class="avail"><tr><th></th>${DAGEN.map(d=>`<th>${d}</th>`).join("")}</tr>${DEEL.map(([k,l])=>`<tr><th style="text-align:left">${l}</th>${DAGEN.map(d=>`<td>${c.mom.includes(d+"-"+k)?"●":""}</td>`).join("")}</tr>`).join("")}</table>`;
+  $("#drawer").innerHTML=`<div class="dh"><div style="flex:1;min-width:0"><h2>${esc(c.voornaam)} ${esc(c.naam)}</h2><div class="sub">${esc(c.functie)} · ${c.bron==="vacature"?"reactie op vacature: "+esc(c.vac||""):"spontane sollicitatie"}</div></div><button class="small" id="close" aria-label="Sluiten">Sluiten</button></div>
+  <div class="db">
+    <div class="two" style="gap:12px">
+      <div class="f"><label for="dStatus">Status</label><select id="dStatus">${STATUS.map(s=>`<option ${s[0]===c.status?"selected":""}>${s[0]}</option>`).join("")}</select></div>
+      <div class="f"><label for="dPot">Potentieel <span class="hint">· inschatting adjunct</span></label><select id="dPot">${["","Ja","Misschien","Nee"].map(p=>`<option value="${p}" ${p===c.pot?"selected":""}>${p||"Nog niet beoordeeld"}</option>`).join("")}</select></div>
+    </div>
+    <dl class="kv">
+      <dt>E-mail</dt><dd>${esc(c.email)}</dd>
+      <dt>Woonplaats</dt><dd>${esc(c.woon)||"–"}</dd>
+      <dt>Domein(en)</dt><dd>${c.clusters.map(k=>`<span class="tag"><span class="dot" style="background:${CCOL[k]}"></span>${esc(k)}</span>`).join("")}</dd>
+      <dt>Vakken / modules</dt><dd>${esc(c.vakken)||"–"}</dd>
+      <dt>Diploma</dt><dd>${esc(c.diploma)}</dd>
+      <dt>Pedagogisch diploma</dt><dd><span class="yn ${c.ped.toLowerCase()}">${esc(c.ped)}</span></dd>
+      <dt>Ervaring onderwijs</dt><dd>${esc(c.erv)} · volwassenen: ${esc(c.vwo)}</dd>
+      <dt>Campussen</dt><dd>${c.campus.map(esc).join(", ")}${c.online?" · ook online":""}</dd>
+      <dt>Beschikbaar vanaf</dt><dd>${fmt(c.vanaf)} · ${esc(c.uren)}</dd>
+      <dt>Melding naar</dt><dd>${esc(c.adj)}</dd>
+      <dt>Bewaren tot</dt><dd>${fmt(c.tot)}</dd>
+    </dl>
+    <div style="overflow-x:auto">${avail}</div>
+    <div class="files"><span class="file">📄 CV_${esc(c.naam)}.pdf</span>${c.mot?`<span class="file">📄 Motivatie_${esc(c.naam)}.pdf</span>`:`<span class="file" style="opacity:.6">geen motivatiebrief</span>`}</div>
+    <div class="f"><label for="dOpm">Opmerkingen</label><textarea id="dOpm">${esc(c.opm)}</textarea><span class="hint">Feitelijk en professioneel: de kandidaat heeft inzagerecht.</span></div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap"><button class="primary" id="save">Bewaar</button>${c.status==="Werfreserve"||c.status==="Nieuw"?`<button id="invite">Uitnodigen voor gesprek</button>`:""}</div>
+    <div><h3 style="margin-bottom:8px">Historiek</h3><ul class="log">${c.log.map(([d,t])=>`<li><time>${fmt(d)}</time>${esc(t)}</li>`).join("")}</ul></div>
+  </div>`;
+  $("#drawer").hidden=false;$("#scrim").hidden=false;$("#close").focus();
+  $("#close").onclick=closeDrawer;
+  const today=TODAY.toISOString().slice(0,10);
+  $("#save").onclick=()=>{const ns=$("#dStatus").value;if(ns!==c.status){c.log.push([today,`Status ${c.status} → ${ns} (door adjunct)`]);c.status=ns;if(ns==="Aangeworven")c.log.push([today,"Onboardingformulier gestart met kandidaatgegevens"])}
+    c.pot=$("#dPot").value;c.opm=$("#dOpm").value;closeDrawer();render();toast(ns==="Aangeworven"?"Bewaard · onboarding gestart":"Bewaard")};
+  const inv=$("#invite");if(inv)inv.onclick=()=>{$("#dStatus").value="Uitgenodigd";$("#save").click()};
+}
+function closeDrawer(){$("#drawer").hidden=true;$("#scrim").hidden=true}
+$("#scrim").onclick=closeDrawer;
+document.addEventListener("keydown",e=>{if(e.key==="Escape")closeDrawer()});
+
+// ---------- meldingen ----------
+function renderRouting(){
+  $("#routing").innerHTML=`<tr><th>Domein</th><th>Melding naar</th></tr>`+CLUSTERS.map(([k,col],i)=>`<tr><td><span class="tag"><span class="dot" style="background:${col}"></span>${esc(k)}</span></td><td><input type="text" id="r${i}" value="${esc(ROUTE[k])}" placeholder="mailadres adjunct" aria-label="Adjunct voor ${esc(k)}"></td></tr>`).join("");
+  CLUSTERS.forEach(([k],i)=>$("#r"+i).addEventListener("change",e=>{ROUTE[k]=e.target.value;data.forEach(c=>{if(c.status==="Nieuw")c.adj=c.clusters.map(x=>ROUTE[x]||"(nog toe te wijzen)").join(", ")})}));
+}
+function renderMail(c){
+  c=c||data.find(x=>x.status==="Nieuw")||data[0];
+  $("#mailPreview").innerHTML=`<div class="mh"><span>Aan</span><b>${esc(c.adj)}</b><span>Onderwerp</span><b>Nieuwe sollicitatie ${esc(c.clusters.join(" / "))}: ${esc(c.voornaam)} ${esc(c.naam)}</b></div>
+   <div class="mb"><p>Er kwam een nieuwe ${c.bron==="vacature"?"reactie op de vacature <b>"+esc(c.vac)+"</b>":"spontane sollicitatie"} binnen.</p>
+   <ul class="hex"><li>${esc(c.functie)} · ${esc(c.vakken||c.diploma)}</li><li>Pedagogisch diploma: ${esc(c.ped)} · ervaring: ${esc(c.erv)}</li><li>Campus: ${esc(c.campus.join(", "))} · ${momTxt(c)}</li><li>Beschikbaar vanaf ${fmt(c.vanaf)}</li></ul>
+   <span class="cta">Open in de personeelsdatabank</span><p class="hint">Status staat op Nieuw. Na 10 werkdagen zonder actie volgt een herinnering.</p></div>`;
+}
+
+// ---------- specificatie ----------
+const FIELDS=[
+ ["Voornaam, Familienaam","Tekst","Formulier","ja",""],
+ ["E-mail, Gsm, Woonplaats","Tekst","Formulier","e-mail ja",""],
+ ["Bron","Keuze","Formulier","ja","Spontaan · Vacature"],
+ ["Vacature","Tekst","Formulier / URL","","Vooraf ingevuld via parameter in de vacaturelink"],
+ ["Functie","Keuze","Formulier","ja",FUNCTIE.join(" · ")],
+ ["Opleidingsdomein(en)","Keuze, meerdere","Formulier","ja","15 domeinen, = clusters"],
+ ["Vakken / modules","Tekst (meerdere regels)","Formulier","",""],
+ ["Hoogste diploma","Tekst","Formulier","ja",""],
+ ["Pedagogisch diploma","Keuze","Formulier","ja","Ja · Bezig · Nee"],
+ ["Ervaring onderwijs","Keuze","Formulier","","Geen · <2 j · 2–5 j · >5 j"],
+ ["Ervaring volwassenen","Ja/nee","Formulier","",""],
+ ["Campussen","Keuze, meerdere","Formulier","ja",CAMPUS.join(" · ")],
+ ["Beschikbaar vanaf","Datum","Formulier","ja",""],
+ ["Gewenste opdracht","Keuze","Formulier","","Enkele uren · Halftijds · Voltijds · Vervangingen"],
+ ["Momenten","Keuze, meerdere","Formulier","","ma–za × voormiddag/namiddag/avond (18 waarden, bv. di-av)"],
+ ["Online lesgeven","Ja/nee","Formulier","",""],
+ ["CV, Motivatiebrief","Bijlage","Formulier","CV ja","PDF/Word, max 5 MB"],
+ ["Toestemming bewaring","Ja/nee","Formulier","ja","Zonder vinkje geen inzending"],
+ ["Ingediend op","Datum","Automatisch","",""],
+ ["Schooljaar","Berekend","Automatisch","","bv. 26-27 (vanaf 1 september)"],
+ ["Bewaren tot","Datum","Automatisch","","Ingediend + 2 jaar; verlengbaar"],
+ ["Verantwoordelijke adjunct(en)","Persoon, meerdere","Automatisch","","Uit lijst Routering"],
+ ["Status","Keuze","Adjunct","ja","Zie statussen"],
+ ["Potentieel","Keuze","Adjunct","","Ja · Misschien · Nee"],
+ ["Opmerkingen","Tekst (meerdere regels)","Adjunct","",""],
+ ["Historiek","Tekst, alleen toevoegen","Automatisch","","Wie, wanneer, statuswijziging"]];
+$("#fieldsTbl").innerHTML=`<tr><th>Veld</th><th>Type</th><th>Ingevuld door</th><th>Verplicht</th><th>Waarden / toelichting</th></tr>`+FIELDS.map(r=>`<tr>${r.map(x=>`<td>${esc(x)}</td>`).join("")}</tr>`).join("");
+$("#statusTbl").innerHTML=`<tr><th>Status</th><th>Betekenis</th></tr>`+STATUS.map(([s,c,d])=>`<tr><td><span class="pill ${c}">${s}</span></td><td>${d}</td></tr>`).join("");
+
+// ---------- routing ----------
+function toast(t){const el=$("#toast");el.textContent=t;el.hidden=false;clearTimeout(toast.t);toast.t=setTimeout(()=>el.hidden=true,2600)}
+const VIEWS_IDS=["formulier","databank","meldingen","specificatie"];
+function route(){
+  const h=(location.hash||"#formulier").slice(1);const v=VIEWS_IDS.includes(h)?h:"formulier";
+  VIEWS_IDS.forEach(x=>$("#v-"+x).hidden=x!==v);
+  $$("nav.tabs a").forEach(a=>a.getAttribute("href")==="#"+v?a.setAttribute("aria-current","page"):a.removeAttribute("aria-current"));
+  if(v==="databank")render();if(v==="meldingen"){renderRouting();renderMail()}
+  closeDrawer();window.scrollTo(0,0);
+}
+window.addEventListener("hashchange",route);route();
+})();
+</script>
+
+</body></html>
