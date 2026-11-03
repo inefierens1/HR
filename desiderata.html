@@ -1,0 +1,532 @@
+<title>Desiderata Crescendo CVO</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700&display=swap">
+<style>
+/* Layout: intranet-app met tabbalk; formulier in genummerde blokken, overzicht als tabel met detailpaneel. */
+:root{
+  --bg:#f7f8f6; --surface:#ffffff; --surface-2:#eef0ed; --line:#dfe3df;
+  --fg:#1b1f1e; --fg-soft:#5b6362; --title:#4d5554;
+  --accent:#4d5554; --accent-fg:#ffffff;
+  --hex:#ced7d2; --roze:#dacfd3; --rood:#b91818;
+  --ok:#2f7a4f; --ok-bg:#dff0e5; --warn:#8a5a00; --warn-bg:#fbefd1; --info:#245d86; --info-bg:#dcebf6; --neutral-bg:#ebedeb; --bad:#9b2c2c; --bad-bg:#f6dddd;
+  --font:'Calibri','Segoe UI','Open Sans',system-ui,sans-serif;
+  --r:8px;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#171a19; --surface:#202423; --surface-2:#2a2f2d; --line:#363c3a;
+  --fg:#eceeed; --fg-soft:#a8b0ae; --title:#d7dcda; --accent:#ced7d2; --accent-fg:#171a19;
+  --hex:#55635c; --roze:#5a4a50; --rood:#ff8a80;
+  --ok:#8fd6a8; --ok-bg:#1f3a2a; --warn:#f2c86b; --warn-bg:#3d3017; --info:#9ccbef; --info-bg:#1c3446; --neutral-bg:#2e3331; --bad:#f2a3a3; --bad-bg:#432222;
+  color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#171a19; --surface:#202423; --surface-2:#2a2f2d; --line:#363c3a;
+  --fg:#eceeed; --fg-soft:#a8b0ae; --title:#d7dcda; --accent:#ced7d2; --accent-fg:#171a19;
+  --hex:#55635c; --roze:#5a4a50; --rood:#ff8a80;
+  --ok:#8fd6a8; --ok-bg:#1f3a2a; --warn:#f2c86b; --warn-bg:#3d3017; --info:#9ccbef; --info-bg:#1c3446; --neutral-bg:#2e3331; --bad:#f2a3a3; --bad-bg:#432222;
+  color-scheme:dark}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{background:var(--bg);color:var(--fg);font-family:var(--font);font-size:15px;line-height:1.5}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--surface)}
+.wrap{max-width:1240px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+h1,h2,h3{color:var(--title);text-wrap:balance;margin:0;line-height:1.2}
+h2{font-size:1.45rem} h3{font-size:1.05rem}
+p{margin:0}
+header.top{background:var(--surface);border-bottom:1px solid var(--line);position:sticky;top:env(safe-area-inset-top,0px);z-index:5}
+.brand{display:flex;align-items:center;gap:8px 12px;padding-block:12px 4px;flex-wrap:wrap}
+.brand svg{width:30px;height:34px;flex:none}
+.brand b{font-size:1.05rem;color:var(--title)}
+.brand span{color:var(--fg-soft);font-size:.85rem}
+.demo{margin-left:auto;font-size:.75rem;text-transform:uppercase;letter-spacing:.08em;background:var(--roze);color:var(--fg);padding:3px 9px;border-radius:999px;white-space:nowrap}
+nav.tabs{display:flex;gap:2px;overflow-x:auto;scrollbar-width:none}
+nav.tabs a{padding:10px 14px;text-decoration:none;color:var(--fg-soft);border-bottom:3px solid transparent;white-space:nowrap;font-weight:600}
+nav.tabs a[aria-current="page"]{color:var(--title);border-color:var(--rood)}
+:focus-visible{outline:2px solid var(--info);outline-offset:2px}
+main{padding-block:24px 64px}
+.intro{display:flex;flex-direction:column;gap:6px;margin-bottom:20px;max-width:78ch}
+.intro p{color:var(--fg-soft)}
+.who{font-size:.75rem;text-transform:uppercase;letter-spacing:.1em;color:var(--fg-soft);font-weight:700}
+button{font:inherit;cursor:pointer;border-radius:var(--r);border:1px solid var(--line);background:var(--surface);color:var(--fg);padding:8px 14px;font-weight:600}
+button.primary{background:var(--accent);color:var(--accent-fg);border-color:var(--accent)}
+button.small{padding:4px 10px;font-size:.85rem}
+label{font-weight:600;font-size:.92rem}
+.hint{font-weight:400;color:var(--fg-soft);font-size:.82rem}
+input[type=text],input[type=search],input[type=number],select,textarea{font:inherit;width:100%;padding:8px 10px;border:1px solid var(--line);border-radius:6px;background:var(--surface);color:var(--fg)}
+textarea{min-height:70px;resize:vertical}
+.pill{display:inline-block;font-size:.74rem;font-weight:700;padding:2px 8px;border-radius:999px;white-space:nowrap}
+.tag{display:inline-flex;align-items:center;gap:5px;font-size:.78rem;padding:2px 8px;border-radius:999px;background:var(--surface-2);white-space:nowrap;margin:0 3px 3px 0;border:1px solid var(--line)}
+.dot{display:inline-block;vertical-align:middle;width:9px;height:9px;border-radius:50%;flex:none;border:1px solid rgba(0,0,0,.15)}
+ul.hex{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:6px}
+ul.hex li{padding-left:20px;position:relative}
+ul.hex li::before{content:"";position:absolute;left:0;top:.38em;width:11px;height:12px;background:var(--hex);clip-path:polygon(50% 0,100% 25%,100% 75%,50% 100%,0 75%,0 25%)}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:18px;display:flex;flex-direction:column;gap:12px;min-width:0}
+.two{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:20px;align-items:start}
+@media (max-width:900px){.two{grid-template-columns:1fr}}
+.scroll{overflow-x:auto}
+table.simple{border-collapse:collapse;width:100%;font-size:.88rem}
+table.simple th{text-align:left;font-size:.74rem;text-transform:uppercase;letter-spacing:.06em;color:var(--fg-soft);padding:6px 8px;border-bottom:1px solid var(--line);vertical-align:bottom}
+table.simple td{padding:7px 8px;border-bottom:1px solid var(--line);vertical-align:top}
+.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(20px + env(safe-area-inset-bottom,0px));background:var(--accent);color:var(--accent-fg);padding:10px 18px;border-radius:999px;z-index:30;font-weight:600;max-width:calc(100% - 32px)}
+.callout{border-left:4px solid var(--rood);background:var(--surface);padding:12px 16px;border-radius:0 var(--r) var(--r) 0;font-size:.92rem;display:flex;flex-direction:column;gap:6px}
+
+/* vergelijking */
+table.cmp{border-collapse:collapse;width:100%;min-width:860px;font-size:.88rem;background:var(--surface)}
+table.cmp th{font-size:.74rem;text-transform:uppercase;letter-spacing:.05em;color:var(--fg-soft);padding:10px 8px;border-bottom:1px solid var(--line);text-align:left;background:var(--surface-2);vertical-align:bottom}
+table.cmp td{padding:9px 8px;border-bottom:1px solid var(--line);vertical-align:top}
+table.cmp td.y{color:var(--fg)} table.cmp td.n{color:var(--fg-soft)}
+.mk{display:inline-grid;place-items:center;width:20px;height:22px;clip-path:polygon(50% 0,100% 25%,100% 75%,50% 100%,0 75%,0 25%);font-size:.7rem;font-weight:700;margin-right:6px;vertical-align:middle}
+.mk.y{background:var(--ok);color:var(--surface)} .mk.n{background:var(--surface-2);color:var(--fg-soft)}
+td.dec{background:color-mix(in srgb,var(--ok-bg) 45%,transparent);font-weight:600}
+.lbl-dir{font-size:.7rem;font-weight:700;color:var(--ok);text-transform:uppercase;letter-spacing:.06em;display:block}
+
+/* formulier */
+.formgrid{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:24px;align-items:start}
+@media (max-width:950px){.formgrid{grid-template-columns:1fr}}
+.formgrid>*{min-width:0}
+form.des{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);overflow:hidden}
+.fhead{background:var(--accent);color:var(--accent-fg);padding:18px 24px 30px;clip-path:polygon(0 0,100% 0,100% 84%,0 100%);display:flex;flex-direction:column;gap:6px}
+.fhead h2{color:var(--accent-fg)}
+.fhead p{opacity:.9;max-width:65ch;font-size:.92rem}
+.me{margin:0 24px;padding:12px 14px;border-radius:var(--r);background:var(--surface-2);display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:8px 16px;font-size:.88rem}
+.me dt{color:var(--fg-soft);font-size:.75rem;text-transform:uppercase;letter-spacing:.06em}
+.me dd{margin:0;font-weight:600}
+.me .auto{grid-column:1/-1;font-size:.78rem;color:var(--ok);font-weight:700}
+fieldset{border:0;border-top:1px solid var(--line);margin:0;padding:20px 24px;display:flex;flex-direction:column;gap:14px;min-width:0}
+fieldset.first{border-top:0}
+legend{float:left;width:100%;font-weight:700;color:var(--title);display:flex;align-items:center;gap:8px;margin-bottom:2px;font-size:1.02rem}
+legend .n{display:inline-grid;place-items:center;width:24px;height:27px;background:var(--hex);color:var(--fg);clip-path:polygon(50% 0,100% 25%,100% 75%,50% 100%,0 75%,0 25%);font-size:.8rem;flex:none}
+.f{display:flex;flex-direction:column;gap:4px;min-width:0}
+.row2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px 18px}
+@media (max-width:600px){.row2{grid-template-columns:1fr}}
+.grid3{border-collapse:collapse;font-size:.85rem}
+.grid3 th{font-weight:600;color:var(--fg-soft);padding:4px;text-align:center}
+.grid3 th.rl{text-align:left;padding-right:10px}
+.grid3 td{padding:3px}
+.cell{width:52px;height:34px;border-radius:6px;border:1px solid var(--line);background:var(--surface);font-size:.72rem;font-weight:700;padding:0;color:var(--fg-soft)}
+.cell[data-v="graag"]{background:var(--ok-bg);color:var(--ok);border-color:var(--ok)}
+.cell[data-v="niet"]{background:var(--bad-bg);color:var(--bad);border-color:var(--bad)}
+.cell[data-v="na"]{background:var(--surface-2);color:var(--fg-soft);opacity:.5;cursor:not-allowed}
+.glegend{display:flex;gap:14px;flex-wrap:wrap;font-size:.82rem;color:var(--fg-soft);align-items:center}
+.glegend .cell{width:auto;height:auto;padding:2px 8px;cursor:default}
+.warn{font-size:.85rem;color:var(--warn);background:var(--warn-bg);padding:6px 10px;border-radius:6px}
+.rate{border-collapse:collapse;width:100%;font-size:.88rem}
+.rate td{padding:6px 4px;border-bottom:1px solid var(--line);vertical-align:middle}
+.rate td.o{min-width:0}
+.rate .grp td{background:var(--surface-2);font-size:.74rem;text-transform:uppercase;letter-spacing:.06em;color:var(--fg-soft);font-weight:700;padding:6px 8px}
+.seg3{display:inline-flex;border:1px solid var(--line);border-radius:999px;overflow:hidden;white-space:nowrap}
+.seg3 label{font-weight:500;font-size:.8rem;padding:4px 10px;cursor:pointer;border-left:1px solid var(--line)}
+.seg3 label:first-child{border-left:0}
+.seg3 input{position:absolute;opacity:0;pointer-events:none}
+.seg3 label:has(input:checked){background:var(--hex);color:var(--fg);font-weight:700}
+.seg3 label:has(input[value="graag"]:checked){background:var(--ok-bg);color:var(--ok)}
+.seg3 label:has(input[value="niet"]:checked){background:var(--bad-bg);color:var(--bad)}
+.seg3 label:has(input:focus-visible){outline:2px solid var(--info)}
+.cur{font-size:.72rem;font-weight:700;color:var(--info);background:var(--info-bg);padding:1px 7px;border-radius:999px;margin-left:6px;white-space:nowrap}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chips label{font-weight:400;display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);border-radius:999px;padding:4px 12px;cursor:pointer;font-size:.88rem}
+.chips label:has(input:checked){background:var(--hex);border-color:transparent}
+.chips input{margin:0;accent-color:var(--accent)}
+.opt{border:1px dashed var(--line);border-radius:var(--r);padding:12px 14px;display:flex;flex-direction:column;gap:10px;background:var(--surface-2)}
+.formfoot{padding:16px 24px;border-top:1px solid var(--line);display:flex;gap:12px;align-items:center;flex-wrap:wrap;background:var(--surface-2)}
+aside.note{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:16px;display:flex;flex-direction:column;gap:10px;font-size:.9rem;position:sticky;top:110px}
+.ok-box{border-radius:var(--r);background:var(--ok-bg);padding:14px 16px;display:flex;flex-direction:column;gap:8px}
+
+/* overzicht */
+.toolbar{display:flex;gap:10px;flex-wrap:wrap;align-items:flex-end;margin-bottom:12px}
+.toolbar .f{flex:1 1 180px}
+.stats{display:flex;gap:16px;flex-wrap:wrap;font-size:.88rem;color:var(--fg-soft);margin-bottom:8px}
+.stats b{color:var(--fg);font-variant-numeric:tabular-nums}
+table.ov{border-collapse:collapse;width:100%;min-width:1000px;font-size:.88rem;background:var(--surface)}
+table.ov th{text-align:left;font-size:.72rem;text-transform:uppercase;letter-spacing:.05em;color:var(--fg-soft);padding:9px 8px;border-bottom:1px solid var(--line);background:var(--surface-2);white-space:nowrap}
+table.ov td{padding:9px 8px;border-bottom:1px solid var(--line);vertical-align:top}
+table.ov tr.row{cursor:pointer}
+table.ov tr.row:hover td{background:var(--surface-2)}
+table.ov tr.sel td{background:var(--info-bg)}
+.arrow{font-weight:700;font-variant-numeric:tabular-nums;white-space:nowrap;font-size:.8rem;display:inline-flex;gap:4px;align-items:center;margin:0 4px 3px 0;padding:1px 7px;border-radius:999px}
+.arrow.up{background:var(--ok-bg);color:var(--ok)} .arrow.down{background:var(--bad-bg);color:var(--bad)} .arrow.eq{background:var(--surface-2);color:var(--fg-soft)} .arrow.new{background:var(--info-bg);color:var(--info)}
+.st-ok{background:var(--ok-bg);color:var(--ok)} .st-no{background:var(--warn-bg);color:var(--warn)}
+.signal{font-size:.75rem;color:var(--info);font-weight:700}
+.detail{margin-top:16px;border-left:4px solid var(--accent)}
+.cmpbars{display:flex;flex-direction:column;gap:8px}
+.cmpbars .r{display:grid;grid-template-columns:150px minmax(0,1fr) 120px;gap:10px;align-items:center;font-size:.88rem}
+@media (max-width:600px){.cmpbars .r{grid-template-columns:110px minmax(0,1fr) 90px}}
+.bars{display:flex;flex-direction:column;gap:3px}
+.bars i{display:block;height:9px;border-radius:3px}
+.bars i.now{background:var(--fg-soft)} .bars i.wish{background:var(--ok)}
+.mini{border-collapse:collapse;font-size:.75rem}
+.mini th{color:var(--fg-soft);font-weight:600;padding:2px 4px}
+.mini td{width:30px;height:20px;border:1px solid var(--line);text-align:center;font-weight:700}
+.mini td.g{background:var(--ok-bg);color:var(--ok)} .mini td.x{background:var(--bad-bg);color:var(--bad)}
+.kv{display:grid;grid-template-columns:170px minmax(0,1fr);gap:6px 12px;font-size:.9rem}
+.kv dt{color:var(--fg-soft)} .kv dd{margin:0}
+@media (max-width:600px){.kv{grid-template-columns:1fr}}
+</style>
+
+<header class="top">
+  <div class="wrap">
+    <div class="brand">
+      <svg viewBox="0 0 100 115" aria-hidden="true"><polygon points="50,2 95,28 95,87 50,113 5,87 5,28" fill="#4a4247"/><polygon points="50,2 95,28 50,54 5,28" fill="#a28790"/><polygon points="50,54 95,28 95,87 50,113" fill="#889a91"/></svg>
+      <div><b>Crescendo CVO</b><br><span>Personeelsdatabank · Desiderata</span></div>
+      <span class="demo">Prototype · voorbeelddata</span>
+    </div>
+    <nav class="tabs" aria-label="Schermen">
+      <a href="#vergelijking">1 · Van 7 naar 1</a>
+      <a href="#formulier">2 · Formulier lesgever</a>
+      <a href="#overzicht">3 · Overzicht adjunct</a>
+      <a href="#specificatie">4 · Specificatie ICT</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+
+<!-- ============ 1. VERGELIJKING ============ -->
+<section id="v-vergelijking" hidden>
+  <div class="intro">
+    <span class="who">Basis voor de keuzes in het formulier</span>
+    <h2>Van 7 formulieren naar 1</h2>
+    <p>Drie van de zeven bestaande formulieren naast elkaar (ICT, Diploma Secundair, Techniek), aangevuld met wat de directie op 29 oktober afsprak. De laatste kolom toont wat het uniforme formulier doet. De andere vier formulieren kunnen nog aangevuld worden.</p>
+  </div>
+  <div class="scroll" style="border:1px solid var(--line);border-radius:var(--r)"><table class="cmp" id="cmpTbl"></table></div>
+  <div class="two" style="margin-top:20px">
+    <div class="panel">
+      <h3>Wat we overnemen</h3>
+      <ul class="hex">
+        <li><b>Rooster dag × voormiddag/namiddag/avond</b> (ICT, Techniek). Eén raster met drie standen: graag, kan, niet.</li>
+        <li><b>Schaal heel graag / oké / liever niet</b> (Diploma Secundair, Techniek). Overal dezelfde schaal: voor campussen, opleidingen en andere opdrachten.</li>
+        <li><b>Minimum en maximum</b> (ICT, Diploma Secundair). In lestijden van het eigen ambt, met de noemer erbij.</li>
+        <li><b>Reden bij "niet"</b> (Diploma Secundair). Eén tekstveld, zodat de adjunct de context kent.</li>
+        <li><b>Coördinatie en andere taken</b> (Diploma Secundair). Uitgebreid naar alle clusters.</li>
+        <li><b>Voorkeur uurrooster</b> bij 10/20 of meer (Diploma Secundair). Algemeen gemaakt.</li>
+      </ul>
+    </div>
+    <div class="panel">
+      <h3>Wat we anders doen</h3>
+      <ul class="hex">
+        <li><b>Geen naam, mail of standplaats meer vragen.</b> Die komen uit het Crescendo-account en de personeelsdatabank.</li>
+        <li><b>Huidige opdracht staat al ingevuld.</b> De collega reageert per opleiding: meer, behouden, minder.</li>
+        <li><b>Opleidingen over clusters heen.</b> Wie NT2 en Talen geeft, vult één formulier in in plaats van twee.</li>
+        <li><b>Verlofstelsel als vaste vraag.</b> Nu drie verschillende formuleringen; verwijzing naar Team Personeel.</li>
+        <li><b>Clusterspecifieke vragen</b> staan in een apart blok dat enkel verschijnt voor collega's van die cluster.</li>
+        <li><b>Groei en ontwikkeling</b> hoort in het POP, niet in de desiderata.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 2. FORMULIER ============ -->
+<section id="v-formulier" hidden>
+  <div class="intro">
+    <span class="who">Wat de lesgever ziet · elk jaar in maart</span>
+    <h2>Eén desiderataformulier voor alle clusters</h2>
+    <p>Voorbeeld voor een collega die NT2, Talen en Diploma Secundair geeft (de casus van de directiedag). Wat al gekend is, staat ingevuld. Het formulier telt zes blokken.</p>
+  </div>
+  <div class="formgrid">
+    <form class="des" id="desForm" novalidate>
+      <div class="fhead">
+        <h2>Desiderata schooljaar 2027-2028</h2>
+        <p>Geef je wensen door voor volgend schooljaar. We houden er zoveel mogelijk rekening mee bij het opmaken van de opdrachten en lessenroosters. Het blijven wensen: we kunnen niets garanderen. Invullen tot en met 31 maart.</p>
+      </div>
+      <dl class="me" id="meBox"></dl>
+
+      <fieldset class="first" style="padding-top:18px">
+        <legend><span class="n">1</span>Beschikbaarheid en uurrooster</legend>
+        <p class="hint">Klik op een blok om te wisselen tussen <b>kan</b>, <b>graag</b> en <b>niet</b>. Alles staat standaard op "kan".</p>
+        <div class="scroll"><table class="grid3" id="avail"></table></div>
+        <div class="glegend"><span class="cell" data-v="graag">graag</span><span class="cell">kan</span><span class="cell" data-v="niet">niet</span><span id="nietCount"></span></div>
+        <div class="warn" id="nietWarn" hidden>Je duidt meer dan 3 blokken "niet" aan. Licht hieronder kort toe waarom.</div>
+        <div class="f"><label for="dReden">Waarom kan je op die momenten niet? <span class="hint">· bv. andere job, opleiding, zorgtaak</span></label><input type="text" id="dReden"></div>
+        <div class="row2">
+          <div class="f"><label for="dOnline">Online lesgeven</label><select id="dOnline"><option>Graag</option><option selected>Kan</option><option>Liever niet</option></select></div>
+          <div class="f"><label for="dRooster">Voorkeur uurrooster <span class="hint">· vanaf een halftijdse opdracht</span></label><select id="dRooster"><option>Geen voorkeur</option><option>Geen 8 lesuren op één dag</option><option>Twee halve voorbereidingsdagen</option><option>Lessen op zo weinig mogelijk dagen</option></select></div>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend><span class="n">2</span>Campussen en lesplaatsen</legend>
+        <table class="rate" id="campRate"></table>
+      </fieldset>
+
+      <fieldset>
+        <legend><span class="n">3</span>Volume van je opdracht</legend>
+        <div class="row2">
+          <div class="f"><label for="dRicht">Volgend jaar wil ik mijn opdracht…</label><select id="dRicht"><option>uitbreiden</option><option selected>behouden</option><option>verminderen</option></select></div>
+          <div class="f"><label>Minimum en maximum <span class="hint">· in lestijden, voltijds = <span id="noemer">24</span></span></label>
+            <div style="display:flex;gap:8px;align-items:center"><input type="number" id="dMin" min="0" aria-label="Minimum"><span>tot</span><input type="number" id="dMax" min="0" aria-label="Maximum"></div></div>
+        </div>
+        <div class="f"><label for="dVerlof">Plan je een verlofstelsel aan te vragen? <span class="hint">· welk stelsel, welke periode, hoeveel uren. Vragen? Contacteer tijdig Team Personeel.</span></label><input type="text" id="dVerlof" placeholder="Laat leeg als dit niet van toepassing is"></div>
+      </fieldset>
+
+      <fieldset>
+        <legend><span class="n">4</span>Opleidingen en modules</legend>
+        <p class="hint">Bovenaan staat je huidige opdracht. Daaronder kan je aanduiden wat je ook graag of volgens je diploma zou kunnen geven, ook in een andere cluster.</p>
+        <table class="rate" id="oplRate"></table>
+        <div class="f"><label for="oplAdd">Opleiding toevoegen</label><select id="oplAdd"></select></div>
+        <div class="f"><label for="dIdeaal">Welke modules staan in jouw ideale lessenrooster?</label><input type="text" id="dIdeaal" placeholder="bv. NT2 richtgraad 2, Engels B1, AAV Nederlands"></div>
+      </fieldset>
+
+      <fieldset>
+        <legend><span class="n">5</span>Andere opdrachten</legend>
+        <p class="hint">Opdrachten naast of in plaats van lesgeven.</p>
+        <table class="rate" id="taakRate"></table>
+      </fieldset>
+
+      <fieldset>
+        <legend><span class="n">6</span>Toelichting</legend>
+        <div class="opt" id="clusterBlock"></div>
+        <div class="f"><label for="dOpm">Wil je nog iets meegeven? <span class="hint">· een idee, een bezorgdheid, een wens voor je opleiding</span></label><textarea id="dOpm"></textarea></div>
+      </fieldset>
+
+      <div class="formfoot">
+        <button type="submit" class="primary">Desiderata indienen</button>
+        <span class="hint">Je kan je antwoorden aanpassen tot 31 maart.</span>
+      </div>
+    </form>
+    <aside class="note" id="formAside">
+      <h3>Algemene afspraken</h3>
+      <ul class="hex">
+        <li>Hetzelfde formulier voor alle clusters.</li>
+        <li>Elk schooljaar opnieuw, in maart.</li>
+        <li>Desiderata zijn wensen, geen garanties.</li>
+        <li>NT2 behoudt zijn extra aanbodbevraging in april.</li>
+        <li>Groei en ontwikkeling bespreek je in je POP.</li>
+      </ul>
+    </aside>
+  </div>
+</section>
+
+<!-- ============ 3. OVERZICHT ============ -->
+<section id="v-overzicht" hidden>
+  <div class="intro">
+    <span class="who">Wat de adjunct ziet · over de clusters heen</span>
+    <h2>Alle desiderata op één plek</h2>
+    <p>Elke adjunct ziet de collega's van zijn cluster, en ook wie uit een andere cluster graag bij hem wil lesgeven. Klik op een collega voor het vergelijk huidige opdracht en wens.</p>
+  </div>
+  <div class="toolbar">
+    <div class="f"><label for="oCluster">Cluster</label><select id="oCluster"></select></div>
+    <div class="f"><label for="oWens">Toon</label><select id="oWens"><option value="">Iedereen</option><option value="meer">Wil meer in deze cluster</option><option value="minder">Wil minder in deze cluster</option><option value="nieuw">Wil instappen in deze cluster</option><option value="taak">Interesse in coördinatie of andere taak</option><option value="open">Nog niet ingediend</option></select></div>
+    <div class="f"><label for="oMoment">Kan lesgeven op</label><select id="oMoment"></select></div>
+    <div class="f" style="flex:2 1 220px"><label for="oQ">Zoeken</label><input type="search" id="oQ" placeholder="Naam, module, opmerking…"></div>
+  </div>
+  <div class="stats" id="oStats"></div>
+  <div class="scroll" style="border:1px solid var(--line);border-radius:var(--r)"><table class="ov" id="ovTbl"></table></div>
+  <div class="panel detail" id="ovDetail"></div>
+</section>
+
+<!-- ============ 4. SPECIFICATIE ============ -->
+<section id="v-specificatie" hidden>
+  <div class="intro">
+    <span class="who">Voor de collega ICT</span>
+    <h2>Specificatie voor de personeelsdatabank</h2>
+    <p>Eén formulier, één lijst met antwoorden, gekoppeld aan de gegevens die de personeelsdatabank al heeft. Zo hoeft niemand nog in zeven formulieren en een Excel met links te zoeken.</p>
+  </div>
+  <div style="display:flex;flex-direction:column;gap:20px">
+    <div class="callout">
+      <b>Eerst beslissen: Microsoft Forms of de personeelsdatabank?</b>
+      <p>Met Forms blijven twee problemen: de collega moet zijn naam en standplaats opnieuw invullen, en de huidige opdracht kan niet vooraf ingevuld worden. Het voorstel is daarom een formulier in de personeelsdatabank, waar de collega al aangemeld is. Kan dat niet, dan is één gedeeld Forms-formulier met bewerkrechten voor alle adjuncten de minimale stap. De antwoorden komen dan via Power Automate in een lijst.</p>
+    </div>
+    <div class="panel">
+      <h3>Velden</h3>
+      <div class="scroll"><table class="simple" id="specTbl"></table></div>
+    </div>
+    <div class="two">
+      <div class="panel">
+        <h3>Automatisaties</h3>
+        <ul class="hex">
+          <li><b>1 maart:</b> formulier gaat open; mail en Teams-bericht naar alle actieve lesgevers.</li>
+          <li><b>15 en 25 maart:</b> herinnering aan wie nog niet indiende. De adjunct ziet wie ontbreekt.</li>
+          <li><b>Bij indienen:</b> bevestigingsmail met een kopie van de antwoorden.</li>
+          <li><b>Signaal naar andere cluster:</b> duidt iemand "graag" aan voor een opleiding buiten de eigen cluster, dan krijgt de adjunct van die cluster een melding.</li>
+          <li><b>31 maart:</b> formulier sluit; adjuncten krijgen een samenvatting per cluster.</li>
+        </ul>
+      </div>
+      <div class="panel">
+        <h3>Open vragen</h3>
+        <ul class="hex">
+          <li><b>Noemer van een voltijdse opdracht.</b> Diploma Secundair rekent in twintigsten (20/20), ICT in procent, de casus van de directiedag in /24. Welke noemer per ambt gebruiken we? Dit geldt ook voor het onboardingformulier.</li>
+          <li>Welke clusterspecifieke vragen blijven? Voorstel: enkel vragen die echt voor één cluster gelden, zoals de verlengde module bij Diploma Secundair.</li>
+          <li>Welke lijst met opleidingen en modules gebruiken we? Best dezelfde als in het onboardingformulier.</li>
+          <li>Zien adjuncten de volledige desiderata van een collega uit een andere cluster, of enkel het deel dat hun cluster aangaat?</li>
+          <li>De vier formulieren die nog ontbreken (o.a. NT2 en Talen) nakijken op vragen die hier niet in zitten.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+</main>
+<div class="toast" id="toast" hidden role="status"></div>
+
+<script>
+(()=>{
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+const esc=s=>String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+function toast(t){const el=$("#toast");el.textContent=t;el.hidden=false;clearTimeout(toast.t);toast.t=setTimeout(()=>el.hidden=true,2600)}
+const CCOL={"NT2":"#ed6c71","Talen":"#e2d193","Diploma Secundair":"#40acb6","Techniek":"#5e91a5","ICT":"#85cee4","Zorg & Welzijn":"#c8b7cd","Administratie":"#bb9682"};
+const dot=c=>`<span class="dot" style="background:${CCOL[c]||"#999"}"></span>`;
+const DAGEN=["ma","di","wo","do","vr","za"],DEEL=[["vm","VM"],["nm","NM"],["av","AV"]];
+const NA=new Set(["za-nm","za-av"]);
+const CAMPUS=["Mechelen","Lier","Halle","Sint-Genesius-Rode","Keerbergen","Hoeilaart","Tervuren","Zaventem","Berlaar"];
+const OPL={
+ "NT2":["NT2 richtgraad 1","NT2 richtgraad 2","NT2 richtgraad 3","NT2 alfa"],
+ "Talen":["Engels","Frans","Spaans","Italiaans","Duits"],
+ "Diploma Secundair":["AAV Nederlands","AAV Wiskunde","AAV Wetenschappen","ASO","TaalXL","Studiebegeleiding","Administratief medewerker onthaal","Boekhoudkundig assistent","Winkelverkoper"],
+ "Techniek":["Basis elektriciteit","Elektrotechnisch installateur","Constructielassen","Fietshersteller","Interieurbouwer","Meubelmaker"],
+ "ICT":["Computervaardigheden","Office","Webdesign","Netwerkbeheer"],
+ "Zorg & Welzijn":["Zorgkundige","Kinderbegeleider","EHBO"]};
+const OPL2CL={};Object.entries(OPL).forEach(([c,l])=>l.forEach(o=>OPL2CL[o]=c));
+const TAKEN=["Opleidingscoördinator","Trajectbegeleider","Zorgcoach","Technisch-pedagogische begeleiding (TB)","Werken in een ander ondersteunend team"];
+const SCALE=[["graag","Heel graag"],["oke","Oké"],["niet","Liever niet"]];
+
+// ---------- 1. vergelijking ----------
+const CMP=[
+ ["Naam en e-mail","Via account","Gevraagd","Gevraagd","Uit het Crescendo-account",0],
+ ["Officiële standplaats","Gevraagd","Gevraagd","Gevraagd","Automatisch uit de personeelsdatabank",1],
+ ["Voorkeur campus / lesplaats","Rangorde","Heel graag ↔ liever niet","Liever niet ↔ heel graag","Heel graag / oké / liever niet per campus",0],
+ ["Momenten waarop je niet kan","2 blokken verplicht","Max. 3 blokken (bij voltijds werk)","Open vraag","Raster met 'niet', waarschuwing boven 3",0],
+ ["Momenten waarop je graag wil","2 blokken verplicht","–","Raster per dag","Zelfde raster met 'graag'",0],
+ ["Reden waarom niet","–","Open vraag","In dezelfde open vraag","Eén tekstveld",0],
+ ["Volume","Percent + min/max lesmomenten","Min/max in twintigsten","–","Uitbreiden/behouden/verminderen + min/max in lestijden",1],
+ ["Verlofstelsel","Gevraagd","Gevraagd","Gevraagd","Vaste vraag, verwijzing naar Team Personeel",0],
+ ["Opleidingen / cursussen","Open vraag","Schaal per opleiding","Aankruisen","Huidige opdracht + schaal per opleiding, over clusters heen",1],
+ ["Opleidingen liever niet meer","–","Via schaal","–","Via schaal",1],
+ ["Ideale modules","–","4 modules (open)","–","Open vraag",0],
+ ["Coördinatie / andere taken","–","Schaal per taak","–","Schaal per taak, voor iedereen",1],
+ ["Andere cluster","–","Open vraag","Open vraag","Via opleidingen uit andere clusters",1],
+ ["Online lesgeven","–","–","–","Graag / kan / liever niet",1],
+ ["Voorkeur uurrooster","–","Bij ≥ 10/20","–","Vanaf halftijdse opdracht",0],
+ ["Clusterspecifiek","–","Verlengde module, geletterdheid","–","Apart blok, enkel voor die cluster",0],
+ ["Opmerking / suggestie","Gevraagd","Gevraagd","Gevraagd","Gevraagd",0]];
+$("#cmpTbl").innerHTML=`<tr><th>Thema</th><th>ICT</th><th>Diploma Secundair</th><th>Techniek</th><th>Uniform formulier</th></tr>`+CMP.map(r=>`<tr><td><b>${esc(r[0])}</b></td>${[1,2,3].map(i=>`<td class="${r[i]==="–"?"n":"y"}"><span class="mk ${r[i]==="–"?"n":"y"}">${r[i]==="–"?"–":"✓"}</span>${r[i]==="–"?"":esc(r[i])}</td>`).join("")}<td class="dec">${r[5]?`<span class="lbl-dir">afgesproken op directiedag</span>`:""}${esc(r[4])}</td></tr>`).join("");
+
+// ---------- 2. formulier ----------
+const ME={naam:"Leerkracht X (voorbeeld)",stand:"Mechelen",noemer:24,opdr:[["NT2","NT2 richtgraad 2",8],["Talen","Frans",10],["Diploma Secundair","AAV Nederlands",6]]};
+$("#meBox").innerHTML=`<span class="auto">Automatisch ingevuld uit de personeelsdatabank</span>
+ <div><dt>Naam</dt><dd>${ME.naam}</dd></div><div><dt>Standplaats</dt><dd>${ME.stand}</dd></div>
+ <div><dt>Huidige opdracht</dt><dd>${ME.opdr.reduce((s,o)=>s+o[2],0)}/${ME.noemer}</dd></div>
+ <div><dt>Clusters</dt><dd>${ME.opdr.map(o=>o[0]).join(", ")}</dd></div>`;
+$("#noemer").textContent=ME.noemer;
+const av={};
+function renderAvail(){
+  $("#avail").innerHTML=`<tr><th></th>${DAGEN.map(d=>`<th>${d}</th>`).join("")}</tr>`+DEEL.map(([k,l])=>`<tr><th class="rl">${l}</th>${DAGEN.map(d=>{const id=d+"-"+k;if(NA.has(id))return`<td><button type="button" class="cell" data-v="na" disabled aria-label="${d} ${l}: geen lessen">–</button></td>`;const v=av[id]||"kan";return`<td><button type="button" class="cell" data-id="${id}" data-v="${v}" aria-label="${d} ${l}: ${v}">${v}</button></td>`}).join("")}</tr>`).join("");
+  $$("#avail .cell[data-id]").forEach(b=>b.onclick=()=>{const c=av[b.dataset.id]||"kan";av[b.dataset.id]=c==="kan"?"graag":c==="graag"?"niet":"kan";renderAvail()});
+  const n=Object.values(av).filter(v=>v==="niet").length;
+  $("#nietCount").textContent=`${n} × niet`;$("#nietWarn").hidden=n<=3;
+}
+const rateRow=(name,label,val,extra="")=>`<tr><td class="o">${label}${extra}</td><td style="text-align:right"><span class="seg3" role="radiogroup" aria-label="${esc(name)}">${SCALE.map(([v,l])=>`<label><input type="radio" name="${esc(name)}" value="${v}" ${v===val?"checked":""}>${l}</label>`).join("")}</span></td></tr>`;
+$("#campRate").innerHTML=CAMPUS.map(c=>rateRow("c-"+c,esc(c),c===ME.stand?"graag":"oke",c===ME.stand?`<span class="cur">standplaats</span>`:"")).join("");
+let extraOpl=["NT2 richtgraad 3"];
+function renderOpl(){
+  const cur=ME.opdr.map(o=>o[1]);
+  let h=`<tr class="grp"><td colspan="2">Huidige opdracht</td></tr>`+ME.opdr.map(([c,o,lt])=>`<tr><td class="o">${dot(c)} ${esc(o)}<span class="cur">${lt}/${ME.noemer}</span></td><td style="text-align:right"><span class="seg3" role="radiogroup" aria-label="${esc(o)}">${[["meer","Meer"],["oke","Behouden"],["minder","Minder"],["niet","Stoppen"]].map(([v,l])=>`<label><input type="radio" name="o-${esc(o)}" value="${v==="stoppen"?"niet":v}" ${(o==="NT2 richtgraad 2"&&v==="meer")||(o==="Frans"&&v==="minder")||(o==="AAV Nederlands"&&v==="oke")?"checked":""}>${l}</label>`).join("")}</span></td></tr>`).join("");
+  h+=`<tr class="grp"><td colspan="2">Ook interesse in</td></tr>`+extraOpl.map(o=>`<tr><td class="o">${dot(OPL2CL[o])} ${esc(o)} <span class="hint">${esc(OPL2CL[o])}</span></td><td style="text-align:right"><span class="seg3" role="radiogroup" aria-label="${esc(o)}">${[["graag","Heel graag"],["oke","Kan (diploma)"],["niet","Liever niet"]].map(([v,l])=>`<label><input type="radio" name="o-${esc(o)}" value="${v}" ${v==="graag"?"checked":""}>${l}</label>`).join("")}</span></td></tr>`).join("");
+  $("#oplRate").innerHTML=h;
+  $("#oplAdd").innerHTML=`<option value="">Kies een opleiding of module…</option>`+Object.entries(OPL).map(([c,l])=>`<optgroup label="${esc(c)}">${l.filter(o=>!cur.includes(o)&&!extraOpl.includes(o)).map(o=>`<option>${esc(o)}</option>`).join("")}</optgroup>`).join("");
+}
+$("#oplAdd").onchange=e=>{if(e.target.value){extraOpl.push(e.target.value);renderOpl()}};
+$("#taakRate").innerHTML=TAKEN.map(t=>rateRow("t-"+t,esc(t),t==="Trajectbegeleider"?"oke":"niet")).join("");
+$("#clusterBlock").innerHTML=`<div><span class="pill" style="background:var(--info-bg);color:var(--info)">enkel zichtbaar voor Diploma Secundair</span></div>
+ <div class="f"><label for="dVerl">Wil je graag een verlengde module geven? <span class="hint">· extra geletterdheidsmodule voor pre-teaching en taalcoaching</span></label><select id="dVerl"><option>Ja</option><option selected>Nee</option></select></div>
+ <div class="f"><label for="dGelet">Welke andere noden zie je bij cursisten die een geletterdheidsmodule kan opvangen?</label><input type="text" id="dGelet"></div>`;
+Object.assign(av,{"za-vm":"niet","ma-av":"graag","di-av":"graag","do-av":"graag","vr-av":"niet"});
+$("#dMin").value=20;$("#dMax").value=24;$("#dReden").value="Zaterdag: zorg voor kinderen. Vrijdagavond: andere job.";
+$("#desForm").addEventListener("submit",e=>{e.preventDefault();
+  $("#formAside").innerHTML=`<div class="ok-box"><h3>Ingediend</h3><ul class="hex"><li>Bevestigingsmail met kopie van je antwoorden verstuurd.</li><li>Adjuncten van NT2, Talen en Diploma Secundair zien je desiderata.</li>${extraOpl.length?`<li>Signaal naar de adjunct van ${esc([...new Set(extraOpl.map(o=>OPL2CL[o]))].join(", "))} over je interesse.</li>`:""}<li>Aanpassen kan tot 31 maart.</li></ul><button class="primary" id="goOv">Bekijk als adjunct</button></div>`;
+  $("#goOv").onclick=()=>location.hash="overzicht";toast("Desiderata ingediend")});
+
+// ---------- 3. overzicht ----------
+const P=[
+ {n:"Leerkracht X",stand:"Mechelen",noemer:24,ok:true,opdr:{"NT2":8,"Talen":10,"Diploma Secundair":6},wens:{"NT2":"meer","Talen":"minder","Diploma Secundair":"oke"},nieuw:[],min:20,max:24,niet:["za-vm","vr-av"],graag:["ma-av","di-av","do-av"],taak:["Trajectbegeleider"],richt:"behouden",online:"Kan",verlof:"",opm:"Geen zaterdaglessen meer.",ideaal:"NT2 richtgraad 2 en 3"},
+ {n:"Peeters Lien",stand:"Lier",noemer:20,ok:true,opdr:{"Diploma Secundair":10},wens:{"Diploma Secundair":"meer"},nieuw:["Techniek"],min:10,max:16,niet:["ma-vm","ma-nm"],graag:["wo-av"],taak:[],richt:"uitbreiden",online:"Graag",verlof:"",opm:"",ideaal:"AAV Wiskunde, Basis elektriciteit"},
+ {n:"Janssens Marc",stand:"Mechelen",noemer:20,ok:true,opdr:{"Techniek":16},wens:{"Techniek":"oke"},nieuw:[],min:16,max:16,niet:["ma-vm","di-vm","wo-vm"],graag:["ma-av","di-av"],taak:["Opleidingscoördinator"],richt:"behouden",online:"Liever niet",verlof:"Loopbaanonderbreking 1/5 vanaf februari",opm:"Lasatelier Mechelen heeft nieuwe afzuiging nodig.",ideaal:"Constructielassen"},
+ {n:"Claes Pieter",stand:"Lier",noemer:24,ok:true,opdr:{"Talen":12},wens:{"Talen":"meer"},nieuw:["NT2"],min:12,max:20,niet:["za-vm"],graag:["di-av","do-av"],taak:["Technisch-pedagogische begeleiding (TB)"],richt:"uitbreiden",online:"Graag",verlof:"",opm:"",ideaal:"Engels B2, NT2 richtgraad 3"},
+ {n:"Ferreira Ana",stand:"Mechelen",noemer:24,ok:true,opdr:{"NT2":14},wens:{"NT2":"minder"},nieuw:[],min:8,max:12,niet:["ma-av","di-av","wo-av","do-av"],graag:["ma-vm","di-vm"],taak:[],richt:"verminderen",online:"Graag",verlof:"Ouderschapsverlof 1/2, sept–dec",opm:"Enkel overdag door gezinssituatie.",ideaal:"NT2 alfa"},
+ {n:"De Smet Tom",stand:"Halle",noemer:20,ok:true,opdr:{"ICT":20},wens:{"ICT":"oke"},nieuw:["Diploma Secundair"],min:20,max:20,niet:[],graag:["ma-vm","di-vm","wo-vm"],taak:["Werken in een ander ondersteunend team"],richt:"behouden",online:"Kan",verlof:"",opm:"Interesse in module AI in administratieve beroepen.",ideaal:"Office, AI in administratie"},
+ {n:"Hermans Nora",stand:"Mechelen",noemer:20,ok:false,opdr:{"Zorg & Welzijn":6},wens:{},nieuw:[],niet:[],graag:[],taak:[]},
+ {n:"El Amrani Youssef",stand:"Halle",noemer:24,ok:false,opdr:{"NT2":6,"Talen":4},wens:{},nieuw:[],niet:[],graag:[],taak:[]}];
+const CLS=["NT2","Talen","Diploma Secundair","Techniek","ICT","Zorg & Welzijn"];
+$("#oCluster").innerHTML=`<option value="">Alle clusters</option>`+CLS.map(c=>`<option ${c==="NT2"?"selected":""}>${c}</option>`).join("");
+$("#oMoment").innerHTML=`<option value="">Maakt niet uit</option>`+DAGEN.flatMap(d=>DEEL.filter(([k])=>!NA.has(d+"-"+k)).map(([k,l])=>`<option value="${d}-${k}">${d} ${l}</option>`)).join("");
+let selP=0;
+const WL={meer:["up","▲ meer"],minder:["down","▼ minder"],oke:["eq","= behouden"],niet:["down","✕ stoppen"]};
+function filt(){
+  const c=$("#oCluster").value,w=$("#oWens").value,m=$("#oMoment").value,q=$("#oQ").value.toLowerCase();
+  return P.map((p,i)=>[p,i]).filter(([p])=>{
+    const inC=!c||p.opdr[c]!=null||p.nieuw.includes(c);
+    if(!inC)return false;
+    if(w==="meer"&&!(c?p.wens[c]==="meer":Object.values(p.wens).includes("meer")))return false;
+    if(w==="minder"&&!(c?["minder","niet"].includes(p.wens[c]):Object.values(p.wens).some(x=>x==="minder"||x==="niet")))return false;
+    if(w==="nieuw"&&!(c?p.nieuw.includes(c):p.nieuw.length))return false;
+    if(w==="taak"&&!p.taak.length)return false;
+    if(w==="open"&&p.ok)return false;
+    if(m&&(!p.ok||p.niet.includes(m)))return false;
+    if(q&&!(p.n+" "+(p.opm||"")+" "+(p.ideaal||"")).toLowerCase().includes(q))return false;
+    return true});
+}
+const tot=p=>Object.values(p.opdr).reduce((a,b)=>a+b,0);
+function renderOv(){
+  const c=$("#oCluster").value,list=filt();
+  const scope=P.filter(p=>!c||p.opdr[c]!=null);
+  $("#oStats").innerHTML=`<span><b>${scope.filter(p=>p.ok).length}/${scope.length}</b> ingediend${c?" in "+esc(c):""}</span><span><b>${c?P.filter(p=>p.nieuw.includes(c)).length:P.filter(p=>p.nieuw.length).length}</b> uit andere cluster wil${c?" hier":""} instappen</span><span><b>${list.length}</b> getoond</span>`;
+  $("#ovTbl").innerHTML=`<tr><th>Collega</th><th>Standplaats</th><th>Huidige opdracht</th><th>Wens per cluster</th><th>Min – max</th><th>Niet op</th><th>Andere taken</th><th>Status</th></tr>`+(list.length?list.map(([p,i])=>`<tr class="row ${i===selP?"sel":""}" tabindex="0" data-i="${i}">
+   <td><b>${esc(p.n)}</b>${c&&p.nieuw.includes(c)?`<div class="signal">uit andere cluster</div>`:""}</td>
+   <td>${esc(p.stand)}</td>
+   <td>${Object.entries(p.opdr).map(([k,v])=>`<span class="tag">${dot(k)}${esc(k)} ${v}</span>`).join("")}<div class="hint">${tot(p)}/${p.noemer}</div></td>
+   <td>${p.ok?Object.entries(p.wens).map(([k,v])=>`<span class="arrow ${WL[v][0]}">${esc(k)} ${WL[v][1]}</span>`).join("")+p.nieuw.map(k=>`<span class="arrow new">+ ${esc(k)}</span>`).join(""):"–"}</td>
+   <td style="font-variant-numeric:tabular-nums;white-space:nowrap">${p.ok?`${p.min} – ${p.max}`:"–"}</td>
+   <td>${p.ok?(p.niet.length?p.niet.map(x=>x.replace("-"," ")).join(", "):"geen"):"–"}</td>
+   <td>${p.taak.map(esc).join(", ")||"–"}</td>
+   <td><span class="pill ${p.ok?"st-ok":"st-no"}">${p.ok?"ingediend":"nog niet"}</span></td></tr>`).join(""):`<tr><td colspan="8" style="padding:24px;text-align:center;color:var(--fg-soft)">Geen collega's voor deze filters.</td></tr>`);
+  $$("#ovTbl tr.row").forEach(r=>{r.onclick=()=>{selP=+r.dataset.i;renderOv()};r.onkeydown=e=>{if(e.key==="Enter"){selP=+r.dataset.i;renderOv()}}});
+  renderDetail();
+}
+function renderDetail(){
+  const p=P[selP];
+  if(!p.ok){$("#ovDetail").innerHTML=`<h3>${esc(p.n)}</h3><p>Nog niet ingediend. Herinneringen gaan automatisch uit op 15 en 25 maart.</p>`;return}
+  const all=[...new Set([...Object.keys(p.opdr),...p.nieuw])];
+  const wish=k=>{const now=p.opdr[k]||0,w=p.wens[k];return w==="meer"?now+4:w==="minder"?Math.max(now-4,0):w==="niet"?0:p.nieuw.includes(k)?4:now};
+  const mx=Math.max(p.noemer,...all.map(wish));
+  $("#ovDetail").innerHTML=`<div style="display:flex;gap:10px;align-items:baseline;flex-wrap:wrap"><h3>${esc(p.n)}</h3><span class="hint">standplaats ${esc(p.stand)} · wil opdracht ${esc(p.richt)} · ${p.min}–${p.max}/${p.noemer}</span></div>
+   <div class="two">
+    <div class="cmpbars"><div class="hint">Grijs = huidige lestijden · groen = richting van de wens (indicatief, ±4)</div>
+     ${all.map(k=>`<div class="r"><span>${dot(k)} ${esc(k)}</span><div class="bars"><i class="now" style="width:${(p.opdr[k]||0)/mx*100}%"></i><i class="wish" style="width:${wish(k)/mx*100}%"></i></div><span>${p.opdr[k]||0}/${p.noemer} ${p.wens[k]?`<span class="arrow ${WL[p.wens[k]][0]}">${WL[p.wens[k]][1]}</span>`:`<span class="arrow new">nieuw</span>`}</span></div>`).join("")}
+    </div>
+    <div style="display:flex;flex-direction:column;gap:10px">
+     <div class="scroll"><table class="mini"><tr><th></th>${DAGEN.map(d=>`<th>${d}</th>`).join("")}</tr>${DEEL.map(([k,l])=>`<tr><th>${l}</th>${DAGEN.map(d=>{const id=d+"-"+k;return NA.has(id)?`<td style="opacity:.3">–</td>`:p.niet.includes(id)?`<td class="x">✕</td>`:p.graag.includes(id)?`<td class="g">✓</td>`:`<td></td>`}).join("")}</tr>`).join("")}</table></div>
+     <dl class="kv"><dt>Ideale modules</dt><dd>${esc(p.ideaal)||"–"}</dd><dt>Online</dt><dd>${esc(p.online)}</dd><dt>Verlofstelsel</dt><dd>${esc(p.verlof)||"–"}</dd><dt>Andere taken</dt><dd>${p.taak.map(esc).join(", ")||"–"}</dd><dt>Toelichting</dt><dd>${esc(p.opm)||"–"}</dd></dl>
+    </div>
+   </div>`;
+}
+["#oCluster","#oWens","#oMoment"].forEach(s=>$(s).addEventListener("change",renderOv));$("#oQ").addEventListener("input",renderOv);
+
+// ---------- 4. spec ----------
+const SPEC=[
+ ["Naam, e-mail","Automatisch","Crescendo-account"],
+ ["Standplaats","Automatisch","Personeelsdatabank"],
+ ["Huidige opdracht per opleiding (lestijden, noemer)","Automatisch","Personeelsdatabank / onboarding (opleidingen en modules)"],
+ ["Beschikbaarheid","Raster 6 dagen × VM/NM/AV (za alleen VM)","Per blok: graag · kan · niet"],
+ ["Reden 'niet'","Tekst","Waarschuwing bij meer dan 3 blokken 'niet'"],
+ ["Online lesgeven","Keuze","Graag · kan · liever niet"],
+ ["Voorkeur uurrooster","Keuze","Geen voorkeur · geen 8 lesuren op één dag · 2 halve voorbereidingsdagen · zo weinig mogelijk dagen"],
+ ["Campussen en lesplaatsen","Schaal per campus","Heel graag · oké · liever niet"],
+ ["Richting opdracht","Keuze","Uitbreiden · behouden · verminderen"],
+ ["Minimum, maximum","Getal","In lestijden van het eigen ambt"],
+ ["Verlofstelsel","Tekst","Stelsel, periode, uren"],
+ ["Huidige opleidingen","Schaal per opleiding","Meer · behouden · minder · stoppen"],
+ ["Andere opleidingen","Herhalend: opleiding + schaal","Heel graag · kan (diploma) · liever niet; zelfde lijst als onboarding"],
+ ["Ideale modules","Tekst",""],
+ ["Andere opdrachten","Schaal per taak","Opleidingscoördinator · trajectbegeleider · zorgcoach · TB · ander ondersteunend team"],
+ ["Clusterspecifieke vragen","Voorwaardelijk blok","Enkel zichtbaar als de collega een opdracht heeft in die cluster"],
+ ["Toelichting","Tekst",""],
+ ["Schooljaar, status, ingediend op","Automatisch","Status: nog niet · ingediend"]];
+$("#specTbl").innerHTML=`<tr><th>Veld</th><th>Type</th><th>Waarden / bron</th></tr>`+SPEC.map(r=>`<tr>${r.map(x=>`<td>${esc(x)}</td>`).join("")}</tr>`).join("");
+
+// ---------- routing ----------
+const V=["vergelijking","formulier","overzicht","specificatie"];
+function route(){const h=(location.hash||"#vergelijking").slice(1),v=V.includes(h)?h:"vergelijking";
+  V.forEach(x=>$("#v-"+x).hidden=x!==v);
+  $$("nav.tabs a").forEach(a=>a.getAttribute("href")==="#"+v?a.setAttribute("aria-current","page"):a.removeAttribute("aria-current"));
+  if(v==="overzicht")renderOv();window.scrollTo(0,0)}
+renderAvail();renderOpl();
+window.addEventListener("hashchange",route);route();
+})();
+</script>
