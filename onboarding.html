@@ -1,0 +1,595 @@
+<title>Onboarding Crescendo CVO</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700&display=swap">
+<style>
+/* Layout: intranet-app met tabbalk; proceskaart in vier fasen naast elkaar, op gsm onder elkaar. */
+:root{
+  --bg:#f7f8f6; --surface:#ffffff; --surface-2:#eef0ed; --line:#dfe3df;
+  --fg:#1b1f1e; --fg-soft:#5b6362; --title:#4d5554;
+  --accent:#4d5554; --accent-fg:#ffffff;
+  --hex:#ced7d2; --roze:#dacfd3; --paars:#c8c6c7; --rood:#b91818;
+  --ok:#2f7a4f; --ok-bg:#dff0e5; --warn:#8a5a00; --warn-bg:#fbefd1; --info:#245d86; --info-bg:#dcebf6; --neutral-bg:#ebedeb; --bad:#9b2c2c; --bad-bg:#f6dddd;
+  --font:'Calibri','Segoe UI','Open Sans',system-ui,sans-serif;
+  --r:8px;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#171a19; --surface:#202423; --surface-2:#2a2f2d; --line:#363c3a;
+  --fg:#eceeed; --fg-soft:#a8b0ae; --title:#d7dcda; --accent:#ced7d2; --accent-fg:#171a19;
+  --hex:#55635c; --roze:#5a4a50; --paars:#4c464a; --rood:#ff8a80;
+  --ok:#8fd6a8; --ok-bg:#1f3a2a; --warn:#f2c86b; --warn-bg:#3d3017; --info:#9ccbef; --info-bg:#1c3446; --neutral-bg:#2e3331; --bad:#f2a3a3; --bad-bg:#432222;
+  color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#171a19; --surface:#202423; --surface-2:#2a2f2d; --line:#363c3a;
+  --fg:#eceeed; --fg-soft:#a8b0ae; --title:#d7dcda; --accent:#ced7d2; --accent-fg:#171a19;
+  --hex:#55635c; --roze:#5a4a50; --paars:#4c464a; --rood:#ff8a80;
+  --ok:#8fd6a8; --ok-bg:#1f3a2a; --warn:#f2c86b; --warn-bg:#3d3017; --info:#9ccbef; --info-bg:#1c3446; --neutral-bg:#2e3331; --bad:#f2a3a3; --bad-bg:#432222;
+  color-scheme:dark}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{background:var(--bg);color:var(--fg);font-family:var(--font);font-size:15px;line-height:1.5}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--surface)}
+.wrap{max-width:1240px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+h1,h2,h3{color:var(--title);text-wrap:balance;margin:0;line-height:1.2}
+h2{font-size:1.45rem} h3{font-size:1.05rem}
+p{margin:0}
+header.top{background:var(--surface);border-bottom:1px solid var(--line);position:sticky;top:env(safe-area-inset-top,0px);z-index:5}
+.brand{display:flex;align-items:center;gap:8px 12px;padding-block:12px 4px;flex-wrap:wrap}
+.brand svg{width:30px;height:34px;flex:none}
+.brand b{font-size:1.05rem;color:var(--title)}
+.brand span{color:var(--fg-soft);font-size:.85rem}
+.demo{margin-left:auto;font-size:.75rem;text-transform:uppercase;letter-spacing:.08em;background:var(--roze);color:var(--fg);padding:3px 9px;border-radius:999px;white-space:nowrap}
+nav.tabs{display:flex;gap:2px;overflow-x:auto;scrollbar-width:none}
+nav.tabs a{padding:10px 14px;text-decoration:none;color:var(--fg-soft);border-bottom:3px solid transparent;white-space:nowrap;font-weight:600}
+nav.tabs a[aria-current="page"]{color:var(--title);border-color:var(--rood)}
+:focus-visible{outline:2px solid var(--info);outline-offset:2px}
+main{padding-block:24px 64px}
+.intro{display:flex;flex-direction:column;gap:6px;margin-bottom:20px;max-width:78ch}
+.intro p{color:var(--fg-soft)}
+.who{font-size:.75rem;text-transform:uppercase;letter-spacing:.1em;color:var(--fg-soft);font-weight:700}
+button{font:inherit;cursor:pointer;border-radius:var(--r);border:1px solid var(--line);background:var(--surface);color:var(--fg);padding:8px 14px;font-weight:600}
+button.primary{background:var(--accent);color:var(--accent-fg);border-color:var(--accent)}
+button.ghost{background:transparent}
+button.small{padding:4px 10px;font-size:.85rem}
+label{font-weight:600;font-size:.92rem}
+.hint{font-weight:400;color:var(--fg-soft);font-size:.82rem}
+input[type=text],input[type=email],input[type=date],input[type=number],select,textarea{font:inherit;width:100%;padding:8px 10px;border:1px solid var(--line);border-radius:6px;background:var(--surface);color:var(--fg)}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:999px;overflow:hidden;background:var(--surface)}
+.seg button{border:0;border-radius:0;padding:6px 14px;font-size:.88rem}
+.seg button[aria-pressed="true"]{background:var(--accent);color:var(--accent-fg)}
+.pill{display:inline-block;font-size:.74rem;font-weight:700;padding:2px 8px;border-radius:999px;white-space:nowrap}
+.b-bestaand{background:var(--neutral-bg);color:var(--fg-soft)}
+.b-aangepast{background:var(--info-bg);color:var(--info)}
+.b-nieuw{background:var(--ok-bg);color:var(--ok)}
+.b-knelpunt{background:var(--bad-bg);color:var(--bad)}
+.tag{display:inline-flex;align-items:center;font-size:.76rem;padding:2px 8px;border-radius:999px;background:var(--surface-2);white-space:nowrap;border:1px solid var(--line)}
+ul.hex{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:6px}
+ul.hex li{padding-left:20px;position:relative}
+ul.hex li::before{content:"";position:absolute;left:0;top:.38em;width:11px;height:12px;background:var(--hex);clip-path:polygon(50% 0,100% 25%,100% 75%,50% 100%,0 75%,0 25%)}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:18px;display:flex;flex-direction:column;gap:12px;min-width:0}
+.two{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:20px;align-items:start}
+@media (max-width:900px){.two{grid-template-columns:1fr}}
+table.simple{border-collapse:collapse;width:100%;font-size:.88rem}
+table.simple th{text-align:left;font-size:.74rem;text-transform:uppercase;letter-spacing:.06em;color:var(--fg-soft);padding:6px 8px;border-bottom:1px solid var(--line)}
+table.simple td{padding:7px 8px;border-bottom:1px solid var(--line);vertical-align:top}
+.scroll{overflow-x:auto}
+.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(20px + env(safe-area-inset-bottom,0px));background:var(--accent);color:var(--accent-fg);padding:10px 18px;border-radius:999px;z-index:30;font-weight:600;max-width:calc(100% - 32px)}
+
+/* ---------- proceskaart ---------- */
+.mapbar{display:flex;gap:10px 18px;flex-wrap:wrap;align-items:center;margin-bottom:14px}
+.mapbar .lbl{font-size:.75rem;text-transform:uppercase;letter-spacing:.08em;color:var(--fg-soft);font-weight:700}
+.legend{display:flex;gap:6px;flex-wrap:wrap;margin-left:auto}
+.phases{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;align-items:start}
+@media (max-width:1000px){.phases{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:600px){.phases{grid-template-columns:1fr}}
+.phase{display:flex;flex-direction:column;gap:10px;min-width:0}
+.phase-h{background:var(--accent);color:var(--accent-fg);padding:10px 14px 16px;clip-path:polygon(0 0,100% 0,100% 78%,0 100%);border-radius:var(--r) var(--r) 0 0}
+.phase-h b{display:block;font-size:1rem}
+.phase-h span{font-size:.8rem;opacity:.85}
+.step{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:12px;display:flex;flex-direction:column;gap:7px;text-align:left;font-weight:400;width:100%}
+.step:hover{border-color:var(--fg-soft)}
+.step[aria-expanded="true"]{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent)}
+.step.dim{opacity:.32}
+.step .t{font-weight:700;color:var(--fg)}
+.step .meta{display:flex;gap:5px;flex-wrap:wrap;align-items:center}
+.auto{font-size:.74rem;font-weight:700;color:var(--fg-soft);display:inline-flex;align-items:center;gap:4px}
+.auto i{width:8px;height:8px;border-radius:50%;background:var(--ok);display:inline-block}
+.auto.man i{background:var(--warn)}
+.par{font-size:.74rem;color:var(--fg-soft);border-left:2px solid var(--hex);padding-left:8px;margin-top:-2px}
+.detail{margin-top:16px;border-left:4px solid var(--accent)}
+.detail .cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px}
+.detail h4{margin:0 0 4px;font-size:.78rem;text-transform:uppercase;letter-spacing:.08em;color:var(--fg-soft)}
+
+/* ---------- formulier ---------- */
+.formgrid{display:grid;grid-template-columns:minmax(0,1fr) 310px;gap:24px;align-items:start}
+@media (max-width:900px){.formgrid{grid-template-columns:1fr}}
+form.start{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);overflow:hidden}
+.fhead{background:var(--accent);color:var(--accent-fg);padding:18px 24px 28px;clip-path:polygon(0 0,100% 0,100% 82%,0 100%);display:flex;flex-direction:column;gap:10px}
+.fhead h2{color:var(--accent-fg)}
+.fhead .seg{align-self:flex-start}
+.pull{margin:0 24px;padding:12px 14px;border-radius:var(--r);background:var(--ok-bg);display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.pull select{flex:1 1 220px;width:auto}
+fieldset{border:0;border-top:1px solid var(--line);margin:0;padding:20px 24px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px 18px}
+fieldset.first{border-top:0}
+legend{float:left;width:100%;font-weight:700;color:var(--title);display:flex;align-items:center;gap:8px;margin-bottom:4px;grid-column:1/-1}
+legend .n{display:inline-grid;place-items:center;width:24px;height:27px;background:var(--hex);color:var(--fg);clip-path:polygon(50% 0,100% 25%,100% 75%,50% 100%,0 75%,0 25%);font-size:.8rem}
+legend .pill{margin-left:4px}
+.f{display:flex;flex-direction:column;gap:4px;min-width:0}
+.f.full{grid-column:1/-1}
+@media (max-width:600px){fieldset{grid-template-columns:1fr}}
+.yn{display:flex;gap:6px}
+.yn label{font-weight:400;display:inline-flex;gap:6px;align-items:center;border:1px solid var(--line);border-radius:999px;padding:4px 12px;cursor:pointer;font-size:.88rem}
+.yn label:has(input:checked){background:var(--hex);border-color:transparent}
+.yn input{margin:0;accent-color:var(--accent)}
+table.opdr{border-collapse:collapse;width:100%;min-width:560px;font-size:.88rem}
+table.opdr th{text-align:left;font-size:.74rem;text-transform:uppercase;letter-spacing:.06em;color:var(--fg-soft);padding:4px 6px}
+table.opdr td{padding:4px 6px;vertical-align:top}
+table.opdr input,table.opdr select{padding:6px 8px;font-size:.88rem}
+table.opdr td.num{width:90px}
+.total{display:flex;gap:16px;align-items:center;flex-wrap:wrap;margin-top:8px;font-size:.9rem}
+.total b{font-variant-numeric:tabular-nums;font-size:1.05rem}
+.meter{flex:1 1 160px;height:8px;border-radius:4px;background:var(--surface-2);overflow:hidden;min-width:120px}
+.meter i{display:block;height:100%;background:var(--ok)}
+.file{display:flex;align-items:center;gap:8px;border:1px solid var(--line);border-radius:6px;padding:8px 10px;font-size:.88rem;background:var(--surface-2)}
+.file .src{margin-left:auto;font-size:.75rem;color:var(--ok);font-weight:700}
+.formfoot{padding:16px 24px;border-top:1px solid var(--line);display:flex;gap:12px;align-items:center;flex-wrap:wrap;background:var(--surface-2)}
+aside.note{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:16px;display:flex;flex-direction:column;gap:10px;font-size:.9rem;position:sticky;top:110px}
+.ok-box{border-radius:var(--r);background:var(--ok-bg);padding:14px 16px;display:flex;flex-direction:column;gap:8px}
+.chg{display:flex;flex-direction:column;gap:8px}
+.chg div{display:flex;gap:8px;align-items:baseline}
+
+/* ---------- nabootsing personeelsdatabank ---------- */
+.formgrid>*,form.modal>*,.add>*{min-width:0}
+form.modal{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:26px 26px 20px;display:flex;flex-direction:column;gap:14px;box-shadow:0 10px 30px rgba(0,0,0,.08);max-width:640px;width:100%}
+.mhead{display:flex;gap:12px;align-items:flex-start}
+.mhead h2{color:var(--fg);font-weight:600;font-size:1.4rem}
+.msub{color:var(--fg-soft);margin-top:4px}
+.mx{margin-left:auto;color:var(--fg-soft);font-size:1.1rem}
+.msec{color:var(--fg-soft);font-size:1.02rem;margin-top:10px}
+.mgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px 16px}
+@media (max-width:600px){.mgrid{grid-template-columns:1fr}}
+form.modal label{font-weight:500;font-size:.95rem;color:var(--fg)}
+form.modal input[type=text],form.modal input[type=email],form.modal input[type=date],form.modal input[type=number],form.modal select{border-radius:8px;padding:10px 12px}
+.add{border-left:4px solid var(--ok);background:color-mix(in srgb,var(--ok-bg) 45%,transparent);border-radius:0 10px 10px 0;padding:10px 14px 14px;display:flex;flex-direction:column;gap:10px;margin-left:-14px}
+.add.soft{border-left-color:var(--info);background:color-mix(in srgb,var(--info-bg) 45%,transparent)}
+.add>.pill{align-self:flex-start}
+.add .msec{margin-top:0}
+.pullrow{display:flex;gap:8px;flex-wrap:wrap}
+.pullrow select{flex:1 1 220px;width:auto}
+.mbtn{background:var(--surface);border:1px solid var(--line);border-radius:8px;font-weight:600}
+.chk{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.mfoot{display:flex;gap:10px;align-items:center;justify-content:flex-end;flex-wrap:wrap;margin-top:10px}
+.mfoot .hint{margin-right:auto}
+.mlink{border:0;background:transparent;font-weight:500}
+.mprimary{background:var(--fg);color:var(--bg);border:1px solid var(--fg);border-radius:10px;padding:9px 18px;font-weight:600;text-decoration:none;display:inline-block;white-space:nowrap}
+.listapp{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:24px}
+.lhead{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:16px}
+.ltitle{color:var(--fg);font-weight:500;font-size:1.7rem}
+.lactions{margin-left:auto;display:flex;gap:10px;flex-wrap:wrap}
+.lactions input{font:inherit;padding:9px 12px;border:1px solid var(--line);border-radius:10px;background:var(--surface);color:var(--fg);min-width:0;width:240px;max-width:100%}
+table.ltable{border-collapse:collapse;width:100%;min-width:960px;font-size:.92rem}
+table.ltable th{text-align:left;font-weight:500;color:var(--fg);padding:10px 8px;border-bottom:1px solid var(--line);white-space:nowrap}
+table.ltable th.new{background:var(--ok-bg)}
+table.ltable td{padding:12px 8px;border-bottom:1px solid var(--line);vertical-align:middle}
+table.ltable td.new{background:color-mix(in srgb,var(--ok-bg) 40%,transparent);white-space:nowrap}
+.lname{color:var(--fg-soft)}
+.lstatus{font-size:.85rem;padding:3px 10px;border-radius:6px;background:var(--info-bg);color:var(--info);white-space:nowrap}
+.lstatus.ok{background:var(--ok-bg);color:var(--ok)} .lstatus.w{background:var(--warn-bg);color:var(--warn)}
+.lact{display:flex;gap:14px;white-space:nowrap}
+.lact button{border:0;background:transparent;padding:0;font-weight:500}
+.lact button[disabled]{color:var(--fg-soft);cursor:default}
+.minibar{display:flex;gap:3px}
+.minibar i{width:12px;height:12px;border-radius:2px;background:var(--surface-2);border:1px solid var(--line)}
+.minibar i.done{background:var(--ok);border-color:var(--ok)} .minibar i.late{background:var(--bad);border-color:var(--bad)} .minibar i.wait{background:var(--warn-bg);border-color:var(--warn)}
+tr.expand td{background:var(--surface-2)}
+.checklist{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:8px 18px;padding:6px 4px}
+.checklist div{display:flex;gap:8px;align-items:center;font-size:.88rem}
+.checklist .who2{color:var(--fg-soft);font-size:.78rem}
+/* ---------- opvolging ---------- */
+table.track{border-collapse:collapse;width:100%;min-width:900px;font-size:.88rem;background:var(--surface)}
+table.track th{font-size:.7rem;text-transform:uppercase;letter-spacing:.05em;color:var(--fg-soft);padding:8px 6px;border-bottom:1px solid var(--line);background:var(--surface-2);text-align:center;vertical-align:bottom}
+table.track th:first-child,table.track td:first-child{text-align:left;padding-left:12px}
+table.track td{padding:10px 6px;border-bottom:1px solid var(--line);text-align:center;vertical-align:middle}
+.st{display:inline-grid;place-items:center;width:24px;height:27px;clip-path:polygon(50% 0,100% 25%,100% 75%,50% 100%,0 75%,0 25%);font-size:.75rem;font-weight:700}
+.st.done{background:var(--ok);color:var(--surface)}
+.st.wait{background:var(--warn-bg);color:var(--warn)}
+.st.late{background:var(--bad);color:var(--surface)}
+.st.na{background:var(--surface-2);color:var(--fg-soft)}
+.prog{font-variant-numeric:tabular-nums;font-weight:700}
+.tracklegend{display:flex;gap:14px;flex-wrap:wrap;font-size:.82rem;color:var(--fg-soft);margin-top:10px;align-items:center}
+.tracklegend span{display:inline-flex;gap:6px;align-items:center}
+.callout{border-left:4px solid var(--rood);background:var(--surface);padding:12px 16px;border-radius:0 var(--r) var(--r) 0;font-size:.92rem;display:flex;flex-direction:column;gap:6px}
+</style>
+
+<header class="top">
+  <div class="wrap">
+    <div class="brand">
+      <svg viewBox="0 0 100 115" aria-hidden="true"><polygon points="50,2 95,28 95,87 50,113 5,87 5,28" fill="#4a4247"/><polygon points="50,2 95,28 50,54 5,28" fill="#a28790"/><polygon points="50,54 95,28 95,87 50,113" fill="#889a91"/></svg>
+      <div><b>Crescendo CVO</b><br><span>Personeelsdatabank · Onboarding</span></div>
+      <span class="demo">Prototype · voorbeelddata</span>
+    </div>
+    <nav class="tabs" aria-label="Schermen">
+      <a href="#proces">1 · Het proces</a>
+      <a href="#startformulier">2 · Nieuwe onboarding</a>
+      <a href="#opvolging">3 · Overzicht</a>
+      <a href="#specificatie">4 · Wijzigingen voor ICT</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+
+<!-- ================= 1. PROCES ================= -->
+<section id="v-proces" hidden>
+  <div class="intro">
+    <span class="who">Visual voor iedereen · van aanwerving tot eerste lesdag</span>
+    <h2>Hoe verloopt de onboarding van een nieuwe collega?</h2>
+    <p>Eén startformulier van de adjunct zet alles in gang. Daarna loopt het meeste automatisch en tegelijk. Klik op een stap voor wie wat doet. Kies een rol om enkel de stappen van die persoon te zien.</p>
+  </div>
+  <div class="mapbar">
+    <div class="seg" role="group" aria-label="Situatie">
+      <button data-mode="nieuw" aria-pressed="true">Nieuwe collega</button>
+      <button data-mode="her" aria-pressed="false">Heractivatie</button>
+    </div>
+    <span class="lbl">Rol</span>
+    <select id="roleSel" style="width:auto"></select>
+    <div class="legend">
+      <span class="pill b-bestaand">bestaat al</span><span class="pill b-aangepast">aangepast</span><span class="pill b-nieuw">nieuw</span><span class="pill b-knelpunt">knelpunt nu</span>
+    </div>
+  </div>
+  <div class="phases" id="phases"></div>
+  <div class="panel detail" id="detail"></div>
+</section>
+
+<!-- ================= 2. STARTFORMULIER ================= -->
+<section id="v-startformulier" hidden>
+  <div class="intro">
+    <span class="who">Personeelsdatabank · knop "+ Nieuwe onboarding"</span>
+    <h2>Het bestaande venster, aangevuld</h2>
+    <p>Dit is het venster dat de adjunct vandaag al gebruikt, met dezelfde secties en velden. Wat erbij komt, staat gemarkeerd met een groene rand. Probeer "Ophalen uit wervingsreserve": het venster vult zich dan grotendeels zelf in.</p>
+  </div>
+  <div class="formgrid">
+    <form class="modal" id="startForm" novalidate>
+      <div class="mhead">
+        <div><h2 id="mTitle">Nieuwe onboarding starten</h2>
+        <p class="msub">Het nieuwe personeelslid krijgt een welkom-link om zelf de rest van de persoonlijke gegevens in te vullen.</p></div>
+        <span class="mx" aria-hidden="true">✕</span>
+      </div>
+
+      <div class="add" id="pullBox">
+        <span class="pill b-nieuw">nieuw</span>
+        <div class="pullrow"><select id="pullSel" aria-label="Kandidaat uit wervingsreserve"></select><button type="button" class="mbtn" id="pullBtn">Ophalen uit wervingsreserve</button></div>
+      </div>
+
+      <div class="add">
+        <span class="pill b-nieuw">nieuw</span>
+        <div class="msec">Soort onboarding</div>
+        <div class="seg" role="group" aria-label="Soort onboarding">
+          <button type="button" data-ftype="nieuw" aria-pressed="true">Nieuwe collega</button>
+          <button type="button" data-ftype="her" aria-pressed="false">Heractivatie</button>
+        </div>
+      </div>
+
+      <div class="msec">Basisgegevens</div>
+      <div class="mgrid">
+        <div class="f"><label for="sVoornaam">Voornaam *</label><input id="sVoornaam" type="text"></div>
+        <div class="f"><label for="sNaam">Achternaam *</label><input id="sNaam" type="text"></div>
+        <div class="f full"><label for="sMail">Persoonlijk email *</label><input id="sMail" type="email"></div>
+      </div>
+
+      <div class="msec">Functie</div>
+      <div class="f"><label for="sFunctie">Functie *</label><select id="sFunctie"><option value="">—</option><option>Lesgever</option><option>Administratief medewerker</option><option>ICT-medewerker</option><option>Coördinator</option></select></div>
+
+      <div class="add">
+        <span class="pill b-nieuw">nieuw</span>
+        <div class="msec">Opdracht</div>
+        <div class="mgrid">
+          <div class="f"><label for="sStart">Startdatum *</label><input id="sStart" type="date"></div>
+          <div class="f"><label for="sEind">Einddatum <span class="hint">· leeg = onbepaald</span></label><input id="sEind" type="date"></div>
+          <div class="f"><label for="sAard">Aard van de opdracht</label><select id="sAard"><option>Tijdelijk in vacante betrekking</option><option>Vervanging</option><option>Bijkomende opdracht</option></select></div>
+          <div class="f"><label for="sNoemer">Voltijds = … lestijden</label><input id="sNoemer" type="number" min="1" value="24"></div>
+          <div class="f full">
+            <label>Opleidingen en modules</label>
+            <div class="scroll"><table class="opdr" id="opdrTbl"></table></div>
+            <div><button type="button" class="mbtn small" id="addRow">+ Opleiding toevoegen</button></div>
+            <div class="total"><span>Totaal <b id="totFrac">0/24</b></span><span><b id="totPct">0%</b> opdracht</span><div class="meter"><i id="totBar" style="width:0"></i></div></div>
+          </div>
+          <div class="f full"><label class="chk"><input type="checkbox" id="sAthena"> Lesmomenten staan in Athenasoft <span class="hint">· voorstel, vervangt het roosterdocument</span></label></div>
+        </div>
+      </div>
+
+      <div class="msec">Evaluatoren</div>
+      <div class="f"><label for="sEval1">Eerste evaluator *</label><select id="sEval1"></select></div>
+      <div class="f"><label for="sEval2">Tweede evaluator *</label><select id="sEval2"></select></div>
+
+      <div class="msec">Onderwijs-ervaring</div>
+      <div class="f"><label for="sPed">Pedagogische bekwaamheid *</label><select id="sPed"><option value="">—</option><option>Ja</option><option>Nee</option></select></div>
+      <div class="f"><label for="sOnd">Ervaring in onderwijs *</label><select id="sOnd"><option value="">—</option><option>Ja</option><option>Nee</option></select></div>
+      <div class="f"><label for="sVwo">Ervaring volwassenenonderwijs *</label><select id="sVwo"><option value="">—</option><option>Ja</option><option>Nee</option></select></div>
+      <div class="add soft">
+        <span class="pill b-aangepast">aangepast</span>
+        <div class="f"><label for="sAb">Aanvangsbegeleiding opstarten *</label><select id="sAb"><option value="">—</option><option>Ja</option><option>Nee</option></select><span class="hint" id="abHint">Er verschijnt een voorstel zodra startdatum, einddatum of ervaring ingevuld is.</span></div>
+      </div>
+
+      <div class="add" id="fsBijlagen">
+        <span class="pill b-nieuw">nieuw</span>
+        <div class="msec">Bijlagen</div>
+        <div class="mgrid"><div class="f" id="cvBox"></div><div class="f" id="motBox"></div></div>
+      </div>
+
+      <div class="mfoot">
+        <span class="hint" id="formErr" role="alert"></span>
+        <button type="button" class="mlink" id="cancelBtn">Annuleren</button>
+        <button type="submit" class="mprimary">Start</button>
+      </div>
+    </form>
+
+    <aside class="note" id="formAside">
+      <h3>Wat verandert er in dit venster?</h3>
+      <div class="chg">
+        <div><span class="pill b-nieuw">nieuw</span><span>Ophalen uit wervingsreserve, met CV en motivatiebrief</span></div>
+        <div><span class="pill b-nieuw">nieuw</span><span>Keuze nieuwe collega of heractivatie</span></div>
+        <div><span class="pill b-nieuw">nieuw</span><span>Sectie Opdracht: meerdere opleidingen, modules, lestijden en opdrachtpercentage</span></div>
+        <div><span class="pill b-aangepast">aangepast</span><span>Aanvangsbegeleiding: voorstel op basis van duur en ervaring</span></div>
+        <div><span class="pill b-bestaand">bestaat al</span><span>Basisgegevens, functie, evaluatoren, onderwijs-ervaring: ongewijzigd</span></div>
+      </div>
+      <p class="hint">De welkom-link blijft: het nieuwe personeelslid vult zelf de rest van de persoonlijke gegevens aan.</p>
+    </aside>
+  </div>
+</section>
+
+<!-- ================= 3. OPVOLGING ================= -->
+<section id="v-opvolging" hidden>
+  <div class="intro">
+    <span class="who">Personeelsdatabank · overzicht Onboarding</span>
+    <h2>Het bestaande overzicht, met voortgang per collega</h2>
+    <p>Dezelfde lijst als nu, met naam, email, status en acties. Nieuw zijn de startdatum, een voortgangsbalk en bij "Bekijken" een checklist van alle stappen. Zo hoeft niemand nog mails of losse documenten na te lopen.</p>
+  </div>
+  <div class="listapp">
+    <div class="lhead">
+      <h2 class="ltitle">Onboarding</h2>
+      <div class="lactions"><input type="search" id="tq" placeholder="Zoek op naam of email..." aria-label="Zoek op naam of email"><a class="mprimary" href="#startformulier">+ Nieuwe onboarding</a></div>
+    </div>
+    <div class="scroll"><table class="ltable" id="track"></table></div>
+  </div>
+  <div class="tracklegend">
+    <span class="pill b-nieuw">nieuw</span><span>kolommen Start en Voortgang, en de checklist onder Bekijken</span>
+    <span><i class="st done">✓</i>klaar</span><span><i class="st wait">…</i>loopt</span><span><i class="st late">!</i>langer dan 5 werkdagen open</span>
+  </div>
+</section>
+<section id="v-specificatie" hidden>
+  <div class="intro">
+    <span class="who">Voor de collega ICT en Team Personeel</span>
+    <h2>Wat moet er aangepast worden in de personeelsdatabank?</h2>
+    <p>Het bestaande venster "Nieuwe onboarding starten" en het overzicht Onboarding blijven de basis. Er komen velden bij; er verdwijnt niets.</p>
+  </div>
+  <div style="display:flex;flex-direction:column;gap:20px">
+    <div class="panel">
+      <h3>Venster "Nieuwe onboarding starten": velden</h3>
+      <div class="scroll"><table class="simple" id="fieldTbl"></table></div>
+    </div>
+    <div class="two">
+      <div class="panel">
+        <h3>Aanpassingen aan de flow</h3>
+        <ul class="hex">
+          <li><b>Koppeling met de wervingsreserve.</b> Status "Aangeworven" opent het startformulier met de gegevens al ingevuld. Bijlagen worden gekopieerd naar het personeelsdossier.</li>
+          <li><b>Eén mail met alle documenten.</b> Diploma, uittreksel strafregister, Penta en anciënniteit komen in één mail met een checklist en één plek om op te laden. Nu volgen er nog losse mails achteraf.</li>
+          <li><b>Herinneringen.</b> Staat een document na 5 werkdagen nog open, dan krijgt de nieuwe collega een herinnering. Na 10 werkdagen krijgt Team Personeel een melding.</li>
+          <li><b>Opdracht naar de betrokken mensen.</b> De melding aan coördinator(en) en campusbeheerder vermeldt opleidingen, modules en campus uit het formulier.</li>
+          <li><b>Heractivatie via het formulier.</b> Zo zijn opdracht en opleidingen ook bij een terugkerende collega actueel. De bestaande mails naar Team Aanvangsbegeleiding en Helpdesk ICT blijven.</li>
+          <li><b>Overzicht Onboarding uitbreiden.</b> Twee kolommen erbij (Start en Voortgang) en onder Bekijken een checklist van alle stappen (scherm 3). De bestaande acties Bewerken, Welkom-link en Verwijderen blijven.</li><li><b>Statussen.</b> Nu zien we "review". Voorstel voor de volledige reeks: welkom-link verstuurd → review → documenten → afgerond, plus heractivatie. Na te gaan welke statussen al bestaan.</li>
+        </ul>
+      </div>
+      <div class="panel">
+        <h3>Af te spreken met Team Personeel</h3>
+        <ul class="hex">
+          <li>Welke info uit het personeelsdossier-formulier is echt nodig? Kunnen we velden schrappen die al in het startformulier staan?</li>
+          <li>Welke extra mails stuurt Team Personeel nu na de onboarding? Die horen thuis in de ene documentenmail of in de checklist.</li>
+          <li>Kan de adjunct de lesopdracht meteen in Athenasoft ingeven, zodat het roosterdocument wegvalt?</li>
+          <li>Wat is de noemer van een voltijdse opdracht per ambt (lesgever, administratief, …)?</li>
+          <li>Vanaf welke duur starten we aanvangsbegeleiding standaard op? Het prototype stelt nu "ja" voor bij een opdracht van meer dan 3 maanden zonder ervaring in onderwijs.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="callout">
+      <b>Samenhang met de andere prototypes</b>
+      <p>Wervingsreserve → <b>status Aangeworven</b> → startformulier onboarding → opvolgoverzicht. De opleidingen en modules uit het startformulier kunnen later ook de basis vormen voor de desiderata.</p>
+    </div>
+  </div>
+</section>
+</main>
+<div class="toast" id="toast" hidden role="status"></div>
+
+<script>
+(()=>{
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+const esc=s=>String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const TODAY=new Date("2026-11-03");
+const fmt=d=>d?new Date(d).toLocaleDateString("nl-BE",{day:"numeric",month:"short"}):"–";
+function toast(t){const el=$("#toast");el.textContent=t;el.hidden=false;clearTimeout(toast.t);toast.t=setTimeout(()=>el.hidden=true,2600)}
+
+// ---------------- proces ----------------
+const ROLES=["Iedereen","Adjunct-directeur","Nieuwe collega","Team Personeel","Helpdesk ICT","Coördinator / campusbeheerder","Team Aanvangsbegeleiding","Automatisch (flow)"];
+const PHASES={
+ nieuw:[
+  {k:"A",t:"Aanwerving",s:"adjunct · dag 0"},
+  {k:"B",t:"Automatisch, tegelijk",s:"flow · binnen enkele minuten"},
+  {k:"C",t:"Personeelsdossier",s:"eerste week"},
+  {k:"D",t:"Start en begeleiding",s:"eerste lesdag en verder"}],
+ her:[
+  {k:"A",t:"Melding",s:"adjunct"},
+  {k:"B",t:"Heractivatie",s:"Team Personeel"},
+  {k:"C",t:"Automatisch",s:"flow"},
+  {k:"D",t:"Start",s:"eerste lesdag"}]};
+const STEPS={
+ nieuw:[
+  {p:"A",t:"Kandidaat aanwerven",who:["Adjunct-directeur"],auto:false,b:"aangepast",d:"Na het gesprek zet de adjunct de kandidaat in de wervingsreserve op 'Aangeworven'.",nu:"Kandidaat komt via mail, NT2-lijst of eigen netwerk; geen vaste plek.",straks:"Status in de wervingsreserve opent meteen het startformulier."},
+  {p:"A",t:"Startformulier invullen",who:["Adjunct-directeur"],auto:false,b:"aangepast",d:"Kort formulier in de personeelsdatabank: persoon, opdracht over één of meer opleidingen, evaluatoren, profiel, bijlagen.",nu:"Eén opleiding per formulier; geen opdrachtpercentage, geen CV of motivatiebrief.",straks:"Gegevens uit de wervingsreserve worden overgenomen. Meerdere opleidingen met modules en lestijden."},
+  {p:"A",t:"Lesopdracht in Athenasoft",who:["Adjunct-directeur"],auto:false,b:"knelpunt",d:"De lesmomenten worden ingepland.",nu:"Sommige adjuncten vullen het roosterdocument in, andere niet.",straks:"Voorstel: de adjunct plant meteen in Athenasoft. Het roosterdocument valt weg."},
+  {p:"B",t:"Crescendo-account aanmaken",who:["Automatisch (flow)","Nieuwe collega"],auto:true,b:"bestaand",d:"Account wordt automatisch aangemaakt. De nieuwe collega krijgt een mail om het te activeren.",nu:"Werkt.",straks:"Blijft zo."},
+  {p:"B",t:"Welkom-link",who:["Automatisch (flow)","Nieuwe collega"],auto:true,b:"bestaand",d:"Het nieuwe personeelslid krijgt een welkom-link om zelf de rest van de persoonlijke gegevens in te vullen.",nu:"Werkt; sommige vragen overlappen met het startformulier.",straks:"Velden die al gekend zijn, worden vooraf ingevuld of geschrapt."},
+  {p:"B",t:"Teams verwittigen",who:["Automatisch (flow)","Coördinator / campusbeheerder","Team Aanvangsbegeleiding","Adjunct-directeur"],auto:true,b:"aangepast",d:"Mail naar opleidingscoördinator(en), team directie, campusbeheerder en Team Aanvangsbegeleiding.",nu:"Mail meldt de komst, zonder details over opdracht.",straks:"Mail vermeldt opleidingen, modules, campus en startdatum."},
+  {p:"B",t:"Athenasoft-account",who:["Automatisch (flow)","Helpdesk ICT"],auto:false,b:"bestaand",d:"Helpdesk ICT krijgt een mail en maakt het account in Athenasoft aan.",nu:"Werkt.",straks:"Helpdesk vinkt af in het opvolgoverzicht."},
+  {p:"C",t:"Review door Team Personeel",who:["Team Personeel"],auto:false,b:"bestaand",d:"Zodra de welkom-link ingevuld is, staat de onboarding op status review. Team Personeel kijkt na en geeft groen licht.",nu:"Werkt.",straks:"Blijft zo; het groene licht wordt zichtbaar in de voortgang."},
+  {p:"C",t:"Documenten opvragen",who:["Automatisch (flow)","Nieuwe collega","Team Personeel"],auto:true,b:"knelpunt",d:"Kopie diploma('s), uittreksel strafregister, registratie op Penta, info over anciënniteit en nuttige ervaring.",nu:"Na de onboarding volgen vaak nog extra losse mails vanuit Team Personeel.",straks:"Eén mail met checklist en één plek om op te laden. Automatische herinnering na 5 werkdagen."},
+  {p:"D",t:"Eerste lesdag",who:["Nieuwe collega","Coördinator / campusbeheerder"],auto:false,b:"bestaand",d:"Ontvangst door coördinator en campusbeheerder.",nu:"Verschilt per campus.",straks:"Te bekijken in P2 (loopbaanbegeleiding)."},
+  {p:"D",t:"Aanvangsbegeleiding",who:["Team Aanvangsbegeleiding","Nieuwe collega"],auto:false,b:"aangepast",d:"Start als de adjunct 'ja' koos in het startformulier.",nu:"Keuze ja/nee zonder richtlijn.",straks:"Formulier stelt een keuze voor op basis van duur en ervaring; adjunct beslist."},
+  {p:"D",t:"Onboarding afgerond",who:["Team Personeel","Adjunct-directeur"],auto:true,b:"nieuw",d:"Alle stappen staan op klaar.",nu:"Niemand ziet in één oogopslag of alles in orde is.",straks:"Opvolgoverzicht toont per collega de stand van zaken."}],
+ her:[
+  {p:"A",t:"Heractivatie aanvragen",who:["Adjunct-directeur"],auto:false,b:"aangepast",d:"De adjunct meldt dat een vroegere collega terugkomt.",nu:"Losse mail aan Team Personeel.",straks:"Via het startformulier, met keuze 'Heractivatie'. Opdracht en opleidingen zijn zo meteen actueel."},
+  {p:"B",t:"Terug actief zetten",who:["Team Personeel"],auto:false,b:"bestaand",d:"Team Personeel vinkt in de databank aan dat de collega terug actief is.",nu:"Werkt.",straks:"Blijft zo."},
+  {p:"C",t:"Aanvangsbegeleiding nakijken",who:["Automatisch (flow)","Team Aanvangsbegeleiding"],auto:true,b:"bestaand",d:"Mail naar Team Aanvangsbegeleiding om te checken of de collega opnieuw in AB moet.",nu:"Werkt.",straks:"Blijft zo."},
+  {p:"C",t:"Accounts heractiveren",who:["Automatisch (flow)","Helpdesk ICT"],auto:true,b:"bestaand",d:"Mail naar Helpdesk ICT om alle accounts terug actief te zetten.",nu:"Werkt.",straks:"Helpdesk vinkt af in het opvolgoverzicht."},
+  {p:"C",t:"Teams verwittigen",who:["Automatisch (flow)","Coördinator / campusbeheerder"],auto:true,b:"nieuw",d:"Coördinator(en) en campusbeheerder weten dat de collega terug is, met opdracht.",nu:"Gebeurt niet automatisch.",straks:"Zelfde mail als bij een nieuwe collega."},
+  {p:"D",t:"Eerste lesdag",who:["Nieuwe collega","Coördinator / campusbeheerder"],auto:false,b:"bestaand",d:"De collega start opnieuw.",nu:"–",straks:"–"}]};
+const BL={bestaand:"bestaat al",aangepast:"aangepast",nieuw:"nieuw",knelpunt:"knelpunt nu"};
+let mode="nieuw",role="Iedereen",sel=null;
+$("#roleSel").innerHTML=ROLES.map(r=>`<option>${r}</option>`).join("");
+$("#roleSel").onchange=e=>{role=e.target.value;renderMap()};
+$$("[data-mode]").forEach(b=>b.onclick=()=>{mode=b.dataset.mode;sel=null;$$("[data-mode]").forEach(x=>x.setAttribute("aria-pressed",x===b));renderMap()});
+function renderMap(){
+  const steps=STEPS[mode];
+  if(sel===null)sel=1;
+  $("#phases").innerHTML=PHASES[mode].map(ph=>{
+    const list=steps.map((s,i)=>[s,i]).filter(([s])=>s.p===ph.k);
+    return `<div class="phase"><div class="phase-h"><b>${ph.t}</b><span>${ph.s}</span></div>
+     ${mode==="nieuw"&&ph.k==="B"?`<div class="par">Deze stappen starten tegelijk na het startformulier.</div>`:""}
+     ${list.map(([s,i])=>`<button class="step ${role!=="Iedereen"&&!s.who.includes(role)?"dim":""}" data-i="${i}" aria-expanded="${i===sel}">
+       <span class="t">${esc(s.t)}</span>
+       <span class="meta"><span class="pill b-${s.b}">${BL[s.b]}</span><span class="auto ${s.auto?"":"man"}"><i></i>${s.auto?"automatisch":"manueel"}</span></span>
+       <span class="meta">${s.who.filter(w=>w!=="Automatisch (flow)").map(w=>`<span class="tag">${esc(w)}</span>`).join("")}</span></button>`).join("")}</div>`}).join("");
+  $$(".step").forEach(b=>b.onclick=()=>{sel=+b.dataset.i;renderMap();$("#detail").scrollIntoView({block:"nearest",behavior:"smooth"})});
+  const s=steps[sel];
+  $("#detail").innerHTML=`<div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap"><h3>${esc(s.t)}</h3><span class="pill b-${s.b}">${BL[s.b]}</span></div>
+   <p>${esc(s.d)}</p>
+   <div class="cols"><div><h4>Wie</h4><p>${s.who.map(esc).join(", ")}</p></div><div><h4>Nu</h4><p>${esc(s.nu)}</p></div><div><h4>Voorstel</h4><p>${esc(s.straks)}</p></div></div>`;
+}
+
+// ---------------- startformulier ----------------
+const OPL=["NT2","Talen","Diploma Secundair","Administratie","ICT","Zorg & Welzijn","Koken","Techniek","Ambachten","Mode","Ecologie & Groen","Verkoop & Logistiek","Toerisme","Fotografie & Grafisch","Politie"];
+const CAMPUS=["Mechelen","Lier","Halle","Rode","Online"];
+const EVAL=["—","Adjunct-directeur NT2","Adjunct-directeur Talen","Adjunct-directeur Diploma Secundair","Adjunct-directeur Economie & ICT","Adjunct-directeur Zorg & Techniek","Opleidingscoördinator"];
+$("#sEval1").innerHTML=EVAL.map(e=>`<option>${e}</option>`).join("");
+$("#sEval2").innerHTML=EVAL.map(e=>`<option>${e}</option>`).join("");
+const RESERVE=[
+ {id:"",n:"Kies een kandidaat met status Aangeworven…"},
+ {id:"1",n:"Van Damme, Sofie · NT2 (voorbeeld)",v:"Sofie",a:"Van Damme",m:"sofie.vandamme@voorbeeld.be",f:"Lesgever",ped:"Ja",ond:"Ja",vwo:"Nee",rows:[["NT2","NT2 richtgraad 1 – avond","Mechelen",8],["Talen","Frans A1","Lier",4]],mot:true,e1:1,e2:2},
+ {id:"2",n:"Kaya, Elif · Zorg & Welzijn (voorbeeld)",v:"Elif",a:"Kaya",m:"elif.kaya@voorbeeld.be",f:"Lesgever",ped:"Nee",ond:"Ja",vwo:"Nee",rows:[["Zorg & Welzijn","EHBO – zaterdag","Mechelen",4]],mot:true,e1:5,e2:6}];
+$("#pullSel").innerHTML=RESERVE.map(r=>`<option value="${r.id}">${esc(r.n)}</option>`).join("");
+let rows=[["","","",""]],pulled=null;
+function renderRows(){
+  $("#opdrTbl").innerHTML=`<tr><th>Opleiding</th><th>Modules</th><th>Campus</th><th>Lestijden</th><th></th></tr>`+rows.map((r,i)=>`<tr>
+   <td><select data-r="${i}" data-c="0" aria-label="Opleiding"><option value="">—</option>${OPL.map(o=>`<option ${o===r[0]?"selected":""}>${o}</option>`).join("")}</select></td>
+   <td><input type="text" data-r="${i}" data-c="1" value="${esc(r[1])}" placeholder="bv. Engels B1 – dinsdagavond" aria-label="Modules"></td>
+   <td><select data-r="${i}" data-c="2" aria-label="Campus"><option value="">—</option>${CAMPUS.map(o=>`<option ${o===r[2]?"selected":""}>${o}</option>`).join("")}</select></td>
+   <td class="num"><input type="number" min="0" data-r="${i}" data-c="3" value="${esc(r[3])}" aria-label="Lestijden"></td>
+   <td>${rows.length>1?`<button type="button" class="small ghost" data-del="${i}" aria-label="Regel verwijderen">✕</button>`:""}</td></tr>`).join("");
+  $$("#opdrTbl [data-r]").forEach(el=>el.addEventListener("input",()=>{rows[+el.dataset.r][+el.dataset.c]=el.value;calc()}));
+  $$("#opdrTbl [data-del]").forEach(b=>b.onclick=()=>{rows.splice(+b.dataset.del,1);renderRows()});
+  calc();
+}
+function calc(){
+  const tot=rows.reduce((s,r)=>s+(+r[3]||0),0),n=+$("#sNoemer").value||24,pct=Math.round(tot/n*100);
+  $("#totFrac").textContent=`${tot}/${n}`;$("#totPct").textContent=pct+"%";$("#totBar").style.width=Math.min(pct,100)+"%";
+  abSuggest();
+}
+$("#addRow").onclick=()=>{rows.push(["","","",""]);renderRows()};
+$("#sNoemer").oninput=calc;
+function abSuggest(){
+  const s=$("#sStart").value,e=$("#sEind").value,ond=$("#sOnd").value,vwo=$("#sVwo").value;
+  const kort=s&&e&&(new Date(e)-new Date(s))/864e5<90;
+  let t="Er verschijnt een voorstel zodra startdatum, einddatum of ervaring ingevuld is.";
+  if(kort)t="Voorstel: nee, opdracht korter dan 3 maanden.";
+  else if(ond==="Nee")t="Voorstel: ja, geen ervaring in onderwijs.";
+  else if(ond==="Ja"&&vwo==="Nee")t="Voorstel: ja, nog geen ervaring in volwassenenonderwijs.";
+  else if(ond==="Ja"&&vwo==="Ja")t="Voorstel: nee, ervaring in onderwijs en volwassenenonderwijs.";
+  $("#abHint").textContent=t;
+}
+["#sStart","#sEind","#sOnd","#sVwo"].forEach(s=>$(s).addEventListener("change",abSuggest));
+function renderFiles(){
+  $("#cvBox").innerHTML=`<label>CV</label>`+(pulled?`<div class="file">📄 CV_${esc(pulled.a)}.pdf<span class="src">uit wervingsreserve</span></div>`:`<input type="file" id="sCV" accept=".pdf,.doc,.docx" aria-label="CV">`);
+  $("#motBox").innerHTML=`<label>Motivatiebrief</label>`+(pulled&&pulled.mot?`<div class="file">📄 Motivatie_${esc(pulled.a)}.pdf<span class="src">uit wervingsreserve</span></div>`:`<input type="file" id="sMot" accept=".pdf,.doc,.docx" aria-label="Motivatiebrief">`);
+}
+$("#pullBtn").onclick=()=>{
+  const r=RESERVE.find(x=>x.id===$("#pullSel").value);if(!r||!r.id){toast("Kies eerst een kandidaat");return}
+  pulled=r;$("#sVoornaam").value=r.v;$("#sNaam").value=r.a;$("#sMail").value=r.m;$("#sFunctie").value=r.f;
+  $("#sPed").value=r.ped;$("#sOnd").value=r.ond;$("#sVwo").value=r.vwo;
+  rows=r.rows.map(x=>[...x]);$("#sStart").value="2026-11-16";$("#sEval1").selectedIndex=r.e1;$("#sEval2").selectedIndex=r.e2;
+  renderRows();renderFiles();abSuggest();toast("Gegevens overgenomen uit de wervingsreserve");
+};
+let ftype="nieuw";
+$$("[data-ftype]").forEach(b=>b.onclick=()=>{ftype=b.dataset.ftype;$$("[data-ftype]").forEach(x=>x.setAttribute("aria-pressed",x===b));
+  $("#pullBox").hidden=ftype==="her";$("#fsBijlagen").hidden=ftype==="her";
+  $("#mTitle").textContent=ftype==="her"?"Collega heractiveren":"Nieuwe onboarding starten";});
+$("#cancelBtn").onclick=()=>{$("#startForm").reset();pulled=null;rows=[["","","",""]];renderRows();renderFiles();$("#formErr").textContent=""};
+$("#startForm").addEventListener("submit",e=>{
+  e.preventDefault();const miss=[];
+  if(!$("#sVoornaam").value.trim())miss.push("voornaam");if(!$("#sNaam").value.trim())miss.push("achternaam");
+  if(!/^\S+@\S+\.\S+$/.test($("#sMail").value))miss.push("persoonlijk email");if(!$("#sFunctie").value)miss.push("functie");
+  if(!$("#sStart").value)miss.push("startdatum");if(!rows.some(r=>r[0]))miss.push("minstens één opleiding");
+  if($("#sEval1").selectedIndex===0||$("#sEval2").selectedIndex===0)miss.push("evaluatoren");
+  if(!$("#sPed").value||!$("#sOnd").value||!$("#sVwo").value||!$("#sAb").value)miss.push("onderwijs-ervaring");
+  if(miss.length){$("#formErr").textContent="Nog in te vullen: "+miss.join(", ")+".";return}
+  $("#formErr").textContent="";
+  const ab=$("#sAb").value==="Ja",her=ftype==="her";
+  TRACK.unshift({n:$("#sNaam").value+" "+$("#sVoornaam").value,m:$("#sMail").value,opl:rows.filter(r=>r[0]).map(r=>r[0]).join(", "),start:$("#sStart").value,her,wijz:"zonet",
+    status:her?"heractivatie":"welkom-link verstuurd",
+    s:her?["done","na","na","wait","na","na","na","wait",ab?"wait":"na"]:["done","wait","wait","wait","wait","wait","wait",$("#sAthena").checked?"done":"wait",ab?"wait":"na"]});
+  const naam=$("#sVoornaam").value+" "+$("#sNaam").value;
+  $("#formAside").innerHTML=`<div class="ok-box"><h3>Onboarding gestart voor ${esc(naam)}</h3>
+   <ul class="hex">${her?"<li>Team Personeel krijgt de vraag om terug actief te zetten.</li><li>Mail naar Team Aanvangsbegeleiding en Helpdesk ICT.</li><li>Coördinator(en) en campusbeheerder verwittigd, met opdracht.</li>":
+   "<li>Crescendo-account aangemaakt, activatiemail verstuurd.</li><li>Welkom-link verstuurd om de persoonlijke gegevens aan te vullen.</li><li>Coördinator(en), directie, campusbeheerder en Team AB verwittigd, met opdracht.</li><li>Helpdesk ICT gevraagd een Athenasoft-account aan te maken.</li>"+(pulled?"<li>CV en motivatiebrief gekopieerd naar het personeelsdossier.</li>":"")}</ul>
+   <button class="primary" id="goTrack">Bekijk in het overzicht</button></div>`;
+  $("#goTrack").onclick=()=>location.hash="opvolging";toast("Onboarding gestart");
+});
+
+// ---------------- opvolging ----------------
+const COLS=[["Onboarding gestart","Adjunct"],["Account geactiveerd","Nieuwe collega"],["Welkom-link ingevuld","Nieuwe collega"],["Review door Team Personeel","Team Personeel"],["Diploma","Nieuwe collega"],["Uittreksel strafregister","Nieuwe collega"],["Registratie Penta","Nieuwe collega"],["Athenasoft","Helpdesk ICT / adjunct"],["Aanvangsbegeleiding","Team AB"]];
+const TRACK=[
+ {n:"Hermans Nora",m:"nora.hermans@voorbeeld.be",opl:"Koken",start:"2026-10-05",status:"afgerond",wijz:"2 weken geleden",s:["done","done","done","done","done","done","done","done","done"]},
+ {n:"Peeters Lien",m:"lien.peeters@voorbeeld.be",opl:"Diploma Secundair",start:"2026-10-19",status:"documenten",wijz:"6 dagen geleden",s:["done","done","done","done","done","late","wait","done","wait"]},
+ {n:"El Amrani Youssef",m:"y.elamrani@voorbeeld.be",opl:"NT2, Talen",start:"2026-11-02",status:"review",wijz:"23 minuten geleden",s:["done","done","done","wait","wait","wait","wait","done","wait"]},
+ {n:"Claes Pieter",m:"pieter.claes@voorbeeld.be",opl:"Talen",start:"2026-11-09",her:true,status:"heractivatie",wijz:"1 dag geleden",s:["done","na","na","done","na","na","na","wait","na"]}];
+const SYM={done:"✓",wait:"…",late:"!",na:"–"};
+let openRow=-1;
+function renderTrack(){
+  const q=($("#tq").value||"").toLowerCase();
+  const list=TRACK.map((t,i)=>[t,i]).filter(([t])=>!q||(t.n+" "+t.m).toLowerCase().includes(q));
+  $("#track").innerHTML=`<tr><th>Naam</th><th>Email</th><th>Status</th><th class="new">Start</th><th class="new">Voortgang</th><th>Laatst gewijzigd</th><th>Acties</th></tr>`+list.map(([t,i])=>{
+    const rel=t.s.filter(x=>x!=="na"),done=rel.filter(x=>x==="done").length;
+    const sc=t.status==="afgerond"?"ok":t.status==="documenten"?"w":"";
+    let h=`<tr><td class="lname">${esc(t.n)}${t.her?` <span class="pill b-aangepast">heractivatie</span>`:""}<div class="hint">${esc(t.opl)}</div></td><td class="hint">${esc(t.m)}</td>
+     <td><span class="lstatus ${sc}">${esc(t.status)}</span></td><td class="new">${fmt(t.start)}</td>
+     <td class="new"><div class="minibar">${t.s.filter(x=>x!=="na").map(x=>`<i class="${x}"></i>`).join("")}</div><div class="hint">${done}/${rel.length} stappen</div></td>
+     <td class="hint">${esc(t.wijz)}</td>
+     <td><div class="lact"><button type="button" data-open="${i}" aria-expanded="${openRow===i}">Bekijken</button><button type="button" disabled>✎ Bewerken</button><button type="button" disabled>Welkom-link</button><button type="button" disabled>🗑 Verwijderen</button></div></td></tr>`;
+    if(openRow===i)h+=`<tr class="expand"><td colspan="7"><div class="checklist">${t.s.map((x,k)=>x==="na"?"":`<div><i class="st ${x}">${SYM[x]}</i><span>${COLS[k][0]}<br><span class="who2">${COLS[k][1]}</span></span></div>`).join("")}</div></td></tr>`;
+    return h}).join("");
+  $$("[data-open]").forEach(b=>b.onclick=()=>{const i=+b.dataset.open;openRow=openRow===i?-1:i;renderTrack()});
+}
+$("#tq").addEventListener("input",renderTrack);
+// ---------------- specificatie ----------------
+const FIELDS=[
+ ["Voornaam, achternaam, persoonlijke mail","bestaand","Overgenomen uit wervingsreserve indien beschikbaar"],
+ ["Functie","bestaand","Keuzelijst"],
+ ["Soort onboarding","nieuw","Nieuwe collega · Heractivatie"],
+ ["Startdatum, einddatum","nieuw","Einddatum leeg = onbepaalde duur"],
+ ["Aard van de opdracht","nieuw","Tijdelijk vacant · Vervanging · Bijkomende opdracht"],
+ ["Opleidingen (herhalende regel)","aangepast","Per regel: opleiding, modules (vrije tekst), campus, lestijden. Nu slechts één opleiding."],
+ ["Opdrachtpercentage","nieuw","Berekend: som lestijden / voltijdse noemer van het ambt"],
+ ["Lesmomenten in Athenasoft","nieuw","Ja/nee; vervangt het roosterdocument"],
+ ["Eerste en tweede evaluator","bestaand","Beide verplicht, zoals nu"],
+ ["Pedagogische bekwaamheid, ervaring in onderwijs, ervaring volwassenenonderwijs","bestaand","Ja/nee zoals nu; overgenomen uit wervingsreserve"],
+ ["Aanvangsbegeleiding opstarten","aangepast","Ja/nee, met voorstel op basis van duur en ervaring"],
+ ["CV, motivatiebrief","nieuw","Bijlagen; automatisch gekopieerd uit wervingsreserve"]];
+$("#fieldTbl").innerHTML=`<tr><th>Veld</th><th></th><th>Toelichting</th></tr>`+FIELDS.map(f=>`<tr><td>${esc(f[0])}</td><td><span class="pill b-${f[1]}">${BL[f[1]]}</span></td><td>${esc(f[2])}</td></tr>`).join("");
+
+// ---------------- routing ----------------
+const V=["proces","startformulier","opvolging","specificatie"];
+function route(){const h=(location.hash||"#proces").slice(1),v=V.includes(h)?h:"proces";
+  V.forEach(x=>$("#v-"+x).hidden=x!==v);
+  $$("nav.tabs a").forEach(a=>a.getAttribute("href")==="#"+v?a.setAttribute("aria-current","page"):a.removeAttribute("aria-current"));
+  if(v==="opvolging")renderTrack();window.scrollTo(0,0)}
+renderMap();renderRows();renderFiles();
+window.addEventListener("hashchange",route);route();
+})();
+</script>
