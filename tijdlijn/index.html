@@ -247,6 +247,22 @@ td.lc1{background:color-mix(in srgb,var(--bc) 22%,var(--surface))} td.lc2{backgr
 .glscale div{display:flex;justify-content:space-between}
 .hon text{font-size:13px}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .hon tspan[font-weight]{fill:currentColor}}
+.jour{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-bottom:12px}
+@media (max-width:900px){.jour{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:520px){.jour{grid-template-columns:1fr}}
+.jstep{position:relative;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:14px;display:flex;flex-direction:column;gap:6px;font-size:.88rem}
+.jstep[data-step]{cursor:pointer}
+.jstep[aria-current="step"]{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent)}
+.jstep .jn{width:30px;height:34px;display:grid;place-items:center;background:var(--hex);clip-path:polygon(50% 0,100% 25%,100% 75%,50% 100%,0 75%,0 25%);font-weight:700}
+.jstep[aria-current="step"] .jn{background:var(--accent);color:var(--accent-fg)}
+.jstep b{color:var(--title);font-size:1rem}
+.jstep .jsub{color:var(--fg-soft);font-size:.8rem;margin-top:-4px}
+.jstep dl{display:grid;grid-template-columns:70px minmax(0,1fr);gap:2px 8px;margin:4px 0}
+.jstep dt{color:var(--fg-soft);font-size:.78rem}
+.jstep dd{margin:0}
+.vmeta{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px;align-items:start}
+input[type=date]{font:inherit;width:100%;padding:8px 10px;border:1px solid var(--line);border-radius:6px;background:var(--surface);color:var(--fg)}
+.vtab td{font-size:.86rem}
 </style>
 
 <header class="top">
@@ -308,14 +324,28 @@ td.lc1{background:color-mix(in srgb,var(--bc) 22%,var(--surface))} td.lc2{backgr
   <div class="intro">
     <span class="who">Persoonlijk ontwikkelingsplan · in de personeelsdatabank</span>
     <h2>POP: waar sta ik, waar wil ik naartoe?</h2>
-    <p>Het POP vertrekt van het minimumkompas van elke bouwsteen. Je functie bepaalt welke kolom van het kompas jouw minimum is: in de klas, in de opleiding of in het centrum. Voor leidinggevenden komt daar de visietekst personeelsbeleid bij. Bij elke uitspraak kies je wat voor jou klopt, en je kiest één of twee groeidoelen.</p>
+    <p>Het POP is één formulier in de personeelsdatabank dat je het hele schooljaar meeneemt. Je vult het zelf in, bespreekt het in een coachingsgesprek met je adjunct of opleidingscoördinator, en blikt er in juni op terug. Je functie bepaalt welke kolom van het kompas jouw minimum is: in de klas, in de opleiding of in het centrum.</p>
   </div>
-  <div class="steps" aria-label="Verloop POP"><span class="on">1 Zelfreflectie</span><span class="on">2 Groeidoelen</span><span>3 POP-gesprek</span><span>4 Acties en opvolging</span><span>5 Terugblik einde schooljaar</span></div>
+  <div class="jour" aria-label="Het POP in vier stappen">
+    <div class="jstep" data-step="zelf"><span class="jn">1</span><b>Ik vul mijn POP in</b><span class="jsub">zelfreflectie</span>
+      <dl><dt>Wie</dt><dd>jij</dd><dt>Wanneer</dt><dd>september tot half oktober*</dd><dt>Waar</dt><dd>dit formulier in de personeelsdatabank</dd><dt>Tijd</dt><dd>± 20 minuten</dd></dl>
+      <p>Per bouwsteen duid je aan wat voor jou klopt, en je stelt 1 of 2 groeidoelen voor.</p></div>
+    <div class="jstep" data-step="gesprek"><span class="jn">2</span><b>Coachingsgesprek</b><span class="jsub">samen kijken</span>
+      <dl><dt>Wie</dt><dd>jij en je adjunct of opleidingscoördinator</dd><dt>Wanneer</dt><dd>vóór de herfstvakantie*</dd><dt>Waar</dt><dd>gesprek; je coach vult hetzelfde POP aan</dd><dt>Tijd</dt><dd>± 30 minuten</dd></dl>
+      <p>Jullie leggen de groeidoelen vast en spreken acties en ondersteuning af. Het verslag wordt automatisch aangemaakt en kan naar de HR-tool.</p></div>
+    <div class="jstep"><span class="jn">3</span><b>Aan de slag</b><span class="jsub">doorheen het jaar</span>
+      <dl><dt>Wie</dt><dd>jij, met je vakgroep</dd><dt>Wanneer</dt><dd>oktober tot mei</dd><dt>Waar</dt><dd>leerpad van de bouwsteen, vakgroep-intervisie, nascholing</dd></dl>
+      <p>Je voert je acties uit. Loopt het vast, dan plan je een kort coachingsmoment.</p></div>
+    <div class="jstep"><span class="jn">4</span><b>Terugblik</b><span class="jsub">wat is er gegroeid?</span>
+      <dl><dt>Wie</dt><dd>jij, kort besproken met je coach</dd><dt>Wanneer</dt><dd>juni*</dd><dt>Waar</dt><dd>hetzelfde POP</dd><dt>Tijd</dt><dd>± 15 minuten</dd></dl>
+      <p>Je vult de uitspraken opnieuw in. Zo zie je je groei, en heb je een vertrekpunt voor volgend jaar.</p></div>
+  </div>
+  <p class="hint" style="margin:-6px 0 18px">* Voorstel, te beslissen op de directiedag van 5 januari (P4). Klik op stap 1 of 2 om te zien wat jij of je coach invult.</p>
   <div class="tlbar">
     <div class="f" style="min-width:240px"><label for="pFunc">Mijn functie</label><select id="pFunc"><option value="lk">Lesgever</option><option value="oc">Opleidingscoördinator (geeft ook les)</option><option value="ad">Adjunct-directeur</option></select></div>
     <div class="seg" role="group" aria-label="Welke scores">
-      <button data-pbron="zelf" aria-pressed="true">Mijn zelfreflectie</button>
-      <button data-pbron="gesprek" aria-pressed="false">Na het POP-gesprek</button>
+      <button data-pbron="zelf" aria-pressed="true">Stap 1 · mijn zelfreflectie</button>
+      <button data-pbron="gesprek" aria-pressed="false">Stap 2 · na het coachingsgesprek</button>
     </div>
     <span class="hint" id="pWho"></span>
     <button type="button" class="small" id="toViz" style="margin-left:auto">Vier weergaven vergelijken ↓</button>
@@ -335,7 +365,8 @@ td.lc1{background:color-mix(in srgb,var(--bc) 22%,var(--surface))} td.lc2{backgr
     <div class="scroll" id="kFull"></div>
   </div>
   <div id="goals" style="display:flex;flex-direction:column;gap:12px;margin-top:20px"></div>
-  <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:14px"><button class="primary" id="popSave">Bewaar en plan POP-gesprek</button><span class="hint">Zichtbaar voor jou en je leidinggevende of coach.</span></div>
+  <div class="panel" id="verslag" style="margin-top:20px" hidden></div>
+  <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:14px"><button class="primary" id="popSave">Bewaar en plan coachingsgesprek</button><span class="hint">Zichtbaar voor jou en je leidinggevende of coach.</span></div>
   <section class="vizsec" id="vizOpties" aria-labelledby="vizTitle">
     <div class="intro" style="margin-top:36px">
       <span class="who">Om samen te beslissen</span>
@@ -355,7 +386,7 @@ td.lc1{background:color-mix(in srgb,var(--bc) 22%,var(--surface))} td.lc2{backgr
   </div>
   <div class="tlbar">
     <div class="f" style="min-width:220px"><label for="tCl">Bekijk</label><select id="tCl"></select></div>
-    <div class="f" style="min-width:200px"><label for="tBron">Scores</label><select id="tBron"><option value="zelf">Zelfreflectie</option><option value="gesprek">Na het POP-gesprek</option></select></div>
+    <div class="f" style="min-width:200px"><label for="tBron">Scores</label><select id="tBron"><option value="zelf">Zelfreflectie</option><option value="gesprek">Na het coachingsgesprek</option></select></div>
   </div>
   <div class="kpis" id="tKpi"></div>
   <div class="panel" style="margin-top:16px">
@@ -406,6 +437,7 @@ td.lc1{background:color-mix(in srgb,var(--bc) 22%,var(--surface))} td.lc2{backgr
           <li><b>Toegang:</b> de medewerker en zijn leidinggevende of coach. De adjunct ziet in Teamnoden de POP's van de lesgevers van zijn eigen cluster(s). Andere adjuncten zien die niet.</li>
           <li><b>Teamnoden op centrumniveau:</b> enkel gemiddelden en verdelingen, nooit namen. Een groep van minder dan 5 ingevulde POP's wordt niet apart getoond.</li>
           <li>De kompassen (vraag × kolom) en de visieteksten in een aparte lijst, zodat bouwsteenteams en directie ze zelf bijwerken. Een bouwsteen zonder kompas toont "kompas in opmaak".</li>
+          <li><b>Verslag coachingsgesprek:</b> wordt automatisch opgebouwd uit het POP (zelfreflectie, inschatting na het gesprek, groeidoelen) en aangevuld met gespreksnotities van de coach. Download als Word-bestand. Naar de HR-tool: manueel opladen als bijlage, of automatisch via Power Automate als de HR-tool dat toelaat. Na te vragen bij ICT.</li>
           <li>Anonieme optelling per team (aandeel op "nog niet" of "soms" per kompasvraag, gekozen groeidoelen) voedt het professionaliseringsplan (P4).</li>
         </ul>
       </div>
@@ -416,7 +448,7 @@ td.lc1{background:color-mix(in srgb,var(--bc) 22%,var(--surface))} td.lc2{backgr
         <li><b>Niveaus.</b> Voorstel: nog niet, soms, vast in mijn praktijk, ik help anderen. Akkoord?</li>
         <li><b>Kompassen.</b> Enkel Kwaliteitsvol is uitgewerkt (eerste voorzet). De andere vijf volgen via de bouwsteenteams.</li>
         <li><b>Visieteksten per functie.</b> Welke visietekst is het minimum voor administratieve medewerkers, ICT, trajectbegeleiders en zorgcoaches? De competenties uit het competentiewoordenboek vallen weg.</li>
-        <li><b>Wanneer het POP-gesprek?</b> Voorstel: zelfreflectie in september en oktober, gesprek voor de herfstvakantie, terugblik in juni. Te bespreken op de directiedag van 5 januari (P4).</li>
+        <li><b>Wanneer het coachingsgesprek?</b> Voorstel: zelfreflectie in september en oktober, gesprek voor de herfstvakantie, terugblik in juni. Te bespreken op de directiedag van 5 januari (P4).</li>
         <li><b>Verhouding POP en functioneringsgesprek.</b> Het POP is van de medewerker en gaat over groei; functioneren en evalueren gebeurt in de HR-tool. Mag de HR-tool naar het POP verwijzen?</li>
       </ul>
     </div>
@@ -501,7 +533,7 @@ $$("[data-view]").forEach(b=>b.onclick=()=>{view=b.dataset.view;$$("[data-view]"
 // ---------------- jaarkalender ----------------
 const MONTHS=["sep","okt","nov","dec","jan","feb","mrt","apr","mei","jun","jul","aug"];
 const EV=[
- [0,"p3","Start aanvangsbegeleiding","nieuwe collega's"],[0,"p4","POP: zelfreflectie*","sept – okt"],[1,"p4","POP-gesprek*","voor herfstvakantie"],
+ [0,"p3","Start aanvangsbegeleiding","nieuwe collega's"],[0,"p4","POP: zelfreflectie*","sept – okt"],[1,"p4","Coachingsgesprek POP*","voor herfstvakantie"],
  [1,"p2","Coachingsgesprekken","doorlopend"],[2,"p4","Professionaliseringsplan","noden uit POP's"],[5,"p4","Start trajecten bouwstenen*","directie en begeleiders eerst"],[9,"p4","Zelfscan directie","effecten en keuze trajecten"],
  [6,"p1","Desiderata","1 – 31 maart"],[7,"p1","Aanbodbevraging NT2","april"],[7,"p1","Opdrachten verdelen","na desiderata"],
  [8,"p2","Functioneringsgesprekken*","mei – juni"],[9,"p4","POP: terugblik*","juni"],[9,"p2","Waarderingsmoment*","einde schooljaar"],
@@ -560,7 +592,7 @@ function renderPOP(){
     return`<button class="krow" style="${bv(k)}" data-k="${esc(k)}" aria-pressed="${k===psel}">${chip(k)}<span class="kcells">${cells}</span></button>`}).join("");
   $$("#kOverview .krow").forEach(b=>b.onclick=()=>{psel=b.dataset.k;renderPOP()});
   $("#pVisieNote").textContent=F.visie?"Voor leidinggevenden is de visietekst personeelsbeleid het minimum, naast de kolom \"In het centrum\" van elk kompas.":"Voor lesgevers en coördinatoren is het onderwijsbeleid, met de 6 bouwstenen, de kapstok. De visieteksten voor andere functies (administratie, ICT, trajectbegeleiding, zorg) volgen nog.";
-  renderDetail();renderFull();renderGoals();
+  renderDetail();renderFull();renderGoals();markStep();renderVerslag();
 }
 function lvRadios(key){const S=SC[pbron];return`<div class="lv" role="radiogroup" aria-label="Hoe sterk zit dit in jouw praktijk?">${LV.map((l,j)=>`<label><input type="radio" name="r-${esc(key)}" value="${j+1}" data-key="${esc(key)}" ${S[key]===j+1?"checked":""}>${l}</label>`).join("")}</div>`}
 function stmtHtml(key,head,txt){const G=GOALS[pfunc];return`<div class="stmt ${G.has(key)?"goal":""}"><div class="q">${head}</div><div class="txt">${esc(txt)}</div>${lvRadios(key)}<label class="goalchk"><input type="checkbox" data-goal="${esc(key)}" ${G.has(key)?"checked":""}> Groeidoel</label></div>`}
@@ -616,7 +648,7 @@ function vRadar(){
   A.forEach((k,i)=>{const ang=-Math.PI/2+i*2*Math.PI/n,x=cx+(R+22)*Math.cos(ang),y=cy+(R+22)*Math.sin(ang),c=Math.cos(ang);
     const an=Math.abs(c)<.2?"middle":c>0?"start":"end",dy=Math.sin(ang)>.5?14:Math.sin(ang)<-.5?-4:4;
     s+=`<text class="rax" x="${x}" y="${y+dy}" text-anchor="${an}" style="fill:${BC[k].t}">${k}</text>`});
-  return s+`</svg><div class="vleg"><span><i class="ln" style="border-color:var(--s-zelf)"></i>zelfreflectie</span><span><i class="ln" style="border-color:var(--s-gesprek);border-top-style:dashed"></i>na het POP-gesprek</span><span><i class="ln" style="border-color:var(--s-vorig);border-top-style:dotted"></i>vorig schooljaar</span></div>`;
+  return s+`</svg><div class="vleg"><span><i class="ln" style="border-color:var(--s-zelf)"></i>zelfreflectie</span><span><i class="ln" style="border-color:var(--s-gesprek);border-top-style:dashed"></i>na het coachingsgesprek</span><span><i class="ln" style="border-color:var(--s-vorig);border-top-style:dotted"></i>vorig schooljaar</span></div>`;
 }
 function vRij(){
   return`<div class="krows">${BOUW.map(b=>`<div class="krow" style="${bv(b.k)};cursor:default">${chip(b.k)}<span class="kcells"><span class="kgrp"><small>klas</small>${DEMO.zelf[b.k].map((l,i)=>`<i class="kh v${l}" title="Vraag ${i+1} · ${LV[l-1]}">${i+1}</i>`).join("")}</span></span></div>`).join("")}</div>
@@ -627,7 +659,7 @@ function vGroei(){
   return`<div class="gl">${BOUW.map(b=>{const z=dAvg(b.k),v=DEMO.vorig[b.k],g=DEMO.gesprek[b.k],lo=Math.min(v,z),hi=Math.max(v,z);
     return`<div class="glr">${chip(b.k)}<div class="gltrack"><i class="base"></i>${[1,2,3,4].map(t=>`<i class="tick" style="left:${X(t)}%"></i>`).join("")}<i class="arr" style="left:${X(lo)}%;width:${X(hi)-X(lo)}%;background:${b.c}"></i><i class="m" style="left:${X(v)}%;background:var(--surface);border:2px solid var(--s-vorig)" title="Vorig jaar ${f1(v)}"></i><i class="m" style="left:${X(g)}%;width:12px;height:12px;top:8px;margin-left:-6px;border-radius:2px;transform:rotate(45deg);background:var(--s-gesprek)" title="Na gesprek ${f1(g)}"></i><i class="m" style="left:${X(z)}%;background:${b.t}" title="Zelfreflectie ${f1(z)}"></i></div></div>`}).join("")}
    <div class="glscale"><span></span><div><span>1 nog niet</span><span>2 soms</span><span>3 vast</span><span>4 ik help anderen</span></div></div></div>
-   <div class="vleg"><span><i class="m" style="position:static;display:inline-block;width:12px;height:12px;border-radius:50%;border:2px solid var(--s-vorig)"></i>vorig jaar</span><span><i style="display:inline-block;width:10px;height:10px;transform:rotate(45deg);background:var(--s-gesprek)"></i>na het POP-gesprek</span><span><i style="display:inline-block;width:12px;height:12px;border-radius:50%;background:#648780"></i>zelfreflectie nu</span><span>gekleurde lijn = groei sinds vorig jaar</span></div>`;
+   <div class="vleg"><span><i class="m" style="position:static;display:inline-block;width:12px;height:12px;border-radius:50%;border:2px solid var(--s-vorig)"></i>vorig jaar</span><span><i style="display:inline-block;width:10px;height:10px;transform:rotate(45deg);background:var(--s-gesprek)"></i>na het coachingsgesprek</span><span><i style="display:inline-block;width:12px;height:12px;border-radius:50%;background:#648780"></i>zelfreflectie nu</span><span>gekleurde lijn = groei sinds vorig jaar</span></div>`;
 }
 function vHoning(){
   const pos=[[110,72],[260,72],[410,72],[185,232],[335,232],[485,232]],r=55;
@@ -639,7 +671,7 @@ function vHoning(){
 }
 const VIZ=[
  {t:"Spinnenweb",f:vRadar,
-  bouw:"Zes assen, één per bouwsteen. Het midden is niveau 1 (nog niet), de rand niveau 4 (ik help anderen). Per bouwsteen telt het gemiddelde van de kompasvragen. Drie lijnen liggen over elkaar: de zelfreflectie, de inschatting na het POP-gesprek en vorig schooljaar.",
+  bouw:"Zes assen, één per bouwsteen. Het midden is niveau 1 (nog niet), de rand niveau 4 (ik help anderen). Per bouwsteen telt het gemiddelde van de kompasvragen. Drie lijnen liggen over elkaar: de zelfreflectie, de inschatting na het coachingsgesprek en vorig schooljaar.",
   lees:"Hoe groter de vorm, hoe sterker het geheel. Een deuk naar binnen is een groeikans: hier Innovatief en Betrokken. Waar de volle lijn buiten de stippellijn van vorig jaar ligt, ben je gegroeid.",
   plus:["Totaalbeeld van zes bouwstenen in één oogopslag","Drie momenten vergelijken in één figuur"],
   min:["Een gemiddelde verbergt welke kompasvraag zwak is","De vorm hangt af van de volgorde van de assen","Niet iedereen leest een spinnenweb vlot"]},
@@ -651,7 +683,7 @@ const VIZ=[
  {t:"Groeilijn",f:vGroei,
   bouw:"Per bouwsteen een lijn van 1 tot 4. Een open bolletje toont vorig jaar, een ruitje de inschatting na het gesprek, een vol bolletje de zelfreflectie nu. De gekleurde lijn ertussen is de groei.",
   lees:"Hoe langer de gekleurde lijn, hoe meer groei. Hier is de groei het grootst bij Kwaliteitsvol. Ligt het ruitje ver van het volle bolletje, dan kijken medewerker en leidinggevende verschillend naar dezelfde bouwsteen: bij Kwaliteitsvol en Innovatief schat het gesprek hoger in dan de lesgever zelf.",
-  plus:["Groei is meteen zichtbaar","Nauwkeurig en makkelijk te lezen","Geschikt voor het POP-gesprek en de terugblik in juni"],
+  plus:["Groei is meteen zichtbaar","Nauwkeurig en makkelijk te lezen","Geschikt voor het coachingsgesprek en de terugblik in juni"],
   min:["Toont per bouwsteen een gemiddelde, niet per kompasvraag","Minder beeldend"]},
  {t:"Honingraat",f:vHoning,
   bouw:"Zes zeshoeken, één per bouwsteen in de eigen kleur. Elke zeshoek loopt vol van onder naar boven, volgens het gemiddelde niveau.",
@@ -665,6 +697,81 @@ function renderViz(){
 }
 $("#toViz").onclick=()=>$("#vizOpties").scrollIntoView({behavior:"smooth"});
 
+// ---------------- verslag coachingsgesprek ----------------
+const PERS={lk:{naam:"Sofie Van Damme",functie:"Lesgever NT2",coach:"Adjunct-directeur NT2"},oc:{naam:"Pieter Claes",functie:"Opleidingscoördinator Talen",coach:"Adjunct-directeur Talen"},ad:{naam:"Adjunct-directeur (voorbeeld)",functie:"Adjunct-directeur",coach:"Directeur"}};
+const NOTES={};
+const NF=[["goed","Wat loopt goed?"],["groei","Waar wil je groeien, en waarom?"],["afspraken","Afspraken en ondersteuning"]];
+function vItems(){
+  const F=FUNCS[pfunc],out=[];
+  F.cols.forEach(c=>KOMPAS["Kwaliteitsvol"].q.forEach((q,i)=>out.push({key:`${pfunc}|Kwaliteitsvol|${c}|${i}`,grp:`Kwaliteitsvol · ${COLS[c][0].toLowerCase()}`,lab:`${i+1}. ${q.t}`})));
+  if(F.visie)VISIE.forEach((v,pi)=>v.s.forEach((s,j)=>out.push({key:`${pfunc}|visie|${pi}|${j}`,grp:`Visietekst personeelsbeleid · ${v.p.slice(4)}`,lab:s})));
+  return out;
+}
+function vNotes(){return NOTES[pfunc]||(NOTES[pfunc]={coach:PERS[pfunc].coach,datum:"2026-10-20",volgend:"2027-02-15",goed:"",groei:"",afspraken:""})}
+function renderVerslag(){
+  const box=$("#verslag");box.hidden=pbron!=="gesprek";if(box.hidden)return;
+  const P=PERS[pfunc],N=vNotes(),G=[...GOALS[pfunc]];
+  const rows=vItems().map(it=>{const z=SC.zelf[it.key],g=SC.gesprek[it.key];return`<tr><td><span class="hint">${esc(it.grp)}</span><br>${esc(it.lab)}</td><td>${z?LV[z-1]:"–"}</td><td>${g?LV[g-1]:"–"}</td><td>${z&&g&&z!==g?`<span class="tagw">${g>z?"coach schat hoger in":"coach schat lager in"}</span>`:""}</td></tr>`}).join("");
+  box.innerHTML=`<div class="dhead"><h3>Verslag coachingsgesprek</h3><span class="pill s-ok">wordt automatisch aangemaakt</span></div>
+   <p class="hint">Het verslag neemt de zelfreflectie, de inschatting na het gesprek en de groeidoelen over. De coach vult de gespreksnotities aan en downloadt het verslag voor de HR-tool.</p>
+   <div class="vmeta"><div class="f"><label>Medewerker</label><div><b>${esc(P.naam)}</b><br><span class="hint">${esc(P.functie)}</span></div></div>
+    <div class="f"><label for="vCoach">Coach</label><input type="text" id="vCoach" data-n="coach" value="${esc(N.coach)}"></div>
+    <div class="f"><label for="vDatum">Datum gesprek</label><input type="date" id="vDatum" data-n="datum" value="${esc(N.datum)}"></div>
+    <div class="f"><label for="vVolg">Volgende opvolging</label><input type="date" id="vVolg" data-n="volgend" value="${esc(N.volgend)}"></div></div>
+   <div class="colh">1 · Zelfreflectie en inschatting na het gesprek <span class="hint" style="text-transform:none;letter-spacing:0;font-weight:400">(automatisch)</span></div>
+   <div class="scroll"><table class="simple vtab"><tr><th>Uitspraak</th><th>Zelfreflectie</th><th>Na het gesprek</th><th></th></tr>${rows}</table></div>
+   <div class="colh">2 · Groeidoelen <span class="hint" style="text-transform:none;letter-spacing:0;font-weight:400">(automatisch)</span></div>
+   ${G.length?`<ul class="hex">${G.map(k=>{const d=goalData[k]||{};return`<li><b>${esc(keyLabel(k))}</b>${d.doel?`<br>Doel: ${esc(d.doel)}`:""}${d.actie?`<br>Acties: ${esc(d.actie)}`:""}${d.pijler?`<br>Leervorm: ${esc(d.pijler)}`:""}${d.wanneer?` · ${esc(d.wanneer)}`:""}</li>`}).join("")}</ul>`:`<p class="hint">Nog geen groeidoelen gekozen.</p>`}
+   <div class="colh">3 · Gespreksnotities <span class="hint" style="text-transform:none;letter-spacing:0;font-weight:400">(in te vullen door de coach)</span></div>
+   ${NF.map(([k,l])=>`<div class="f"><label for="vn-${k}">${l}</label><textarea id="vn-${k}" data-n="${k}">${esc(N[k])}</textarea></div>`).join("")}
+   <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center"><button class="primary" id="vDown">Download verslag (Word)</button><button id="vCopy">Kopieer verslag</button><span class="hint">Het verslag opent in Word. Je kan het daarna als bijlage opladen in de HR-tool.</span></div>`;
+  $$("#verslag [data-n]").forEach(el=>el.addEventListener("input",()=>{vNotes()[el.dataset.n]=el.value}));
+  $("#vDown").onclick=downloadVerslag;$("#vCopy").onclick=copyVerslag;
+}
+const dNL=d=>d?new Date(d).toLocaleDateString("nl-BE",{day:"numeric",month:"long",year:"numeric"}):"–";
+function verslagHTML(){
+  const P=PERS[pfunc],N=vNotes(),G=[...GOALS[pfunc]];
+  const rows=vItems().map(it=>{const z=SC.zelf[it.key],g=SC.gesprek[it.key];return`<tr><td>${esc(it.grp)}<br><b>${esc(it.lab)}</b></td><td>${z?LV[z-1]:"–"}</td><td>${g?LV[g-1]:"–"}</td></tr>`}).join("");
+  return`<html><head><meta charset="utf-8"><title>Verslag coachingsgesprek</title><style>body{font-family:Calibri,Arial,sans-serif;font-size:11pt;color:#000}h1{color:#4d5554;font-size:18pt;margin:0}h2{color:#4d5554;font-size:13pt;margin:18pt 0 6pt}table{border-collapse:collapse;width:100%}td,th{border:1px solid #c8c6c7;padding:4pt 6pt;vertical-align:top;text-align:left}th{background:#ced7d2}.k{color:#4d5554}</style></head><body>
+  <p class="k">CRESCENDO CVO · centrum voor volwassenenonderwijs</p><h1>Verslag coachingsgesprek POP</h1>
+  <table><tr><th>Medewerker</th><td>${esc(P.naam)}</td><th>Functie</th><td>${esc(P.functie)}</td></tr><tr><th>Coach</th><td>${esc(N.coach)}</td><th>Datum gesprek</th><td>${dNL(N.datum)}</td></tr><tr><th>Schooljaar</th><td>2026-2027</td><th>Volgende opvolging</th><td>${dNL(N.volgend)}</td></tr></table>
+  <h2>1. Zelfreflectie en inschatting na het gesprek</h2><table><tr><th>Uitspraak</th><th>Zelfreflectie</th><th>Na het gesprek</th></tr>${rows}</table>
+  <h2>2. Groeidoelen</h2>${G.length?G.map(k=>{const d=goalData[k]||{};return`<p><b>${esc(keyLabel(k))}</b><br>Doel: ${esc(d.doel||"–")}<br>Acties: ${esc(d.actie||"–")}<br>Leervorm: ${esc(d.pijler||"–")} · Wanneer: ${esc(d.wanneer||"–")}</p>`}).join(""):"<p>Geen groeidoelen gekozen.</p>"}
+  <h2>3. Gespreksnotities</h2>${NF.map(([k,l])=>`<p><b>${l}</b><br>${esc(N[k]||"–").replace(/\n/g,"<br>")}</p>`).join("")}
+  <p style="margin-top:24pt;color:#999">Automatisch aangemaakt vanuit het POP in de personeelsdatabank.</p></body></html>`;
+}
+function verslagTekst(){
+  const P=PERS[pfunc],N=vNotes(),G=[...GOALS[pfunc]];
+  const L=[`VERSLAG COACHINGSGESPREK POP`,`Medewerker: ${P.naam} (${P.functie})`,`Coach: ${N.coach}`,`Datum gesprek: ${dNL(N.datum)} · Volgende opvolging: ${dNL(N.volgend)}`,``,`1. Zelfreflectie en inschatting na het gesprek`];
+  vItems().forEach(it=>{const z=SC.zelf[it.key],g=SC.gesprek[it.key];L.push(`- ${it.grp} · ${it.lab}: zelf ${z?LV[z-1].toLowerCase():"–"}, na gesprek ${g?LV[g-1].toLowerCase():"–"}`)});
+  L.push(``,`2. Groeidoelen`);G.forEach(k=>{const d=goalData[k]||{};L.push(`- ${keyLabel(k)}`,`  Doel: ${d.doel||"–"}`,`  Acties: ${d.actie||"–"} (${d.pijler||"–"}, ${d.wanneer||"–"})`)});
+  L.push(``,`3. Gespreksnotities`);NF.forEach(([k,l])=>L.push(`${l} ${N[k]||"–"}`));
+  return L.join("\n");
+}
+let DL=null;
+(async()=>{try{if(window.claude&&claude.use){DL=await claude.use("downloads")}}catch(e){DL=null}})();
+async function downloadVerslag(){
+  const N=vNotes(),base=`Verslag_coachingsgesprek_${PERS[pfunc].naam.replace(/[^A-Za-z0-9]+/g,"_")}_${N.datum}`;
+  if(DL){
+    try{await DL.save({filename:base+".html",data:verslagHTML()});toast("Verslag opgeslagen. Open het in Word of je browser.");}
+    catch(e){const c=e&&e.code;
+      if(c==="declined")return;
+      if(c==="rate_limited"){toast("Even wachten en opnieuw proberen.");return}
+      toast("Downloaden lukt hier niet. Gebruik Kopieer verslag.")}
+    return;
+  }
+  try{const blob=new Blob(["﻿"+verslagHTML()],{type:"application/msword"}),a=document.createElement("a");
+    a.href=URL.createObjectURL(blob);a.download=base+".doc";document.body.appendChild(a);a.click();a.remove();
+    toast("Verslag gedownload");}catch(e){toast("Downloaden lukt hier niet. Gebruik Kopieer verslag.")}
+}
+function copyVerslag(){
+  const t=verslagTekst();
+  try{navigator.clipboard.writeText(t).then(()=>toast("Verslag gekopieerd"),()=>fallbackCopy(t))}catch(e){fallbackCopy(t)}
+}
+function fallbackCopy(t){const ta=document.createElement("textarea");ta.value=t;ta.style.position="fixed";ta.style.opacity="0";document.body.appendChild(ta);ta.select();try{document.execCommand("copy");toast("Verslag gekopieerd")}catch(e){toast("Selecteer en kopieer de tekst manueel")}ta.remove()}
+
+function markStep(){$$(".jstep[data-step]").forEach(c=>c.dataset.step===pbron?c.setAttribute("aria-current","step"):c.removeAttribute("aria-current"))}
+$$(".jstep[data-step]").forEach(c=>{c.tabIndex=0;const go=()=>{pbron=c.dataset.step;$$("[data-pbron]").forEach(x=>x.setAttribute("aria-pressed",x.dataset.pbron===pbron));renderPOP()};c.onclick=go;c.onkeydown=e=>{if(e.key==="Enter")go()}});
 function renderAll(){renderPOP();renderViz()}
 
 // ---------------- teamnoden ----------------
@@ -694,7 +801,7 @@ function renderTeam(){
   const sorted=[...S].sort((a,b)=>b.nood-a.nood||a.m-b.m),gt=[...S].sort((a,b)=>b.goals-a.goals)[0];
   const scope=cl?`cluster ${cl}`:"het centrum";
   $("#tKpi").innerHTML=`<div class="kpi"><span>POP's ingevuld</span><b>${done.length}/${sel.length}</b><small>${sel.length-done.length} nog open</small></div>
-   <div class="kpi"><span>POP-gesprek gevoerd</span><b>${sel.filter(p=>p.st==="gesprek").length}</b><small>van ${sel.length} lesgevers</small></div>
+   <div class="kpi"><span>Coachingsgesprek gevoerd</span><b>${sel.filter(p=>p.st==="gesprek").length}</b><small>van ${sel.length} lesgevers</small></div>
    <div class="kpi warn"><span>Grootste nood</span><b>Kwaliteitsvol · ${QSHORT[sorted[0].i]}</b><small>${Math.round(sorted[0].nood*100)}% op "nog niet" of "soms"</small></div>
    <div class="kpi"><span>Meest gekozen groeidoel</span><b>${QSHORT[gt.i]}</b><small>${gt.goals} ${gt.goals===1?"lesgever":"lesgevers"}</small></div>`;
   $("#tHeat").innerHTML=`<span></span>${[1,2,3,4].map(n=>`<span class="hh">Vraag ${n}</span>`).join("")}`+BOUW.map(b=>{
