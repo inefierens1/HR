@@ -2,7 +2,7 @@
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700&display=swap">
 <style>
-/* Layout: intranet-app met tabbalk; tijdlijn als hexagonketen (horizontaal op desktop, verticaal op gsm), POP als spinnenweb naast zelfreflectie. */
+/* Layout: intranet-app met tabbalk; tijdlijn als hexagonketen (horizontaal op desktop, verticaal op gsm), POP als kompasrij per bouwsteen naast de uitspraken. */
 :root{
   --bg:#f7f8f6; --surface:#ffffff; --surface-2:#eef0ed; --line:#dfe3df;
   --fg:#1b1f1e; --fg-soft:#5b6362; --title:#4d5554;
@@ -86,7 +86,7 @@ table.simple td{padding:7px 8px;border-bottom:1px solid var(--line);vertical-ali
 /* tijdlijn */
 .tlbar{display:flex;gap:10px 18px;flex-wrap:wrap;align-items:center;margin-bottom:16px}
 .legend{display:flex;gap:6px;flex-wrap:wrap;margin-left:auto}
-.timeline{position:relative;display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:8px;padding-top:6px}
+.timeline{position:relative;display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:8px;padding-top:6px}
 .timeline::before{content:"";position:absolute;left:7%;right:7%;top:38px;height:3px;background:var(--line);border-radius:2px}
 .stage{position:relative;background:transparent;border:0;padding:0;display:flex;flex-direction:column;align-items:center;gap:6px;text-align:center;font-weight:400}
 .stage .hx{width:64px;height:72px;display:grid;place-items:center;background:var(--hex);clip-path:polygon(50% 0,100% 25%,100% 75%,50% 100%,0 75%,0 25%);font-weight:700;font-size:1.25rem;color:var(--fg);transition:transform .15s}
@@ -110,6 +110,14 @@ table.simple td{padding:7px 8px;border-bottom:1px solid var(--line);vertical-ali
 .sphead{display:flex;gap:10px 16px;flex-wrap:wrap;align-items:baseline}
 .sphead .why{color:var(--fg-soft);font-size:.9rem;max-width:80ch}
 .forms{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:12px}
+.subh{margin:4px 0 0;font-size:.78rem;text-transform:uppercase;letter-spacing:.08em;color:var(--fg-soft)}
+.flow{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px}
+.flow li{border:1px solid var(--line);border-radius:var(--r);padding:10px 12px;display:flex;gap:10px;align-items:flex-start;background:var(--surface-2)}
+.flow li.dec{border-color:var(--warn);background:var(--warn-bg)}
+.flow .fn{flex:none;width:26px;height:29px;display:grid;place-items:center;background:var(--hex);clip-path:polygon(50% 0,100% 25%,100% 75%,50% 100%,0 75%,0 25%);font-weight:700;font-size:.8rem}
+.flow b{display:block;font-size:.9rem}
+.flow span.d{font-size:.84rem;color:var(--fg-soft)}
+.qbox{border-left:4px solid var(--rood);padding:8px 14px;background:var(--surface);display:flex;flex-direction:column;gap:8px}
 .fcard{border:1px solid var(--line);border-radius:var(--r);padding:12px 14px;display:flex;flex-direction:column;gap:8px;background:var(--surface)}
 .fcard .t{font-weight:700;display:flex;gap:8px;align-items:flex-start;justify-content:space-between}
 .fcard .meta{display:flex;gap:5px;flex-wrap:wrap}
@@ -128,84 +136,124 @@ table.simple td{padding:7px 8px;border-bottom:1px solid var(--line);vertical-ali
 .ylegend span{display:inline-flex;gap:6px;align-items:center}
 .ylegend i{width:12px;height:12px;border-radius:2px;display:inline-block}
 
-/* POP */
-.popgrid{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:20px;align-items:start}
+/* POP en teamnoden */
+.popgrid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.15fr);gap:20px;align-items:start}
 @media (max-width:950px){.popgrid{grid-template-columns:1fr}}
-.radarwrap{position:sticky;top:110px}
-.radar svg{width:100%;height:auto;display:block;max-width:560px;margin:0 auto}
-.radar .ring{fill:none;stroke:var(--grid)}
-.radar .spoke{stroke:var(--grid)}
-.radar .lvl{fill:var(--fg-soft);font-size:10px}
-.radar .ax{fill:var(--fg);font-size:12.5px;font-weight:600;cursor:pointer}
-.radar .ax.sel{fill:var(--ok);font-weight:700}
-.radar .goalmark{fill:var(--ok)}
-.series-zelf{fill:color-mix(in srgb,var(--s-zelf) 18%,transparent);stroke:var(--s-zelf);stroke-width:2.2}
-.series-gesprek{fill:color-mix(in srgb,var(--s-gesprek) 14%,transparent);stroke:var(--s-gesprek);stroke-width:2.2;stroke-dasharray:6 4}
-.series-vorig{fill:none;stroke:var(--s-vorig);stroke-width:1.6;stroke-dasharray:2 4}
-.pt-zelf{fill:var(--s-zelf)} .pt-gesprek{fill:var(--s-gesprek)} .pt-vorig{fill:var(--s-vorig)}
-.chips{display:flex;gap:6px;flex-wrap:wrap;justify-content:center}
-.chips label{font-weight:500;display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);border-radius:999px;padding:4px 12px;cursor:pointer;font-size:.85rem}
-.chips input{margin:0;accent-color:var(--accent)}
-.sw{width:18px;height:0;border-top:3px solid}
-.sw.zelf{border-color:var(--s-zelf)} .sw.gesprek{border-color:var(--s-gesprek);border-top-style:dashed} .sw.vorig{border-color:var(--s-vorig);border-top-style:dotted}
-.scale{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;font-size:.78rem}
-.scale div{background:var(--surface-2);border-radius:6px;padding:6px 8px}
-.scale b{display:block;font-size:.82rem}
-.axrow{border:1px solid var(--line);border-radius:var(--r);padding:10px 12px;display:flex;flex-direction:column;gap:6px;background:var(--surface)}
-.axrow.goal{border-color:var(--ok);box-shadow:0 0 0 1px var(--ok)}
-.axrow .h{display:flex;gap:8px;align-items:baseline;flex-wrap:wrap}
-.axrow .h b{color:var(--title)}
-.axrow .h .val{margin-left:auto;font-variant-numeric:tabular-nums;font-weight:700;color:var(--s-zelf);white-space:nowrap}
-.axrow input[type=range]{width:100%;accent-color:var(--s-zelf)}
-.axrow .goalchk{font-weight:500;font-size:.82rem;display:inline-flex;gap:6px;align-items:center}
-.axlist{display:flex;flex-direction:column;gap:8px}
-.goalbox{border-left:4px solid var(--ok);background:var(--surface);border-radius:0 var(--r) var(--r) 0;padding:12px 14px;display:flex;flex-direction:column;gap:10px}
+.steps{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}
+.steps span{font-size:.8rem;font-weight:700;padding:4px 10px;border-radius:999px;background:var(--surface-2);color:var(--fg-soft)}
+.steps span.on{background:var(--accent);color:var(--accent-fg)}
+.bchip{display:inline-flex;align-items:center;gap:6px;font-weight:700;font-size:.88rem;color:var(--bt);background:color-mix(in srgb,var(--bc) 14%,var(--surface));border:1.5px solid var(--bc);border-radius:999px;padding:3px 12px 3px 9px;white-space:nowrap}
+.bchip i{width:11px;height:12px;background:var(--bc);clip-path:polygon(50% 0,100% 25%,100% 75%,50% 100%,0 75%,0 25%)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .bchip{color:var(--bc)}}
+:root[data-theme="dark"] .bchip{color:var(--bc)}
+.krows{display:flex;flex-direction:column;gap:4px}
+.krow{display:grid;grid-template-columns:215px minmax(0,1fr);gap:10px;align-items:center;padding:8px 10px;border-radius:var(--r);border:1.5px solid transparent;background:none;width:100%;text-align:left;font-weight:400}
+.krow:hover{background:var(--surface-2)}
+.krow .bchip{justify-self:start}
+.krow[aria-pressed="true"]{border-color:var(--bc);background:color-mix(in srgb,var(--bc) 8%,var(--surface))}
+@media (max-width:520px){.krow{grid-template-columns:1fr}}
+.kcells{display:flex;gap:12px;flex-wrap:wrap;align-items:center;min-width:0}
+.kgrp{display:flex;gap:3px;align-items:center}
+.kgrp small{font-size:.68rem;color:var(--fg-soft);margin-right:4px;text-transform:uppercase;letter-spacing:.05em;font-weight:700}
+.kh{width:24px;height:27px;clip-path:polygon(50% 0,100% 25%,100% 75%,50% 100%,0 75%,0 25%);display:inline-grid;place-items:center;font-size:.7rem;font-weight:700;color:var(--fg-soft);background:var(--surface-2)}
+.kh.v1{background:color-mix(in srgb,var(--bc) 22%,var(--surface));color:var(--fg)}
+.kh.v2{background:color-mix(in srgb,var(--bc) 55%,var(--surface));color:var(--fg)}
+.kh.v3{background:var(--bc);color:var(--fg)}
+.kh.v4{background:var(--bt);color:#fff}
+.kopm{font-size:.82rem;color:var(--fg-soft)}
+.klegend{display:flex;gap:12px;flex-wrap:wrap;font-size:.8rem;color:var(--fg-soft);align-items:center;margin-top:10px}
+.klegend span{display:inline-flex;gap:5px;align-items:center}
+.klegend .kh{width:14px;height:16px}
+.colh{font-size:.74rem;text-transform:uppercase;letter-spacing:.07em;color:var(--fg-soft);font-weight:700;margin-top:4px}
+.stmt{border:1px solid var(--line);border-radius:var(--r);padding:12px;display:flex;flex-direction:column;gap:8px;background:var(--surface)}
+.stmt.goal{border-color:var(--bc);box-shadow:0 0 0 1px var(--bc)}
+.stmt .q{display:flex;gap:8px;align-items:baseline;flex-wrap:wrap}
+.stmt .q b{color:var(--title)}
+.stmt .txt{font-size:.92rem}
+.tagw{font-size:.72rem;font-weight:700;padding:1px 7px;border-radius:999px;background:var(--warn-bg);color:var(--warn);white-space:nowrap}
+.goalchk{font-weight:500;font-size:.82rem;display:inline-flex;gap:6px;align-items:center}
+.lv{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:4px}
+.lv label{font-weight:500;font-size:.78rem;border:1px solid var(--line);border-radius:6px;padding:6px;cursor:pointer;text-align:center;line-height:1.2}
+.lv input{position:absolute;opacity:0;pointer-events:none}
+.lv label:has(input:checked){background:var(--bc);color:#fff;border-color:var(--bc);font-weight:700}
+.lv label:has(input:focus-visible){outline:2px solid var(--info)}
+@media (max-width:480px){.lv{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.dhead{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+table.komp{border-collapse:collapse;width:100%;min-width:680px;font-size:.84rem}
+table.komp th,table.komp td{border:1px solid var(--line);padding:8px 10px;vertical-align:top;text-align:left}
+table.komp thead th{background:color-mix(in srgb,var(--bc) 30%,var(--surface));color:var(--title)}
+table.komp thead th small,table.komp tbody th small{display:block;font-weight:400;color:var(--fg-soft);font-style:italic}
+table.komp tbody th{background:color-mix(in srgb,var(--bc) 18%,var(--surface));width:200px;color:var(--title)}
+table.komp td.mine{background:color-mix(in srgb,var(--bc) 12%,var(--surface));box-shadow:inset 3px 0 0 var(--bc)}
+.goalbox{border-left:4px solid var(--bc,var(--ok));background:var(--surface);border-radius:0 var(--r) var(--r) 0;padding:12px 14px;display:flex;flex-direction:column;gap:10px}
 .goalbox .row2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
 @media (max-width:600px){.goalbox .row2{grid-template-columns:1fr}}
-.lv{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:4px}
-.lv label{font-weight:500;font-size:.78rem;border:1px solid var(--line);border-radius:6px;padding:5px 6px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:1px;text-align:center;line-height:1.2}
-.lv label b{font-size:.95rem}
-.lv input{position:absolute;opacity:0;pointer-events:none}
-.lv label:has(input:checked){background:var(--s-zelf);color:var(--surface);border-color:var(--s-zelf)}
-.lv label:has(input:focus-visible){outline:2px solid var(--info)}
-.ind{font-size:.85rem;color:var(--fg);background:var(--surface-2);border-radius:6px;padding:6px 10px}
-@media (max-width:480px){.lv{grid-template-columns:repeat(2,minmax(0,1fr))}}
-:root{--l3:color-mix(in srgb,var(--ok) 55%,var(--surface))}
-.series-team{fill:color-mix(in srgb,var(--s-zelf) 20%,transparent);stroke:var(--s-zelf);stroke-width:2.4}
-.series-centrum{fill:none;stroke:var(--s-vorig);stroke-width:1.8;stroke-dasharray:5 4}
-.pt-team{fill:var(--s-zelf)}
 .kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px}
 .kpi{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:12px 14px;display:flex;flex-direction:column;gap:2px}
 .kpi span{font-size:.74rem;text-transform:uppercase;letter-spacing:.06em;color:var(--fg-soft);font-weight:700}
-.kpi b{font-size:1.3rem;color:var(--title);font-variant-numeric:tabular-nums}
+.kpi b{font-size:1.15rem;color:var(--title);font-variant-numeric:tabular-nums}
 .kpi small{color:var(--fg-soft);font-size:.82rem}
 .kpi.warn{border-left:4px solid var(--warn)}
+.hm{display:grid;grid-template-columns:150px repeat(4,minmax(70px,1fr));gap:4px;font-size:.84rem;min-width:560px;align-items:stretch}
+.hm .hh{font-size:.72rem;text-transform:uppercase;letter-spacing:.05em;color:var(--fg-soft);font-weight:700;padding:4px 6px}
+.hm .hc{border-radius:6px;padding:8px 6px;text-align:center;font-weight:700;font-variant-numeric:tabular-nums;display:flex;flex-direction:column;gap:1px}
+.hm .hc small{font-weight:400;font-size:.72rem}
+.hm .open{grid-column:span 4;border:1px dashed var(--line);border-radius:6px;padding:8px 10px;color:var(--fg-soft);font-size:.82rem}
 .dist{display:flex;flex-direction:column;gap:10px}
-.drow{display:grid;grid-template-columns:170px minmax(0,1fr) 36px;gap:10px;align-items:center;font-size:.88rem}
-@media (max-width:600px){.drow{grid-template-columns:110px minmax(0,1fr) 32px}}
+.drow{display:grid;grid-template-columns:170px minmax(0,1fr) 44px;gap:10px;align-items:center;font-size:.88rem}
+@media (max-width:600px){.drow{grid-template-columns:110px minmax(0,1fr) 40px}}
 .dname{font-weight:600;min-width:0}
 .star{color:var(--warn);font-weight:700;font-size:.8rem}
 .dbar{display:flex;height:16px;border-radius:4px;overflow:hidden;background:var(--surface-2)}
 .dbar i{display:block;height:100%}
 .dval{font-variant-numeric:tabular-nums;font-weight:700;text-align:right}
-.dlegend{display:flex;gap:12px;flex-wrap:wrap;font-size:.8rem;color:var(--fg-soft);margin-top:6px}
-.dlegend span{display:inline-flex;gap:5px;align-items:center}
-.dlegend i{width:12px;height:12px;border-radius:2px;display:inline-block}
-table.heat{border-collapse:collapse;width:100%;font-size:.85rem;min-width:760px}
+table.heat{border-collapse:collapse;width:100%;font-size:.85rem;min-width:640px}
 table.heat th{font-size:.72rem;text-transform:uppercase;letter-spacing:.04em;color:var(--fg-soft);padding:6px;border-bottom:1px solid var(--line);text-align:left;white-space:nowrap}
 table.heat td{padding:6px;border-bottom:1px solid var(--line);vertical-align:middle}
-td.hc{text-align:center;font-weight:700;font-variant-numeric:tabular-nums;width:56px}
-td.l1{background:var(--bad-bg);color:var(--bad)} td.l2{background:var(--warn-bg);color:var(--warn)} td.l3{background:var(--ok-bg);color:var(--ok)} td.l4{background:var(--ok);color:var(--surface)}
-.steps{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}
-.steps span{font-size:.8rem;font-weight:700;padding:4px 10px;border-radius:999px;background:var(--surface-2);color:var(--fg-soft)}
-.steps span.on{background:var(--accent);color:var(--accent-fg)}
+td.lc{text-align:center;font-weight:700;width:92px;font-size:.78rem}
+td.lc1{background:color-mix(in srgb,var(--bc) 22%,var(--surface))} td.lc2{background:color-mix(in srgb,var(--bc) 55%,var(--surface))} td.lc3{background:var(--bc);color:#1b1f1e} td.lc4{background:var(--bt);color:#fff}
+.logo{background:#fff;border-radius:6px;padding:4px 8px;display:inline-flex;align-items:center;flex:none}
+.logo img{height:38px;width:auto;display:block}
+.ptitle{display:flex;flex-direction:column;line-height:1.25}
+.ptitle b{color:var(--title);font-size:1rem}
+.ptitle span{color:var(--fg-soft);font-size:.85rem}
+.vizcard{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:20px;display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:24px;align-items:start}
+@media (max-width:900px){.vizcard{grid-template-columns:1fr}}
+.vizcard h3{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.vizcard .nr{display:inline-grid;place-items:center;width:30px;height:34px;background:var(--hex);clip-path:polygon(50% 0,100% 25%,100% 75%,50% 100%,0 75%,0 25%);font-weight:700;font-size:.9rem;color:var(--fg)}
+.vizinfo{display:flex;flex-direction:column;gap:12px;font-size:.92rem;min-width:0}
+.vizinfo h4{margin:0 0 3px;font-size:.74rem;text-transform:uppercase;letter-spacing:.08em;color:var(--fg-soft)}
+.vizinfo .pc{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media (max-width:520px){.vizinfo .pc{grid-template-columns:1fr}}
+.vizinfo .plus{border-left:3px solid var(--ok);padding-left:10px}
+.vizinfo .min{border-left:3px solid var(--warn);padding-left:10px}
+.vizinfo ul{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:3px}
+.vizfig svg{width:100%;height:auto;display:block;max-width:520px;margin:0 auto}
+.vleg{display:flex;gap:14px;flex-wrap:wrap;justify-content:center;font-size:.82rem;color:var(--fg-soft);margin-top:8px}
+.vleg span{display:inline-flex;gap:6px;align-items:center}
+.ln{width:20px;border-top:3px solid}
+.rring{fill:none;stroke:var(--grid)} .rspoke{stroke:var(--grid)} .rlvl{fill:var(--fg-soft);font-size:10px} .rax{fill:var(--fg);font-size:12.5px;font-weight:600}
+.rz{fill:color-mix(in srgb,var(--s-zelf) 18%,transparent);stroke:var(--s-zelf);stroke-width:2.4}
+.rg{fill:none;stroke:var(--s-gesprek);stroke-width:2.2;stroke-dasharray:6 4}
+.rv{fill:none;stroke:var(--s-vorig);stroke-width:1.8;stroke-dasharray:2 4}
+.gl{display:flex;flex-direction:column;gap:12px}
+.glr{display:grid;grid-template-columns:130px minmax(0,1fr);gap:10px;align-items:center}
+.gltrack{position:relative;height:28px}
+.gltrack .base{position:absolute;left:0;right:0;top:13px;height:3px;background:var(--line);border-radius:2px}
+.gltrack .tick{position:absolute;top:8px;width:1px;height:13px;background:var(--line)}
+.gltrack .arr{position:absolute;top:13px;height:3px;border-radius:2px}
+.gltrack .m{position:absolute;top:6px;width:16px;height:16px;margin-left:-8px;border-radius:50%}
+.glscale{display:grid;grid-template-columns:130px minmax(0,1fr);gap:10px;font-size:.74rem;color:var(--fg-soft)}
+.glscale div{display:flex;justify-content:space-between}
+.hon text{font-size:13px}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .hon tspan[font-weight]{fill:currentColor}}
 </style>
 
 <header class="top">
   <div class="wrap">
     <div class="brand">
-      <svg viewBox="0 0 100 115" aria-hidden="true"><polygon points="50,2 95,28 95,87 50,113 5,87 5,28" fill="#4a4247"/><polygon points="50,2 95,28 50,54 5,28" fill="#a28790"/><polygon points="50,54 95,28 95,87 50,113" fill="#889a91"/></svg>
-      <div><b>Crescendo CVO</b><br><span>Personeelsdatabank · Tijdlijn personeelspraktijken</span></div>
+      <span class="logo"><img src="data:image/png;base64,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" alt="Crescendo CVO, centrum voor volwassenenonderwijs"></span>
+      <div class="ptitle"><b>Personeelsdatabank</b><span>Tijdlijn personeelspraktijken</span></div>
       <span class="demo">Prototype · voorbeelddata</span>
     </div>
     <nav class="tabs" aria-label="Schermen">
@@ -260,32 +308,42 @@ td.l1{background:var(--bad-bg);color:var(--bad)} td.l2{background:var(--warn-bg)
   <div class="intro">
     <span class="who">Persoonlijk ontwikkelingsplan · in de personeelsdatabank</span>
     <h2>POP: waar sta ik, waar wil ik naartoe?</h2>
-    <p>De medewerker scoort zichzelf op de zes bouwstenen of op de competenties. Het spinnenweb toont die zelfreflectie naast de inschatting uit het gesprek en de score van vorig jaar. Kies één of twee groeidoelen en koppel ze aan het traject van die bouwsteen, op jouw niveau. Per bouwsteen kies je het niveau dat het best bij je praktijk past; elk niveau heeft een eigen ik-uitspraak.</p>
+    <p>Het POP vertrekt van het minimumkompas van elke bouwsteen. Je functie bepaalt welke kolom van het kompas jouw minimum is: in de klas, in de opleiding of in het centrum. Voor leidinggevenden komt daar de visietekst personeelsbeleid bij. Bij elke uitspraak kies je wat voor jou klopt, en je kiest één of twee groeidoelen.</p>
   </div>
   <div class="steps" aria-label="Verloop POP"><span class="on">1 Zelfreflectie</span><span class="on">2 Groeidoelen</span><span>3 POP-gesprek</span><span>4 Acties en opvolging</span><span>5 Terugblik einde schooljaar</span></div>
   <div class="tlbar">
-    <div class="seg" role="group" aria-label="Kader">
-      <button data-frame="bouw" aria-pressed="true">6 bouwstenen</button>
-      <button data-frame="comp" aria-pressed="false">Competenties</button>
+    <div class="f" style="min-width:240px"><label for="pFunc">Mijn functie</label><select id="pFunc"><option value="lk">Lesgever</option><option value="oc">Opleidingscoördinator (geeft ook les)</option><option value="ad">Adjunct-directeur</option></select></div>
+    <div class="seg" role="group" aria-label="Welke scores">
+      <button data-pbron="zelf" aria-pressed="true">Mijn zelfreflectie</button>
+      <button data-pbron="gesprek" aria-pressed="false">Na het POP-gesprek</button>
     </div>
-    <span class="hint">Voorbeeld: Sofie Van Damme, lesgever NT2 · schooljaar 2026-2027</span>
+    <span class="hint" id="pWho"></span>
+    <button type="button" class="small" id="toViz" style="margin-left:auto">Vier weergaven vergelijken ↓</button>
   </div>
   <div class="popgrid">
-    <div class="panel radarwrap">
-      <div class="radar" id="radar"></div>
-      <div class="chips" id="seriesChips">
-        <label><input type="checkbox" data-s="zelf" checked><span class="sw zelf"></span>Zelfreflectie</label>
-        <label><input type="checkbox" data-s="gesprek" checked><span class="sw gesprek"></span>Na het POP-gesprek</label>
-        <label><input type="checkbox" data-s="vorig" checked><span class="sw vorig"></span>Vorig schooljaar</label>
-      </div>
-      <div class="scale" id="scale"></div>
+    <div class="panel">
+      <h3>Mijn kompas in één oogopslag</h3>
+      <p class="hint">Elke zeshoek is één kompasvraag. Hoe voller de kleur, hoe vaster het in je praktijk zit. Klik op een rij om de uitspraken te zien.</p>
+      <div class="krows" id="kOverview"></div>
+      <div class="klegend" style="--bc:#97b4ae;--bt:#648780"><span><i class="kh"></i>nog niet ingevuld</span><span><i class="kh v1"></i>nog niet</span><span><i class="kh v2"></i>soms</span><span><i class="kh v3"></i>vast in mijn praktijk</span><span><i class="kh v4"></i>ik help anderen</span><span>★ groeidoel</span></div>
+      <p class="hint" id="pVisieNote"></p>
     </div>
-    <div style="display:flex;flex-direction:column;gap:14px;min-width:0">
-      <div class="axlist" id="axlist"></div>
-      <div id="goals" style="display:flex;flex-direction:column;gap:12px"></div>
-      <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center"><button class="primary" id="popSave">Bewaar en plan POP-gesprek</button><span class="hint">Zichtbaar voor jou en je leidinggevende of coach.</span></div>
-    </div>
+    <div id="kDetail" style="display:flex;flex-direction:column;gap:12px;min-width:0"></div>
   </div>
+  <div class="panel" style="margin-top:20px" id="kFullPanel">
+    <div style="display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;align-items:baseline"><h3 id="kFullTitle"></h3><span class="hint">Je eigen kolom is gemarkeerd. Zo zie je ook wat in de opleiding en in het centrum verwacht wordt.</span></div>
+    <div class="scroll" id="kFull"></div>
+  </div>
+  <div id="goals" style="display:flex;flex-direction:column;gap:12px;margin-top:20px"></div>
+  <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:14px"><button class="primary" id="popSave">Bewaar en plan POP-gesprek</button><span class="hint">Zichtbaar voor jou en je leidinggevende of coach.</span></div>
+  <section class="vizsec" id="vizOpties" aria-labelledby="vizTitle">
+    <div class="intro" style="margin-top:36px">
+      <span class="who">Om samen te beslissen</span>
+      <h2 id="vizTitle">Welke weergave kiezen we voor het POP?</h2>
+      <p>Vier manieren om dezelfde zelfreflectie te tonen, onder elkaar. Ze gebruiken allemaal dezelfde fictieve scores van één lesgever op de zes bouwstenen, alsof alle kompassen al klaar zijn. Zo vergelijk je de weergave, niet de cijfers.</p>
+    </div>
+    <div id="vizList" style="display:flex;flex-direction:column;gap:20px"></div>
+  </section>
 </section>
 
 <!-- ============ 4. TEAMNODEN ============ -->
@@ -293,26 +351,26 @@ td.l1{background:var(--bad-bg);color:var(--bad)} td.l2{background:var(--warn-bg)
   <div class="intro">
     <span class="who">Voor de adjunct en de directie · uit alle POP's samen</span>
     <h2>Waar liggen de grootste professionaliseringsnoden?</h2>
-    <p>De POP's van een cluster of van het hele centrum samen. Het spinnenweb toont het gemiddelde naast dat van het centrum. De balken tonen hoeveel lesgevers op elk niveau staan. Zo zie je meteen welke bouwsteen het meest aandacht vraagt en welk traject daarop antwoordt.</p>
+    <p>De POP's van een cluster of van het hele centrum samen, per kompasvraag. Zo zie je niet alleen welke bouwsteen aandacht vraagt, maar ook welk onderdeel: bij Kwaliteitsvol het doel, de leeractiviteit, de evaluatie of de volgende stap.</p>
   </div>
   <div class="tlbar">
     <div class="f" style="min-width:220px"><label for="tCl">Bekijk</label><select id="tCl"></select></div>
-    <div class="seg" role="group" aria-label="Kader teamnoden">
-      <button data-tframe="bouw" aria-pressed="true">6 bouwstenen</button>
-      <button data-tframe="comp" aria-pressed="false">Competenties</button>
-    </div>
     <div class="f" style="min-width:200px"><label for="tBron">Scores</label><select id="tBron"><option value="zelf">Zelfreflectie</option><option value="gesprek">Na het POP-gesprek</option></select></div>
   </div>
   <div class="kpis" id="tKpi"></div>
-  <div class="two" style="margin-top:16px">
-    <div class="panel"><div class="radar" id="tRadar"></div><div class="chips" id="tLegend"></div></div>
-    <div class="panel">
-      <h3>Verdeling per niveau <span class="hint">· gesorteerd op nood</span></h3>
-      <div class="dist" id="tDist"></div>
-      <div class="dlegend"><span><i style="background:var(--bad)"></i>1 Ontdekken</span><span><i style="background:var(--warn)"></i>2 Ontwikkelen</span><span><i style="background:var(--l3)"></i>3 Beheersen</span><span><i style="background:var(--ok)"></i>4 Inspireren</span><span>★ = gekozen als groeidoel</span></div>
-    </div>
+  <div class="panel" style="margin-top:16px">
+    <h3>Noden per bouwsteen en kompasvraag</h3>
+    <p class="hint">Percentage lesgevers op "nog niet" of "soms" in de kolom "In de klas". Hoe donkerder, hoe groter de nood.</p>
+    <div class="scroll"><div class="hm" id="tHeat"></div></div>
   </div>
-  <div class="panel" style="margin-top:20px" id="tConcl"></div>
+  <div class="two" style="margin-top:20px">
+    <div class="panel">
+      <h3>Kwaliteitsvol: verdeling per kompasvraag</h3>
+      <div class="dist" id="tDist"></div>
+      <div class="klegend" style="--bc:#97b4ae;--bt:#648780"><span><i class="kh v1"></i>nog niet</span><span><i class="kh v2"></i>soms</span><span><i class="kh v3"></i>vast in mijn praktijk</span><span><i class="kh v4"></i>ik help anderen</span><span>★ = gekozen als groeidoel</span></div>
+    </div>
+    <div class="panel" id="tConcl"></div>
+  </div>
   <div class="panel" style="margin-top:20px" id="tPeople"></div>
 </section>
 
@@ -342,22 +400,22 @@ td.l1{background:var(--bad-bg);color:var(--bad)} td.l2{background:var(--warn-bg)
         <h3>POP: gegevens</h3>
         <ul class="hex">
           <li>Per medewerker per schooljaar één POP-item.</li>
-          <li>Scores 1–4 per bouwsteen en per competentie, telkens twee keer: zelfreflectie en na het gesprek. De score van vorig jaar komt uit het vorige item.</li>
+          <li>Per kompasvraag een niveau (nog niet, soms, vast in mijn praktijk, ik help anderen), enkel voor de kolom(men) van de eigen functie: lesgever = in de klas, coördinator = in de klas en in de opleiding, adjunct = in het centrum. Telkens twee keer: zelfreflectie en na het gesprek.</li><li>Voor leidinggevenden ook een niveau per uitspraak uit de visietekst personeelsbeleid.</li>
           <li>Per groeidoel: as, doel, acties met leervorm (leerpad van de bouwsteen, vakgroep-intervisie, externe nascholing, collegiaal leren), timing.</li>
-          <li>Spinnenweb als grafiek op het item (bv. een radargrafiek in Power Apps, of een webonderdeel).</li>
+          <li>Overzicht als kompasrij: per bouwsteen één zeshoek per kompasvraag, ingekleurd volgens niveau, in de kleur van de bouwsteen. Geen spinnenweb.</li>
           <li><b>Toegang:</b> de medewerker en zijn leidinggevende of coach. De adjunct ziet in Teamnoden de POP's van de lesgevers van zijn eigen cluster(s). Andere adjuncten zien die niet.</li>
           <li><b>Teamnoden op centrumniveau:</b> enkel gemiddelden en verdelingen, nooit namen. Een groep van minder dan 5 ingevulde POP's wordt niet apart getoond.</li>
-          <li>Ik-uitspraken per niveau en per bouwsteen in een aparte lijst, zodat de trekkers ze zelf kunnen bijwerken.</li>
-          <li>Anonieme optelling per team (gemiddelde per bouwsteen, gekozen groeidoelen) voedt het professionaliseringsplan (P4).</li>
+          <li>De kompassen (vraag × kolom) en de visieteksten in een aparte lijst, zodat bouwsteenteams en directie ze zelf bijwerken. Een bouwsteen zonder kompas toont "kompas in opmaak".</li>
+          <li>Anonieme optelling per team (aandeel op "nog niet" of "soms" per kompasvraag, gekozen groeidoelen) voedt het professionaliseringsplan (P4).</li>
         </ul>
       </div>
     </div>
     <div class="panel">
       <h3>Open vragen</h3>
       <ul class="hex">
-        <li><b>Schaal 1–4.</b> Ik stel ontdekken, ontwikkelen, beheersen, inspireren voor, in lijn met de ontwikkelingsschalen van de inspectie. Akkoord, of een eigen schaal?</li>
-        <li><b>Omschrijving per bouwsteen.</b> Nu kort, op basis van de thema's van de bouwsteenteams. Best laten nalezen door de trekkers.</li>
-        <li><b>Competenties.</b> Nu de vaste selectie uit de VDAB-vacature (persoonsgebonden en jobgerelateerd). Een aparte set voor administratieve medewerkers en ICT nodig?</li>
+        <li><b>Niveaus.</b> Voorstel: nog niet, soms, vast in mijn praktijk, ik help anderen. Akkoord?</li>
+        <li><b>Kompassen.</b> Enkel Kwaliteitsvol is uitgewerkt (eerste voorzet). De andere vijf volgen via de bouwsteenteams.</li>
+        <li><b>Visieteksten per functie.</b> Welke visietekst is het minimum voor administratieve medewerkers, ICT, trajectbegeleiders en zorgcoaches? De competenties uit het competentiewoordenboek vallen weg.</li>
         <li><b>Wanneer het POP-gesprek?</b> Voorstel: zelfreflectie in september en oktober, gesprek voor de herfstvakantie, terugblik in juni. Te bespreken op de directiedag van 5 januari (P4).</li>
         <li><b>Verhouding POP en functioneringsgesprek.</b> Het POP is van de medewerker en gaat over groei; functioneren en evalueren gebeurt in de HR-tool. Mag de HR-tool naar het POP verwijzen?</li>
       </ul>
@@ -389,14 +447,26 @@ const STAGES=[
  {n:"Opdracht",pr:"Praktijk 2 · P1",why:"Elk schooljaar de desiderata opvragen. De juiste mensen op de juiste plaats, met oog voor sterke punten en talenten.",
   f:[{t:"Desiderata",st:"proto",w:"Personeelsdatabank",who:"Lesgever, adjunct",d:"Eén formulier voor alle clusters, elk jaar in maart.",own:"Ine & Marijke",link:"desiderata/",me:["plan","Open in maart 2027"]},
      {t:"Aanbodbevraging NT2",st:"ok",w:"Forms",who:"Lesgevers NT2",d:"Extra bevraging in april, enkel voor NT2.",me:["plan","April 2027"]},
-     {t:"Afsprakenkader afwezigheden en vervangingen",st:"todo",w:"SharePoint",who:"Directie",d:"Principes: kwaliteit, talenten, samenwerking, eerlijke verdeling, continuïteit.",me:["na","–"]},
      {t:"Functiebeschrijving",st:"dev",w:"SharePoint",who:"Directie",d:"Bestaande actualiseren, ontbrekende (ICT-profielen) aanvullen.",own:"Martine",me:["done","Functiebeschrijving lesgever"]}]},
+ {n:"Afwezigheid en vervanging",pr:"Praktijk 2 · P1",whyLbl:"Uit de P1-schaal",why:"Bij afwezigheden en vervangingen communiceren we transparant, zodat cursisten kwaliteitsvol onderwijs blijven krijgen. Iedereen weet wat hij moet doen en van wie hij wat hoort.",
+  flow:[["Lesgever meldt","Zo snel mogelijk, via één kanaal: welke lessen, verwachte duur, is er een taak voor de cursisten?"],
+        ["Automatische melding","Adjunct, opleidingscoördinator en secretariaat van de campus krijgen tegelijk bericht."],
+        ["Adjunct beslist","Kort (1 of 2 lessen): verplaatsen, inhalen of een opdracht op afstand. Langer: een vervanger zoeken.",1],
+        ["Cursisten verwittigd","Door één vaste persoon, via één vast kanaal, met een standaardbericht: wat gebeurt er met de les?"],
+        ["Vervanging en overdracht","Een collega die wil uitbreiden (desiderata) of iemand uit de wervingsreserve. Krijgt planning, materiaal en cursistenlijst."],
+        ["Terugkeer","Overdracht terug naar de lesgever. Bij langdurige afwezigheid volgt re-integratie (stap 7)."]],
+  vragen:["Via welk kanaal meldt een lesgever een afwezigheid, en tot wanneer (bv. 2 uur voor de les)?","Wie verwittigt de cursisten: secretariaat, opleidingscoördinator of adjunct? En via Teams, sms of Athenasoft?","Vanaf hoeveel lessen zoeken we een vervanger in plaats van te verplaatsen of in te halen?","Wie zoekt de vervanger, en in welke volgorde: eigen vakgroep, collega's die willen uitbreiden, wervingsreserve?","Wanneer mag een les online doorgaan of vervangen worden door een opdracht?","Welke overdracht krijgt een vervanger minimaal, en waar staat die?"],
+  f:[{t:"Afwezigheid melden",st:"todo",w:"Personeelsdatabank (voorstel)",who:"Lesgever",d:"Eén meldformulier in plaats van losse mails en telefoons. Verwittigt automatisch de juiste mensen.",me:["done","1 melding (ziekte, 6 okt)"]},
+     {t:"Cursisten verwittigen",st:"todo",w:"Nog te bepalen",who:"Secretariaat of opleidingscoördinator",d:"Standaardbericht: les vervalt, wordt vervangen, verplaatst of gaat online.",me:["done","Cursisten verwittigd op 6 okt"]},
+     {t:"Vervanging zoeken",st:"proto",w:"Personeelsdatabank",who:"Adjunct",d:"Zoeken bij collega's die willen uitbreiden (desiderata) en in de wervingsreserve.",link:"wervingsreserve/",me:["na","Niet nodig: les ingehaald"]},
+     {t:"Overdracht aan vervanger",st:"todo",w:"Teams of opleidingssite",who:"Lesgever of coördinator, vervanger",d:"Planning, lesmateriaal en cursistenlijst op één vaste plek.",me:["na","–"]},
+     {t:"Procedure afwezigheden en vervangingen",st:"dev",w:"SharePoint",who:"Directie",d:"Bestaande procedure herwerken. Principes: kwaliteit, talenten, samenwerking, eerlijke verdeling, continuïteit.",own:"Voorbereiding directiedag",me:["na","–"]}]},
  {n:"Functioneren en coaching",pr:"Praktijk 3 · P2",why:"Formele gesprekken én een actieve feedbackcultuur, met tweerichtingsverkeer. Evaluaties zijn geen momentopname maar een kans om te groeien.",
   f:[{t:"Functioneringsgesprek",st:"dev",w:"HR-tool",who:"Medewerker, leidinggevende",d:"Formulier in de HR-tool; uitwerking op de directiedag P2 (24 nov).",me:["plan","Gepland mei 2027"]},
      {t:"Coachings- en begeleidingsgesprek",st:"dev",w:"HR-tool",who:"Medewerker, coach",d:"Informeel en ontwikkelingsgericht.",me:["done","Gesprek 20 okt 2026"]},
      {t:"Evaluatiegesprek",st:"dev",w:"HR-tool",who:"Medewerker, evaluatoren",d:"Indien nodig; transparant, rechtvaardig en stimulerend.",me:["na","Niet van toepassing"]}]},
  {n:"Professionele ontwikkeling",pr:"Praktijk 4 · P4",why:"Leren met impact: geen losse druppels, maar trajecten vanuit de 6 bouwstenen, volgens de SILVER-aanpak, op drie niveaus en verankerd in de vakgroep.",
-  f:[{t:"POP",st:"proto",w:"Personeelsdatabank",who:"Medewerker, leidinggevende of coach",d:"Zelfreflectie op de 6 bouwstenen en competenties, met spinnenweb en groeidoelen.",own:"Ine",link:"tijdlijn/#pop",me:["plan","Zelfreflectie ingevuld, gesprek 5 nov"]},
+  f:[{t:"POP",st:"proto",w:"Personeelsdatabank",who:"Medewerker, leidinggevende of coach",d:"Zelfreflectie op het minimumkompas van elke bouwsteen, in de kolom van je functie, met groeidoelen.",own:"Ine",link:"tijdlijn/#pop",me:["plan","Zelfreflectie ingevuld, gesprek 5 nov"]},
      {t:"Leerpaden per bouwsteen (SILVER)",st:"dev",w:"SharePoint + Teams",who:"Lesgevers, begeleiders, directie",d:"Poolstervisie en Kwaliteitsvol uitgewerkt; de andere bouwstenen volgen het meerjarenplan 2026-2029.",own:"Bouwsteenteams",me:["plan","Poolstervisie vanaf feb 2027"]},
      {t:"Aanvraag externe nascholing",st:"ok",w:"HR-tool",who:"Medewerker, directie",d:"Gekozen vanuit een traject of een groeidoel in het POP.",me:["done","Nascholing NT2 alfa, 2 dec"]},
      {t:"Vakgroep-intervisie",st:"dev",w:"Vakgroep + Teams",who:"Vakgroep, opleidingscoördinator",d:"Met de intervisiekaart van het lopende traject, 20 tot 30 minuten, geen verslagplicht.",me:["plan","Na blok 2 Kwaliteitsvol"]},
@@ -415,14 +485,16 @@ function renderTimeline(){
   $$(".stage").forEach(b=>b.onclick=()=>{cur=+b.dataset.i;renderTimeline()});
   const s=STAGES[cur];
   $("#stagePanel").innerHTML=`<div class="sphead"><h3>${cur+1} · ${esc(s.n)}</h3><span class="tag">${esc(s.pr)}</span></div>
-   <p class="sphead"><span class="why"><b>Uit onze visie:</b> ${esc(s.why)}</span></p>
+   <p class="sphead"><span class="why"><b>${s.whyLbl||"Uit onze visie"}:</b> ${esc(s.why)}</span></p>
+   ${s.flow?`<h4 class="subh">Voorstel verloop</h4><ol class="flow">${s.flow.map((x,i)=>`<li class="${x[2]?"dec":""}"><span class="fn">${i+1}</span><div><b>${esc(x[0])}</b><span class="d">${esc(x[1])}</span></div></li>`).join("")}</ol><h4 class="subh">Formulieren</h4>`:""}
    ${view==="mw"?`<p class="hint">Weergave voor <b>Sofie Van Damme</b> (voorbeeld), lesgever NT2 sinds september 2026.</p>`:""}
    <div class="forms">${s.f.map(f=>`<div class="fcard"><div class="t"><span>${esc(f.t)}</span><span class="pill ${ST[f.st][0]}">${ST[f.st][1]}</span></div>
      <div class="meta"><span class="tag">${esc(f.w)}</span></div>
      <div class="d">${esc(f.d)}</div>
      <div class="d"><b>Wie:</b> ${esc(f.who)}${f.own?` · <b>uitwerking:</b> ${esc(f.own)}`:""}</div>
      ${f.link?(f.link==="tijdlijn/#pop"?`<a class="link" href="#pop">Open het POP →</a>`:`<a class="link" href="${GH+f.link}" target="_blank" rel="noopener">Open het prototype →</a>`):""}
-     ${view==="mw"?`<div class="mine ${f.me[0]}">${f.me[0]==="done"?"✓ ":f.me[0]==="plan"?"◷ ":""}${esc(f.me[1])}</div>`:""}</div>`).join("")}</div>`;
+     ${view==="mw"?`<div class="mine ${f.me[0]}">${f.me[0]==="done"?"✓ ":f.me[0]==="plan"?"◷ ":""}${esc(f.me[1])}</div>`:""}</div>`).join("")}</div>
+   ${s.vragen?`<div class="qbox"><h4 class="subh" style="margin:0">Te beslissen bij het herwerken van de procedure</h4><ul class="hex">${s.vragen.map(q=>`<li>${esc(q)}</li>`).join("")}</ul></div>`:""}`;
 }
 $$("[data-view]").forEach(b=>b.onclick=()=>{view=b.dataset.view;$$("[data-view]").forEach(x=>x.setAttribute("aria-pressed",x===b));renderTimeline()});
 
@@ -437,149 +509,212 @@ const EV=[
 $("#year").innerHTML=MONTHS.map(m=>`<div class="m">${m}</div>`).join("")+MONTHS.map((m,i)=>`<div style="display:flex;flex-direction:column;gap:4px">${EV.filter(e=>e[0]===i).map(e=>`<div class="ev ${e[1]}">${esc(e[2])}<small>${esc(e[3])}</small></div>`).join("")}</div>`).join("");
 
 // ---------------- POP ----------------
-const FRAMES={
- bouw:[
-  {k:"Kwaliteitsvol",d:"Doelgericht werken: heldere lesdoelen, evaluatie afgestemd op de doelen.",z:3,g:3,v:2},
-  {k:"Zorgzaam",d:"Oog voor elke cursist; gegevens over cursisten gebruiken om te ondersteunen.",z:2,g:3,v:2},
-  {k:"Levensecht",d:"Link met de praktijk: werkplekleren, soft skills, 21e-eeuwse vaardigheden.",z:3,g:3,v:3},
-  {k:"Betrokken",d:"Zelfregulerend leren: cursisten sturen mee hun eigen leerproces.",z:2,g:2,v:1},
-  {k:"Samen",d:"Vakgroepwerking: expertise delen, horizontaal en verticaal.",z:3,g:4,v:3},
-  {k:"Innovatief",d:"Digitale didactiek: digitale middelen doelgericht inzetten.",z:1,g:2,v:1}],
- comp:[
-  {k:"Coachen",d:"Persoonsgebonden",z:3,g:3,v:2},{k:"Digitaal denken",d:"Persoonsgebonden",z:2,g:2,v:1},{k:"Inleving",d:"Persoonsgebonden",z:4,g:4,v:3},
-  {k:"Samenwerken",d:"Persoonsgebonden",z:3,g:3,v:3},{k:"Klantgericht",d:"Persoonsgebonden",z:3,g:3,v:3},{k:"Plannen en organiseren",d:"Persoonsgebonden",z:2,g:2,v:2},
-  {k:"Leermiddelen uitwerken",d:"Jobgerelateerd",z:2,g:3,v:2},{k:"Lessen voorbereiden",d:"Jobgerelateerd",z:3,g:3,v:3},{k:"Leerprocessen differentiëren",d:"Jobgerelateerd",z:2,g:2,v:1},
-  {k:"Leerresultaten evalueren",d:"Jobgerelateerd",z:2,g:3,v:2},{k:"Werkadministratie bijhouden",d:"Jobgerelateerd",z:3,g:3,v:3}]};
-const LVL=["Ontdekken","Ontwikkelen","Beheersen","Inspireren"];
-const LVLD=["Ik maak er kennis mee","Ik pas het soms toe","Ik pas het vlot en bewust toe","Ik inspireer collega's"];
-const IND={
- "Kwaliteitsvol":["Ik werk vooral vanuit de leerstof; doelen blijven impliciet.","Ik benoem soms het lesdoel; mijn evaluatie sluit er niet altijd bij aan.","Ik formuleer doelen in cursistentaal, verwijs ernaar en stem mijn evaluatie erop af.","Ik help collega's in de vakgroep om doelgericht te werken."],
- "Zorgzaam":["Ik merk vooral achteraf welke cursist extra steun nodig had.","Ik gebruik soms informatie over cursisten om bij te sturen.","Ik gebruik gegevens over cursisten bewust om tijdig te ondersteunen.","Ik denk mee over de zorgaanpak van de opleiding of het centrum."],
- "Levensecht":["Mijn lessen staan nog los van de beroeps- of leefwereld.","Ik breng af en toe voorbeelden uit de praktijk binnen.","Mijn opdrachten vertrekken vanuit echte situaties; ik werk ook aan soft skills.","Ik bouw mee aan werkplekleren of partnerschappen."],
- "Betrokken":["Ik stuur het leerproces van mijn cursisten volledig zelf.","Ik laat cursisten soms reflecteren op hun leren.","Mijn cursisten plannen, reflecteren en sturen structureel mee bij.","Ik inspireer collega's rond zelfregulerend leren."],
- "Samen":["Ik werk vooral alleen aan mijn lessen.","Ik deel soms materiaal of ervaringen in de vakgroep.","Ik draag actief bij aan vakgroepoverleg en intervisie.","Ik trek samenwerking binnen of over vakgroepen heen."],
- "Innovatief":["Ik gebruik digitale middelen vooral om informatie te tonen.","Ik zet soms een digitale tool in om te oefenen of te checken.","Ik kies digitale tools doelgericht voor feedback en differentiatie.","Ik deel digitale praktijken en help collega's op weg."]};
-const indText=(a,v)=>IND[a.k]?IND[a.k][v-1]:LVLD[v-1]+".";
-$("#scale").innerHTML=LVL.map((l,i)=>`<div><b>${i+1} · ${l}</b>${LVLD[i]}</div>`).join("");
-let frame="bouw";const goals={bouw:new Set(["Innovatief"]),comp:new Set()};const show={zelf:true,gesprek:true,vorig:true};
+const BOUW=[
+ {k:"Kwaliteitsvol",c:"#97b4ae",t:"#648780",th:"Doelgericht werken"},
+ {k:"Zorgzaam",c:"#738fb2",t:"#48698e",th:"Brede basiszorg, gegevens over cursisten"},
+ {k:"Levensecht",c:"#d27875",t:"#ab514e",th:"Werkplekleren, soft skills"},
+ {k:"Betrokken",c:"#cec884",t:"#89833e",th:"Zelfregulerend leren"},
+ {k:"Samen",c:"#93a46a",t:"#5f713f",th:"Vakgroepwerking"},
+ {k:"Innovatief",c:"#a77864",t:"#734c39",th:"Digitale didactiek"}];
+const VIS={k:"Visietekst personeelsbeleid",c:"#7d8584",t:"#4d5554"};
+const BC=Object.fromEntries(BOUW.concat([VIS]).map(b=>[b.k,b]));
+const bv=k=>`--bc:${BC[k].c};--bt:${BC[k].t}`;
+const chip=k=>`<span class="bchip" style="${bv(k)}"><i></i>${esc(k)}</span>`;
+const COLS={klas:["In de klas","voor mij"],opl:["In de opleiding","voor ons"],cen:["In het centrum","wat het centrum belooft"]};
+const QSHORT=["Doel","Leeractiviteit","Evaluatie","Volgende stap"];
+const KOMPAS={"Kwaliteitsvol":{
+ q:[{t:"Waar werken we naartoe?",s:"het doel · feed-up"},{t:"Hoe raken wij daar met cursisten?",s:"de leeractiviteit · feedback",dev:1},{t:"Hoe weten we waar ze staan?",s:"de evaluatie · feedback"},{t:"Wat is de volgende stap?",s:"de lus terug · feedforward",dev:1}],
+ cells:{
+  klas:["Elke leerkracht maakt bij de start van de module of les duidelijk welke doelen gelden en op welk niveau, in taal die de cursist begrijpt.","Wat geëvalueerd wordt, is geoefend. De weg mag verschillen, de lat niet.","Elke leerkracht bepaalt duidelijke criteria voor de evaluatie. Cursisten kennen deze verwachtingen. De evaluatievorm past bij het doel.","Elke cursist krijgt minstens twee keer feedback vóór het einde van de module, op een tijdstip waarop hij er nog iets aan kan doen."],
+  opl:["De doelen van de opleiding worden verdeeld over de modules. Elke lesgever kan raadplegen wat vóór en wat ná zijn module komt.","Binnen de opleiding gelden geen tegenstrijdige verwachtingen tussen modules of lesgevers. Waar ze botsen, wordt dat in de vakgroep uitgeklaard.","De opleiding kan tonen dat alle competenties uit het profiel ergens geëvalueerd worden, en dat de evaluaties gespreid zijn.","Wat evaluaties opleveren, wordt minstens één keer per jaar in de vakgroep besproken en stuurt het programma bij."],
+  cen:["Het aanbod dekt het gevalideerd doelenkader. Het centrum stelt de opleidingsprofielen actief ter beschikking van wie lesgeeft.","Professionalisering ondersteunt precies dit, en wordt gegeven door collega's die het zelf doen.","Het centrum kijkt met kwalitatieve én kwantitatieve bronnen naar de evaluatiepraktijk. Resultaten gaan terug naar de opleidingen, nooit naar personen.","De kwaliteitscyclus draait: meten leidt tot beslissen, en wat beslist wordt, wordt teruggekoppeld."]},
+ note:"Eerste voorzet van het bouwsteenteam, niet definitief. Vraag 2 en 4 werkt het team verder uit op 8 januari. Vraag 3 in de klas: het team twijfelt nog tussen verwachtingen en beoordelingscriteria."}};
+const VISIE=[
+ {p:"1 · Rekrutering en selectie",s:["Ik werf aan via een transparante en objectieve procedure, met dezelfde leidraad en criteria als mijn collega's.","Ik kijk bij kandidaten naar unieke kwaliteiten en sta open voor diversiteit in profielen.","Ik beoordeel op diploma, ervaring, motivatie en competenties, en kan mijn keuze motiveren."]},
+ {p:"2 · Opdrachttoewijzing",s:["Ik gebruik de desiderata van mijn medewerkers bij het verdelen van de opdrachten.","Ik houd rekening met sterke punten en talenten, zodat de juiste mensen op de juiste plaats staan.","Ik maak horizontale en verticale loopbaanstappen bespreekbaar."]},
+ {p:"3 · Personeelsevaluatie",s:["Naast formele functionerings- en evaluatiegesprekken voer ik regelmatig informele en begeleidende gesprekken.","In mijn gesprekken is er tweerichtingsverkeer: medewerkers delen hun inzichten, zorgen en feedback.","Ik benoem positieve prestaties en volg ze op.","Wanneer een medewerker vertrekt, voer ik een exitgesprek."]},
+ {p:"4 · Professionele ontwikkeling",s:["Ik heb zicht op de ontwikkelnoden van mijn medewerkers en van mijn team.","Ik stimuleer wederzijds leren, zodat collega's putten uit elkaars expertise en ervaring."]},
+ {p:"5 · Waardering",s:["Ik erken en waardeer niet alleen prestaties, maar ook inzet en betrokkenheid.","Door die waardering stimuleer ik medewerkers om te blijven groeien."]}];
+const LV=["Nog niet","Soms","Vast in mijn praktijk","Ik help anderen"];
+const FUNCS={lk:{cols:["klas"],who:"Voorbeeld: Sofie Van Damme, lesgever NT2 · schooljaar 2026-2027"},oc:{cols:["klas","opl"],who:"Voorbeeld: Pieter Claes, opleidingscoördinator Talen, geeft ook les"},ad:{cols:["cen"],visie:true,who:"Voorbeeld: adjunct-directeur"}};
+const SC={zelf:{},gesprek:{}};
+const setS=(f,b,c,vals)=>vals.forEach((v,i)=>{SC.zelf[`${f}|${b}|${c}|${i}`]=v});
+setS("lk","Kwaliteitsvol","klas",[3,2,2,1]);setS("oc","Kwaliteitsvol","klas",[3,3,2,2]);setS("oc","Kwaliteitsvol","opl",[2,2,1,2]);setS("ad","Kwaliteitsvol","cen",[2,1,2,1]);
+[[3,3,2],[3,2,1],[3,2,3,1],[2,2],[2,3]].forEach((a,pi)=>setS("ad","visie",String(pi),a));
+Object.keys(SC.zelf).forEach((k,i)=>{SC.gesprek[k]=Math.max(1,Math.min(4,SC.zelf[k]+[0,1,0,0,-1,0][i%6]))});
+const GOALS={lk:new Set(["lk|Kwaliteitsvol|klas|3"]),oc:new Set(["oc|Kwaliteitsvol|opl|2"]),ad:new Set(["ad|visie|1|1"])};
 const goalData={};
-function renderRadar(){
-  const A=FRAMES[frame],n=A.length,W=560,H=500,cx=W/2,cy=H/2+4,R=frame==="bouw"?170:160;
-  const pt=(i,v)=>{const a=-Math.PI/2+i*2*Math.PI/n,r=R*v/4;return[cx+r*Math.cos(a),cy+r*Math.sin(a)]};
-  let s=`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Spinnenweb ${frame==="bouw"?"bouwstenen":"competenties"}">`;
-  for(let l=1;l<=4;l++)s+=`<polygon class="ring" points="${A.map((_,i)=>pt(i,l).join(",")).join(" ")}"/>`;
-  A.forEach((_,i)=>{const[x,y]=pt(i,4);s+=`<line class="spoke" x1="${cx}" y1="${cy}" x2="${x}" y2="${y}"/>`});
-  for(let l=1;l<=4;l++){const[x,y]=pt(0,l);s+=`<text class="lvl" x="${x+5}" y="${y+3}">${l}</text>`}
-  [["vorig","v"],["gesprek","g"],["zelf","z"]].forEach(([k,f])=>{if(!show[k])return;
-    s+=`<polygon class="series-${k}" points="${A.map((a,i)=>pt(i,a[f]).join(",")).join(" ")}"/>`;
-    if(k!=="vorig")A.forEach((a,i)=>{const[x,y]=pt(i,a[f]);s+=`<circle class="pt-${k}" cx="${x}" cy="${y}" r="3.5"/>`});});
-  A.forEach((a,i)=>{const ang=-Math.PI/2+i*2*Math.PI/n,[x,y]=[cx+(R+22)*Math.cos(ang),cy+(R+22)*Math.sin(ang)];
-    const c=Math.cos(ang),anchor=Math.abs(c)<.2?"middle":c>0?"start":"end",dy=Math.sin(ang)>.5?12:Math.sin(ang)<-.5?-2:4;
-    const g=goals[frame].has(a.k),words=a.k.length>16?a.k.split(" "):[a.k];
-    const lines=words.length>1?[words.slice(0,Math.ceil(words.length/2)).join(" "),words.slice(Math.ceil(words.length/2)).join(" ")]:words;
-    s+=`<text class="ax ${g?"sel":""}" data-ax="${esc(a.k)}" x="${x}" y="${y+dy}" text-anchor="${anchor}">${lines.map((l,j)=>`<tspan x="${x}" dy="${j?14:0}">${esc(l)}</tspan>`).join("")}${g?" ★":""}</text>`;});
-  s+=`</svg>`;$("#radar").innerHTML=s;
-  $$("#radar .ax").forEach(t=>t.onclick=()=>toggleGoal(t.dataset.ax));
+let pfunc="lk",psel="Kwaliteitsvol",pbron="zelf";
+const avg=a=>a.length?Math.round(a.reduce((s,v)=>s+v,0)/a.length):0;
+const keyLabel=k=>{const[,b,c,i]=k.split("|");return b==="visie"?`${VISIE[+c].p.slice(4)} · uitspraak ${+i+1}`:`${b} · vraag ${+i+1} (${QSHORT[+i]}) · ${COLS[c][0].toLowerCase()}`};
+function renderPOP(){
+  const F=FUNCS[pfunc],S=SC[pbron],G=GOALS[pfunc];
+  $("#pWho").textContent=F.who;
+  const rows=BOUW.map(b=>b.k).concat(F.visie?[VIS.k]:[]);
+  if(!rows.includes(psel))psel="Kwaliteitsvol";
+  $("#kOverview").innerHTML=rows.map(k=>{
+    let cells;
+    if(k===VIS.k)cells=`<div class="kgrp"><small>5 praktijken</small>${VISIE.map((v,pi)=>{const l=avg(v.s.map((_,j)=>S[`${pfunc}|visie|${pi}|${j}`]).filter(Boolean));const g=v.s.some((_,j)=>G.has(`${pfunc}|visie|${pi}|${j}`));return`<i class="kh ${l?"v"+l:""}" title="${esc(v.p)}">${g?"★":pi+1}</i>`}).join("")}</div>`;
+    else if(KOMPAS[k])cells=F.cols.map(c=>`<div class="kgrp"><small>${COLS[c][0].replace("In de ","").replace("In het ","")}</small>${KOMPAS[k].q.map((q,i)=>{const key=`${pfunc}|${k}|${c}|${i}`,l=S[key];return`<i class="kh ${l?"v"+l:""}" title="Vraag ${i+1}: ${esc(q.t)}${l?" · "+LV[l-1]:""}">${G.has(key)?"★":i+1}</i>`}).join("")}</div>`).join("");
+    else cells=`<span class="kopm">kompas in opmaak · ${esc(BC[k].th)}</span>`;
+    return`<button class="krow" style="${bv(k)}" data-k="${esc(k)}" aria-pressed="${k===psel}">${chip(k)}<span class="kcells">${cells}</span></button>`}).join("");
+  $$("#kOverview .krow").forEach(b=>b.onclick=()=>{psel=b.dataset.k;renderPOP()});
+  $("#pVisieNote").textContent=F.visie?"Voor leidinggevenden is de visietekst personeelsbeleid het minimum, naast de kolom \"In het centrum\" van elk kompas.":"Voor lesgevers en coördinatoren is het onderwijsbeleid, met de 6 bouwstenen, de kapstok. De visieteksten voor andere functies (administratie, ICT, trajectbegeleiding, zorg) volgen nog.";
+  renderDetail();renderFull();renderGoals();
 }
-function renderAxes(){
-  const A=FRAMES[frame];let lastGrp="";
-  $("#axlist").innerHTML=A.map((a,i)=>{const g=goals[frame].has(a.k);let head="";
-    if(frame==="comp"&&a.d!==lastGrp){lastGrp=a.d;head=`<div class="who" style="margin-top:${i?8:0}px">${esc(a.d)}e competenties</div>`}
-    return head+`<div class="axrow ${g?"goal":""}"><div class="h"><b>${esc(a.k)}</b>${frame==="bouw"?`<span class="hint">${esc(a.d)}</span>`:""}<span class="val" id="val${i}">${a.z} · ${LVL[a.z-1]}</span></div>
-     <div class="lv" role="radiogroup" aria-label="Zelfreflectie ${esc(a.k)}">${LVL.map((l,j)=>`<label><input type="radio" name="lv${i}" value="${j+1}" data-i="${i}" ${a.z===j+1?"checked":""}><b>${j+1}</b>${l}</label>`).join("")}</div>
-     <div class="ind" id="ind${i}">${esc(indText(a,a.z))}</div>
-     <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center"><label class="goalchk"><input type="checkbox" data-goal="${esc(a.k)}" ${g?"checked":""}> Groeidoel</label><span class="hint">gesprek: ${a.g} · vorig jaar: ${a.v}</span></div></div>`}).join("");
-  $$("#axlist .lv input").forEach(r=>r.onchange=()=>{const i=+r.dataset.i,a=FRAMES[frame][i];a.z=+r.value;$("#val"+i).textContent=`${a.z} · ${LVL[a.z-1]}`;$("#ind"+i).textContent=indText(a,a.z);renderRadar()});
-  $$("#axlist [data-goal]").forEach(c=>c.onchange=()=>toggleGoal(c.dataset.goal,c));
+function lvRadios(key){const S=SC[pbron];return`<div class="lv" role="radiogroup" aria-label="Hoe sterk zit dit in jouw praktijk?">${LV.map((l,j)=>`<label><input type="radio" name="r-${esc(key)}" value="${j+1}" data-key="${esc(key)}" ${S[key]===j+1?"checked":""}>${l}</label>`).join("")}</div>`}
+function stmtHtml(key,head,txt){const G=GOALS[pfunc];return`<div class="stmt ${G.has(key)?"goal":""}"><div class="q">${head}</div><div class="txt">${esc(txt)}</div>${lvRadios(key)}<label class="goalchk"><input type="checkbox" data-goal="${esc(key)}" ${G.has(key)?"checked":""}> Groeidoel</label></div>`}
+function renderDetail(){
+  const F=FUNCS[pfunc],k=psel;let h=`<div class="panel" style="${bv(k)}"><div class="dhead">${chip(k)}<span class="hint">${k===VIS.k?"het minimum voor leidinggevenden":esc(BC[k].th)}</span></div>`;
+  if(k===VIS.k){
+    h+=`<p class="hint">Lees elke uitspraak en kies wat voor jou klopt. De uitspraken komen uit de visietekst personeelsbeleid.</p>`;
+    VISIE.forEach((v,pi)=>{h+=`<div class="colh">${esc(v.p)}</div>`+v.s.map((s,j)=>stmtHtml(`${pfunc}|visie|${pi}|${j}`,`<b>Uitspraak ${j+1}</b>`,s)).join("")});
+  }else if(KOMPAS[k]){
+    const K=KOMPAS[k];h+=`<p class="hint">${esc(K.note)}</p>`;
+    F.cols.forEach(c=>{h+=`<div class="colh">${COLS[c][0]} · ${COLS[c][1]}</div>`+K.q.map((q,i)=>stmtHtml(`${pfunc}|${k}|${c}|${i}`,`<b>${i+1}. ${esc(q.t)}</b><span class="hint">${esc(q.s)}</span>${q.dev?`<span class="tagw">in uitwerking</span>`:""}`,K.cells[c][i])).join("")});
+  }else h+=`<p>Het bouwsteenteam ${esc(k)} werkt het minimumkompas nog uit. Zodra het klaar is, verschijnen hier de kompasvragen en de uitspraken voor jouw functie.</p>`;
+  $("#kDetail").innerHTML=h+`</div>`;
+  $$("#kDetail .lv input").forEach(r=>r.onchange=()=>{SC[pbron][r.dataset.key]=+r.value;renderPOP()});
+  $$("#kDetail [data-goal]").forEach(c=>c.onchange=()=>{const G=GOALS[pfunc],key=c.dataset.goal;if(G.has(key))G.delete(key);else{if(G.size>=2){toast("Kies maximaal 2 groeidoelen");c.checked=false;return}G.add(key)}renderPOP()});
 }
-function toggleGoal(k,cb){
-  const G=goals[frame];
-  if(G.has(k))G.delete(k);else{if(G.size>=2){toast("Kies maximaal 2 groeidoelen");if(cb)cb.checked=false;return}G.add(k)}
-  renderAll();
+function renderFull(){
+  const k=KOMPAS[psel]?psel:null;$("#kFullPanel").hidden=!k;if(!k)return;
+  const K=KOMPAS[k],mine=FUNCS[pfunc].cols;$("#kFullPanel").setAttribute("style",`margin-top:20px;${bv(k)}`);
+  $("#kFullTitle").textContent=`Het kompas ${k}: ${K.q.length} vragen, drie niveaus`;
+  $("#kFull").innerHTML=`<table class="komp"><thead><tr><th></th>${Object.entries(COLS).map(([c,[n,s]])=>`<th>${n}<small>${s}</small></th>`).join("")}</tr></thead><tbody>${K.q.map((q,i)=>`<tr><th>${i+1}. ${esc(q.t)}<small>${esc(q.s)}</small>${q.dev?`<span class="tagw">in uitwerking</span>`:""}</th>${Object.keys(COLS).map(c=>`<td class="${mine.includes(c)?"mine":""}">${esc(K.cells[c][i])}</td>`).join("")}</tr>`).join("")}</tbody></table>`;
 }
 const PIJLERS=["Leerpad van de bouwsteen","Vakgroep-intervisie","Externe nascholing","Collegiaal leren (bv. lesbezoek)","Andere"];
 function renderGoals(){
-  const G=[...goals[frame]];
-  $("#goals").innerHTML=G.length?G.map((k,i)=>{const d=goalData[k]||(goalData[k]=k==="Innovatief"?{doel:"Ik zet digitale tools doelgericht in om cursisten te laten oefenen buiten de les.",actie:"Leerpad Innovatief (digitale didactiek); praktijkopdracht delen in de vakgroep",pijler:"Leerpad van de bouwsteen",wanneer:"Schooljaar 2027-2028"}:{doel:"",actie:"",pijler:"Leerpad van de bouwsteen",wanneer:""});
-    return `<div class="goalbox"><h3>Groeidoel ${i+1}: ${esc(k)}</h3>
-     <div class="f"><label for="gd${i}">Wat wil ik bereiken?</label><textarea id="gd${i}" data-k="${esc(k)}" data-f="doel">${esc(d.doel)}</textarea></div>
-     <div class="f"><label for="ga${i}">Welke acties?</label><input type="text" id="ga${i}" data-k="${esc(k)}" data-f="actie" value="${esc(d.actie)}"></div>
-     <div class="row2"><div class="f"><label for="gp${i}">Hoe leer je dit?</label><select id="gp${i}" data-k="${esc(k)}" data-f="pijler">${PIJLERS.map(p=>`<option ${p===d.pijler?"selected":""}>${p}</option>`).join("")}</select></div>
-     <div class="f"><label for="gw${i}">Wanneer?</label><input type="text" id="gw${i}" data-k="${esc(k)}" data-f="wanneer" value="${esc(d.wanneer)}" placeholder="bv. tegen de paasvakantie"></div></div>
-     <p class="hint">Wat je leert, probeer je uit in je les en deel je in de vakgroep-intervisie.</p></div>`}).join(""):`<div class="goalbox"><p>Nog geen groeidoel gekozen. Vink bij één of twee ${frame==="bouw"?"bouwstenen":"competenties"} "Groeidoel" aan, of klik op een naam in het spinnenweb.</p></div>`;
+  const G=[...GOALS[pfunc]];
+  $("#goals").innerHTML=G.length?G.map((key,i)=>{const b=key.split("|")[1],col=b==="visie"?VIS.k:b;const d=goalData[key]||(goalData[key]={doel:"",actie:"",pijler:PIJLERS[0],wanneer:""});
+    return`<div class="goalbox" style="${bv(col)}"><div class="dhead"><h3>Groeidoel ${i+1}</h3>${chip(col)}<span class="hint">${esc(keyLabel(key))}</span></div>
+     <div class="f"><label for="gd${i}">Wat wil ik bereiken?</label><textarea id="gd${i}" data-k="${esc(key)}" data-f="doel" placeholder="Bv. elke cursist krijgt twee keer feedback vóór het einde van de module">${esc(d.doel)}</textarea></div>
+     <div class="f"><label for="ga${i}">Welke acties?</label><input type="text" id="ga${i}" data-k="${esc(key)}" data-f="actie" value="${esc(d.actie)}"></div>
+     <div class="row2"><div class="f"><label for="gp${i}">Hoe leer je dit?</label><select id="gp${i}" data-k="${esc(key)}" data-f="pijler">${PIJLERS.map(p=>`<option ${p===d.pijler?"selected":""}>${p}</option>`).join("")}</select></div>
+     <div class="f"><label for="gw${i}">Wanneer?</label><input type="text" id="gw${i}" data-k="${esc(key)}" data-f="wanneer" value="${esc(d.wanneer)}" placeholder="bv. tegen de paasvakantie"></div></div></div>`}).join(""):`<div class="goalbox"><p>Nog geen groeidoel gekozen. Vink bij één of twee uitspraken "Groeidoel" aan.</p></div>`;
   $$("#goals [data-k]").forEach(el=>el.addEventListener("input",()=>{goalData[el.dataset.k][el.dataset.f]=el.value}));
 }
-function renderAll(){renderRadar();renderAxes();renderGoals()}
-$$("[data-frame]").forEach(b=>b.onclick=()=>{frame=b.dataset.frame;$$("[data-frame]").forEach(x=>x.setAttribute("aria-pressed",x===b));renderAll()});
-$$("#seriesChips input").forEach(c=>c.onchange=()=>{show[c.dataset.s]=c.checked;renderRadar()});
+$("#pFunc").onchange=e=>{pfunc=e.target.value;renderPOP()};
+$$("[data-pbron]").forEach(b=>b.onclick=()=>{pbron=b.dataset.pbron;$$("[data-pbron]").forEach(x=>x.setAttribute("aria-pressed",x===b));renderPOP()});
 $("#popSave").onclick=()=>toast("POP bewaard · uitnodiging voor gesprek verstuurd");
+// ---------------- visualisaties om te kiezen ----------------
+const DEMO={zelf:{"Kwaliteitsvol":[3,2,2,1],"Zorgzaam":[3,3,2,2],"Levensecht":[2,3,3,2],"Betrokken":[2,1,2,1],"Samen":[3,3,4,3],"Innovatief":[1,2,1,2]},
+ gesprek:{"Kwaliteitsvol":2.5,"Zorgzaam":2.5,"Levensecht":2.5,"Betrokken":1.8,"Samen":3.3,"Innovatief":1.8},
+ vorig:{"Kwaliteitsvol":1.3,"Zorgzaam":2.3,"Levensecht":2,"Betrokken":1.3,"Samen":3,"Innovatief":1}};
+const dAvg=k=>DEMO.zelf[k].reduce((a,b)=>a+b,0)/4;
+const f1=v=>v.toFixed(1).replace(".",",");
+function vRadar(){
+  const A=BOUW.map(b=>b.k),n=6,W=520,H=440,cx=W/2,cy=H/2+6,R=150;
+  const pt=(i,v)=>{const a=-Math.PI/2+i*2*Math.PI/n,r=R*v/4;return[cx+r*Math.cos(a),cy+r*Math.sin(a)]};
+  const poly=(cls,f)=>`<polygon class="${cls}" points="${A.map((k,i)=>pt(i,f(k)).join(",")).join(" ")}"/>`;
+  let s=`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Spinnenweb met de zes bouwstenen">`;
+  for(let l=1;l<=4;l++)s+=`<polygon class="rring" points="${A.map((_,i)=>pt(i,l).join(",")).join(" ")}"/>`;
+  A.forEach((_,i)=>{const[x,y]=pt(i,4);s+=`<line class="rspoke" x1="${cx}" y1="${cy}" x2="${x}" y2="${y}"/>`});
+  for(let l=1;l<=4;l++){const[x,y]=pt(0,l);s+=`<text class="rlvl" x="${x+5}" y="${y+3}">${l}</text>`}
+  s+=poly("rv",k=>DEMO.vorig[k])+poly("rg",k=>DEMO.gesprek[k])+poly("rz",dAvg);
+  A.forEach((k,i)=>{const[x,y]=pt(i,dAvg(k));s+=`<circle cx="${x}" cy="${y}" r="4" fill="var(--s-zelf)"/>`});
+  A.forEach((k,i)=>{const ang=-Math.PI/2+i*2*Math.PI/n,x=cx+(R+22)*Math.cos(ang),y=cy+(R+22)*Math.sin(ang),c=Math.cos(ang);
+    const an=Math.abs(c)<.2?"middle":c>0?"start":"end",dy=Math.sin(ang)>.5?14:Math.sin(ang)<-.5?-4:4;
+    s+=`<text class="rax" x="${x}" y="${y+dy}" text-anchor="${an}" style="fill:${BC[k].t}">${k}</text>`});
+  return s+`</svg><div class="vleg"><span><i class="ln" style="border-color:var(--s-zelf)"></i>zelfreflectie</span><span><i class="ln" style="border-color:var(--s-gesprek);border-top-style:dashed"></i>na het POP-gesprek</span><span><i class="ln" style="border-color:var(--s-vorig);border-top-style:dotted"></i>vorig schooljaar</span></div>`;
+}
+function vRij(){
+  return`<div class="krows">${BOUW.map(b=>`<div class="krow" style="${bv(b.k)};cursor:default">${chip(b.k)}<span class="kcells"><span class="kgrp"><small>klas</small>${DEMO.zelf[b.k].map((l,i)=>`<i class="kh v${l}" title="Vraag ${i+1} · ${LV[l-1]}">${i+1}</i>`).join("")}</span></span></div>`).join("")}</div>
+  <div class="klegend" style="--bc:#97b4ae;--bt:#648780;justify-content:center"><span><i class="kh v1"></i>nog niet</span><span><i class="kh v2"></i>soms</span><span><i class="kh v3"></i>vast in mijn praktijk</span><span><i class="kh v4"></i>ik help anderen</span></div>`;
+}
+function vGroei(){
+  const X=v=>((v-1)/3*100);
+  return`<div class="gl">${BOUW.map(b=>{const z=dAvg(b.k),v=DEMO.vorig[b.k],g=DEMO.gesprek[b.k],lo=Math.min(v,z),hi=Math.max(v,z);
+    return`<div class="glr">${chip(b.k)}<div class="gltrack"><i class="base"></i>${[1,2,3,4].map(t=>`<i class="tick" style="left:${X(t)}%"></i>`).join("")}<i class="arr" style="left:${X(lo)}%;width:${X(hi)-X(lo)}%;background:${b.c}"></i><i class="m" style="left:${X(v)}%;background:var(--surface);border:2px solid var(--s-vorig)" title="Vorig jaar ${f1(v)}"></i><i class="m" style="left:${X(g)}%;width:12px;height:12px;top:8px;margin-left:-6px;border-radius:2px;transform:rotate(45deg);background:var(--s-gesprek)" title="Na gesprek ${f1(g)}"></i><i class="m" style="left:${X(z)}%;background:${b.t}" title="Zelfreflectie ${f1(z)}"></i></div></div>`}).join("")}
+   <div class="glscale"><span></span><div><span>1 nog niet</span><span>2 soms</span><span>3 vast</span><span>4 ik help anderen</span></div></div></div>
+   <div class="vleg"><span><i class="m" style="position:static;display:inline-block;width:12px;height:12px;border-radius:50%;border:2px solid var(--s-vorig)"></i>vorig jaar</span><span><i style="display:inline-block;width:10px;height:10px;transform:rotate(45deg);background:var(--s-gesprek)"></i>na het POP-gesprek</span><span><i style="display:inline-block;width:12px;height:12px;border-radius:50%;background:#648780"></i>zelfreflectie nu</span><span>gekleurde lijn = groei sinds vorig jaar</span></div>`;
+}
+function vHoning(){
+  const pos=[[110,72],[260,72],[410,72],[185,232],[335,232],[485,232]],r=55;
+  const hexPts=(x,y)=>[[x,y-r],[x+r*.866,y-r/2],[x+r*.866,y+r/2],[x,y+r],[x-r*.866,y+r/2],[x-r*.866,y-r/2]].map(p=>p.join(",")).join(" ");
+  let s=`<svg class="hon" viewBox="0 0 600 330" role="img" aria-label="Honingraat met zes bouwstenen">`;
+  BOUW.forEach((b,i)=>{const[x,y]=pos[i],z=dAvg(b.k),h=2*r*(z/4),id="hc"+i;
+    s+=`<clipPath id="${id}"><polygon points="${hexPts(x,y)}"/></clipPath><polygon points="${hexPts(x,y)}" fill="var(--surface-2)" stroke="${b.c}" stroke-width="2"/><rect x="${x-r}" y="${y+r-h}" width="${2*r}" height="${h}" fill="${b.c}" clip-path="url(#${id})"/><text x="${x}" y="${y+r+20}" text-anchor="middle"><tspan font-weight="700" style="fill:${b.t}">${b.k}</tspan><tspan style="fill:var(--fg)"> · ${f1(z)}</tspan></text>`});
+  return s+`</svg><div class="vleg"><span>hoe hoger gevuld, hoe vaster in de praktijk</span></div>`;
+}
+const VIZ=[
+ {t:"Spinnenweb",f:vRadar,
+  bouw:"Zes assen, één per bouwsteen. Het midden is niveau 1 (nog niet), de rand niveau 4 (ik help anderen). Per bouwsteen telt het gemiddelde van de kompasvragen. Drie lijnen liggen over elkaar: de zelfreflectie, de inschatting na het POP-gesprek en vorig schooljaar.",
+  lees:"Hoe groter de vorm, hoe sterker het geheel. Een deuk naar binnen is een groeikans: hier Innovatief en Betrokken. Waar de volle lijn buiten de stippellijn van vorig jaar ligt, ben je gegroeid.",
+  plus:["Totaalbeeld van zes bouwstenen in één oogopslag","Drie momenten vergelijken in één figuur"],
+  min:["Een gemiddelde verbergt welke kompasvraag zwak is","De vorm hangt af van de volgorde van de assen","Niet iedereen leest een spinnenweb vlot"]},
+ {t:"Kompasrij",f:vRij,
+  bouw:"Per bouwsteen een rij zeshoeken, één per kompasvraag. De kleur is die van de bouwsteen. Hoe voller de kleur, hoe hoger het niveau.",
+  lees:"Lees per rij: welke vraag is nog licht? Hier valt bij Kwaliteitsvol vraag 4 (de volgende stap) op, en bij Innovatief vraag 1 en 3.",
+  plus:["Toont precies welke kompasvraag aandacht vraagt","Volgt dezelfde opbouw als het kompas","Past bij de huisstijl (zeshoeken, bouwsteenkleuren)"],
+  min:["Geen vergelijking met vorig jaar in hetzelfde beeld","Minder een totaalbeeld dan het spinnenweb"]},
+ {t:"Groeilijn",f:vGroei,
+  bouw:"Per bouwsteen een lijn van 1 tot 4. Een open bolletje toont vorig jaar, een ruitje de inschatting na het gesprek, een vol bolletje de zelfreflectie nu. De gekleurde lijn ertussen is de groei.",
+  lees:"Hoe langer de gekleurde lijn, hoe meer groei. Hier is de groei het grootst bij Kwaliteitsvol. Ligt het ruitje ver van het volle bolletje, dan kijken medewerker en leidinggevende verschillend naar dezelfde bouwsteen: bij Kwaliteitsvol en Innovatief schat het gesprek hoger in dan de lesgever zelf.",
+  plus:["Groei is meteen zichtbaar","Nauwkeurig en makkelijk te lezen","Geschikt voor het POP-gesprek en de terugblik in juni"],
+  min:["Toont per bouwsteen een gemiddelde, niet per kompasvraag","Minder beeldend"]},
+ {t:"Honingraat",f:vHoning,
+  bouw:"Zes zeshoeken, één per bouwsteen in de eigen kleur. Elke zeshoek loopt vol van onder naar boven, volgens het gemiddelde niveau.",
+  lees:"Hoe voller de zeshoek, hoe vaster de bouwsteen in je praktijk zit. Hier is Samen het meest gevuld, Betrokken en Innovatief het minst.",
+  plus:["Herkenbaar en uitnodigend, past bij de huisstijl","Zeer eenvoudig, ook voor wie niet van grafieken houdt"],
+  min:["Kleine verschillen zijn moeilijk te zien","Geen vergelijking met vorig jaar of met het gesprek","Toont geen kompasvragen"]}];
+function renderViz(){
+  $("#vizList").innerHTML=VIZ.map((v,i)=>`<article class="vizcard"><div style="min-width:0"><h3><span class="nr">${i+1}</span>${v.t}</h3><div class="vizfig">${v.f()}</div></div>
+   <div class="vizinfo"><div><h4>Hoe is het opgebouwd?</h4><p>${v.bouw}</p></div><div><h4>Hoe lees je het?</h4><p>${v.lees}</p></div>
+   <div class="pc"><div class="plus"><h4>Sterk</h4><ul>${v.plus.map(x=>`<li>${x}</li>`).join("")}</ul></div><div class="min"><h4>Let op</h4><ul>${v.min.map(x=>`<li>${x}</li>`).join("")}</ul></div></div></div></article>`).join("");
+}
+$("#toViz").onclick=()=>$("#vizOpties").scrollIntoView({behavior:"smooth"});
+
+function renderAll(){renderPOP();renderViz()}
 
 // ---------------- teamnoden ----------------
 let sd=11;const rnd=()=>{sd=(sd*16807)%2147483647;return(sd-1)/2147483646};
 const clamp=v=>Math.max(1,Math.min(4,Math.round(v)));
 const TEAMS={
- "NT2":{n:["Sofie Van Damme","Ana Ferreira","Youssef El Amrani","Sara Mertens","Inès Bouzid","Karel Goossens","Leen Willems","Nadia Haddou"],b:[2.9,2.6,2.7,2.3,3.2,1.7],c:{1:-0.6,8:-0.2}},
- "Talen":{n:["Pieter Claes","Marie Dubois","Jens Verhoeven","Lotte Smets","Carlos Ruiz","Hilde Peeters"],b:[3.1,2.7,2.0,2.4,2.9,2.6],c:{6:-0.3}},
- "Diploma Secundair":{n:["Lien Peeters","Jonas Verbeeck","Fatima Amrani","Bart Janssens","Eva De Wit","Tine Maes","Koen Raes"],b:[2.6,2.9,2.6,1.8,3.0,2.5],c:{8:-0.6,9:-0.3}},
- "Techniek":{n:["Marc Janssens","Dirk Wouters","Stijn Lambrechts","Rik Vermeulen","Gert Mattheus"],b:[2.7,1.9,3.3,2.2,2.6,1.8],c:{1:-0.7,6:-0.5}}};
-const CB=[2.9,2.4,3.2,3.0,3.0,2.5,2.5,3.0,2.4,2.6,2.9];
+ "NT2":{n:["Sofie Van Damme","Ana Ferreira","Youssef El Amrani","Sara Mertens","Inès Bouzid","Karel Goossens","Leen Willems","Nadia Haddou"],b:[3.0,2.6,2.0,1.9]},
+ "Talen":{n:["Pieter Claes","Marie Dubois","Jens Verhoeven","Lotte Smets","Carlos Ruiz","Hilde Peeters"],b:[3.2,2.7,2.4,2.2]},
+ "Diploma Secundair":{n:["Lien Peeters","Jonas Verbeeck","Fatima Amrani","Bart Janssens","Eva De Wit","Tine Maes","Koen Raes"],b:[2.7,2.6,1.8,2.3]},
+ "Techniek":{n:["Marc Janssens","Dirk Wouters","Stijn Lambrechts","Rik Vermeulen","Gert Mattheus"],b:[2.5,3.0,2.0,1.7]}};
 const PEOPLE=[];
-Object.entries(TEAMS).forEach(([cl,t])=>t.n.forEach((n,j)=>{
-  const z={bouw:t.b.map(b=>clamp(b+(rnd()-.5)*1.6)),comp:CB.map((b,i)=>clamp(b+(t.c[i]||0)+(rnd()-.5)*1.6))};
-  const g={bouw:z.bouw.map(v=>clamp(v+(rnd()<.25?(rnd()<.5?-1:1):0))),comp:z.comp.map(v=>clamp(v+(rnd()<.25?(rnd()<.5?-1:1):0)))};
+Object.entries(TEAMS).forEach(([cl,t])=>t.n.forEach(n=>{
+  const z=t.b.map(b=>clamp(b+(rnd()-.5)*1.6)),g=z.map(v=>clamp(v+(rnd()<.25?(rnd()<.5?-1:1):0)));
   const r=rnd(),st=r<.12?"open":r<.62?"gesprek":"ingevuld";
-  const low=(fr,arr)=>FRAMES[fr].map((a,i)=>[a.k,arr[i]+rnd()*.9]).sort((x,y)=>x[1]-y[1]).slice(0,rnd()<.5?1:2).map(x=>x[0]);
-  PEOPLE.push({n,cl,st,z,g,goals:{bouw:low("bouw",z.bouw),comp:low("comp",z.comp)}});
+  const goals=z.map((v,i)=>[i,v+rnd()*.9]).sort((x,y)=>x[1]-y[1]).slice(0,rnd()<.5?1:2).map(x=>x[0]);
+  PEOPLE.push({n,cl,st,z,g,goals});
 }));
-const TRAJ={"Kwaliteitsvol":"Het leerpad loopt in 2026-2027.","Betrokken":"Het traject staat gepland in 2027-2028.","Innovatief":"Het traject staat gepland in 2027-2028.","Zorgzaam":"Het traject staat gepland in 2028-2029.","Levensecht":"Het traject staat gepland in 2028-2029.","Samen":"Dit loopt via de vakgroep-intervisie."};
-{const s=PEOPLE[0];s.st="ingevuld";s.z.bouw=FRAMES.bouw.map(a=>a.z);s.goals.bouw=["Innovatief"];}
-let tframe="bouw";
+{const s=PEOPLE[0];s.st="ingevuld";s.z=[0,1,2,3].map(i=>SC.zelf[`lk|Kwaliteitsvol|klas|${i}`]);s.goals=[3];}
 $("#tCl").innerHTML=`<option value="">Hele centrum (anoniem)</option>`+Object.keys(TEAMS).map(c=>`<option value="${esc(c)}">Cluster ${esc(c)}</option>`).join("");
 $("#tCl").value="NT2";
-function drawRadar(labels,series){
-  const n=labels.length,W=560,H=480,cx=W/2,cy=H/2,R=n>8?150:165;
-  const pt=(i,v)=>{const a=-Math.PI/2+i*2*Math.PI/n,r=R*v/4;return[cx+r*Math.cos(a),cy+r*Math.sin(a)]};
-  let s=`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Spinnenweb teamgemiddelde">`;
-  for(let l=1;l<=4;l++)s+=`<polygon class="ring" points="${labels.map((_,i)=>pt(i,l).join(",")).join(" ")}"/>`;
-  labels.forEach((_,i)=>{const[x,y]=pt(i,4);s+=`<line class="spoke" x1="${cx}" y1="${cy}" x2="${x}" y2="${y}"/>`});
-  for(let l=1;l<=4;l++){const[x,y]=pt(0,l);s+=`<text class="lvl" x="${x+5}" y="${y+3}">${l}</text>`}
-  series.forEach(se=>{s+=`<polygon class="series-${se.cls}" points="${se.vals.map((v,i)=>pt(i,v).join(",")).join(" ")}"/>`;if(se.pts)se.vals.forEach((v,i)=>{const[x,y]=pt(i,v);s+=`<circle class="pt-${se.cls}" cx="${x}" cy="${y}" r="3.5"/>`})});
-  labels.forEach((k,i)=>{const ang=-Math.PI/2+i*2*Math.PI/n,x=cx+(R+20)*Math.cos(ang),y=cy+(R+20)*Math.sin(ang),c=Math.cos(ang);
-    const anchor=Math.abs(c)<.2?"middle":c>0?"start":"end",dy=Math.sin(ang)>.5?12:Math.sin(ang)<-.5?-2:4;
-    const w=k.length>16?k.split(" "):[k],lines=w.length>1?[w.slice(0,Math.ceil(w.length/2)).join(" "),w.slice(Math.ceil(w.length/2)).join(" ")]:w;
-    s+=`<text class="ax" style="cursor:default" x="${x}" y="${y+dy}" text-anchor="${anchor}">${lines.map((l,j)=>`<tspan x="${x}" dy="${j?14:0}">${esc(l)}</tspan>`).join("")}</text>`});
-  return s+`</svg>`;
-}
 function renderTeam(){
-  const cl=$("#tCl").value,fr=tframe,bron=$("#tBron").value,A=FRAMES[fr].map(a=>a.k);
+  const cl=$("#tCl").value,bron=$("#tBron").value,KV="Kwaliteitsvol",K=KOMPAS[KV];
   const sel=PEOPLE.filter(p=>!cl||p.cl===cl),done=sel.filter(p=>p.st!=="open"),all=PEOPLE.filter(p=>p.st!=="open");
-  const src=p=>bron==="gesprek"&&p.st==="gesprek"?p.g[fr]:p.z[fr];
+  const src=p=>bron==="gesprek"&&p.st==="gesprek"?p.g:p.z;
   const mean=(arr,i)=>arr.reduce((s,p)=>s+src(p)[i],0)/arr.length;
-  const S=A.map((k,i)=>{const d=[0,0,0,0];done.forEach(p=>d[src(p)[i]-1]++);return{k,i,m:mean(done,i),c:mean(all,i),d,nood:(d[0]+d[1])/done.length,goals:done.filter(p=>p.goals[fr].includes(k)).length}});
-  const sorted=[...S].sort((a,b)=>b.nood-a.nood||a.m-b.m);
-  const goalTop=[...S].sort((a,b)=>b.goals-a.goals)[0];
+  const S=K.q.map((q,i)=>{const d=[0,0,0,0];done.forEach(p=>d[src(p)[i]-1]++);const nood=(d[0]+d[1])/done.length;const ca=all.filter(p=>src(p)[i]<=2).length/all.length;return{i,q,d,m:mean(done,i),nood,ca,goals:done.filter(p=>p.goals.includes(i)).length,top:d[3]}});
+  const sorted=[...S].sort((a,b)=>b.nood-a.nood||a.m-b.m),gt=[...S].sort((a,b)=>b.goals-a.goals)[0];
   const scope=cl?`cluster ${cl}`:"het centrum";
   $("#tKpi").innerHTML=`<div class="kpi"><span>POP's ingevuld</span><b>${done.length}/${sel.length}</b><small>${sel.length-done.length} nog open</small></div>
    <div class="kpi"><span>POP-gesprek gevoerd</span><b>${sel.filter(p=>p.st==="gesprek").length}</b><small>van ${sel.length} lesgevers</small></div>
-   <div class="kpi warn"><span>Grootste nood</span><b>${esc(sorted[0].k)}</b><small>${Math.round(sorted[0].nood*100)}% op niveau 1 of 2</small></div>
-   <div class="kpi"><span>Meest gekozen groeidoel</span><b>${esc(goalTop.k)}</b><small>${goalTop.goals} ${goalTop.goals===1?"lesgever":"lesgevers"}</small></div>`;
-  const series=cl?[{cls:"centrum",vals:S.map(s=>s.c)},{cls:"team",vals:S.map(s=>s.m),pts:true}]:[{cls:"team",vals:S.map(s=>s.m),pts:true}];
-  $("#tRadar").innerHTML=drawRadar(A,series);
-  $("#tLegend").innerHTML=`<label style="cursor:default"><span class="sw zelf"></span>Gemiddelde ${esc(scope)}</label>`+(cl?`<label style="cursor:default"><span class="sw vorig"></span>Gemiddelde centrum</label>`:"");
-  const cols=["var(--bad)","var(--warn)","var(--l3)","var(--ok)"];
-  $("#tDist").innerHTML=sorted.map(s=>`<div class="drow"><span class="dname">${esc(s.k)}${s.goals?` <span class="star">★${s.goals}</span>`:""}</span><div class="dbar">${s.d.map((c,j)=>c?`<i style="width:${c/done.length*100}%;background:${cols[j]}" title="${c} op niveau ${j+1}"></i>`:"").join("")}</div><span class="dval">${s.m.toFixed(1)}</span></div>`).join("");
-  const top=sorted.slice(0,2);
-  $("#tConcl").innerHTML=`<h3>Wat betekent dit voor ${esc(scope)}?</h3><ul class="hex">${top.map(s=>`<li><b>${esc(s.k)}</b>: ${Math.round(s.nood*100)}% staat op niveau 1 of 2, gemiddelde ${s.m.toFixed(1)}${cl?` (centrum ${s.c.toFixed(1)})`:""}. ${s.goals} ${s.goals===1?"lesgever koos":"lesgevers kozen"} dit als groeidoel.${fr==="bouw"&&TRAJ[s.k]?` ${esc(TRAJ[s.k])}`:""}</li>`).join("")}
-   ${fr==="bouw"&&top.some(s=>/2028-2029/.test(TRAJ[s.k]||""))?`<li>Een grote nood bij een traject dat pas in 2028-2029 gepland staat, is een signaal om de volgorde in het meerjarenplan te herbekijken.</li>`:""}
-   <li>Lesgevers op niveau 4 kunnen collega's inspireren, bijvoorbeeld als begeleider in de vakgroep-intervisie.</li></ul>`;
+   <div class="kpi warn"><span>Grootste nood</span><b>Kwaliteitsvol · ${QSHORT[sorted[0].i]}</b><small>${Math.round(sorted[0].nood*100)}% op "nog niet" of "soms"</small></div>
+   <div class="kpi"><span>Meest gekozen groeidoel</span><b>${QSHORT[gt.i]}</b><small>${gt.goals} ${gt.goals===1?"lesgever":"lesgevers"}</small></div>`;
+  $("#tHeat").innerHTML=`<span></span>${[1,2,3,4].map(n=>`<span class="hh">Vraag ${n}</span>`).join("")}`+BOUW.map(b=>{
+    if(!KOMPAS[b.k])return`<span>${chip(b.k)}</span><div class="open">kompas in opmaak</div>`;
+    return`<span>${chip(b.k)}</span>`+S.map(s=>{const p=Math.round(s.nood*100);return`<div class="hc" style="background:color-mix(in srgb,${b.t} ${10+Math.round(s.nood*90)}%,var(--surface));color:${s.nood>.55?"#fff":"var(--fg)"}">${p}%<small>${QSHORT[s.i]}${cl?` · centrum ${Math.round(s.ca*100)}%`:""}</small></div>`}).join("")}).join("");
+  const tints=[`color-mix(in srgb,${BC[KV].c} 22%,var(--surface))`,`color-mix(in srgb,${BC[KV].c} 55%,var(--surface))`,BC[KV].c,BC[KV].t];
+  $("#tDist").innerHTML=sorted.map(s=>`<div class="drow"><span class="dname">${s.i+1} · ${QSHORT[s.i]}${s.goals?` <span class="star">★${s.goals}</span>`:""}</span><div class="dbar">${s.d.map((c,j)=>c?`<i style="width:${c/done.length*100}%;background:${tints[j]}" title="${c} × ${LV[j].toLowerCase()}"></i>`:"").join("")}</div><span class="dval">${Math.round(s.nood*100)}%</span></div>`).join("");
+  const t=sorted[0],t2=sorted[1],insp=done.filter(p=>src(p).some(v=>v===4)).length;
+  $("#tConcl").innerHTML=`<h3>Wat betekent dit voor ${esc(scope)}?</h3><ul class="hex">
+   <li><b>Vraag ${t.i+1}, ${QSHORT[t.i].toLowerCase()}:</b> ${Math.round(t.nood*100)}% staat op "nog niet" of "soms". Het minimum in de klas: <i>${esc(K.cells.klas[t.i])}</i></li>
+   <li><b>Vraag ${t2.i+1}, ${QSHORT[t2.i].toLowerCase()}:</b> ${Math.round(t2.nood*100)}%. ${t2.goals} ${t2.goals===1?"lesgever koos":"lesgevers kozen"} dit als groeidoel.</li>
+   ${[t,t2].some(s=>K.q[s.i].dev)?`<li>Let op: vraag 2 en 4 zijn nog in uitwerking door het bouwsteenteam.</li>`:""}
+   <li>${insp} ${insp===1?"collega staat":"collega's staan"} op minstens één vraag op "ik help anderen". Zij kunnen de vakgroep-intervisie mee begeleiden.</li>
+   <li>Het leerpad Kwaliteitsvol loopt in 2026-2027. Bespreek in de vakgroep welke kompasvraag eerst aandacht krijgt.</li></ul>`;
   if(!cl){$("#tPeople").innerHTML=`<h3>Individuele POP's</h3><p class="hint">Op centrumniveau toont de databank enkel anonieme cijfers. Kies een cluster om de POP's van jouw lesgevers te zien.</p>`;return}
-  const lv=v=>`<td class="hc l${v}">${v}</td>`;
-  $("#tPeople").innerHTML=`<h3>Lesgevers cluster ${esc(cl)}</h3><p class="hint">Zichtbaar voor de adjunct van deze cluster als leidinggevende. Scores: ${bron==="gesprek"?"na het POP-gesprek, of zelfreflectie als het gesprek nog niet plaatsvond":"zelfreflectie"}.</p>
-   <div class="scroll"><table class="heat"><tr><th>Lesgever</th><th>Status</th>${A.map(k=>`<th title="${esc(k)}">${esc(k.length>12?k.slice(0,11)+"…":k)}</th>`).join("")}<th>Groeidoelen</th></tr>
-   ${sel.map(p=>`<tr><td><b>${esc(p.n)}</b></td><td><span class="pill ${p.st==="gesprek"?"s-ok":p.st==="ingevuld"?"s-proto":"s-dev"}">${p.st==="gesprek"?"gesprek gevoerd":p.st==="ingevuld"?"zelfreflectie ingevuld":"nog niet ingevuld"}</span></td>${p.st==="open"?A.map(()=>`<td class="hc">–</td>`).join(""):src(p).map(lv).join("")}<td>${p.st==="open"?"–":p.goals[fr].map(esc).join(", ")}</td></tr>`).join("")}</table></div>`;
+  $("#tPeople").innerHTML=`<h3>Lesgevers cluster ${esc(cl)} · Kwaliteitsvol in de klas</h3><p class="hint">Zichtbaar voor de adjunct van deze cluster als leidinggevende.</p>
+   <div class="scroll"><table class="heat" style="${bv(KV)}"><tr><th>Lesgever</th><th>Status</th>${QSHORT.map((q,i)=>`<th>${i+1} · ${q}</th>`).join("")}<th>Groeidoelen</th></tr>
+   ${sel.map(p=>`<tr><td><b>${esc(p.n)}</b></td><td><span class="pill ${p.st==="gesprek"?"s-ok":p.st==="ingevuld"?"s-proto":"s-dev"}">${p.st==="gesprek"?"gesprek gevoerd":p.st==="ingevuld"?"zelfreflectie ingevuld":"nog niet ingevuld"}</span></td>${p.st==="open"?QSHORT.map(()=>`<td class="lc">–</td>`).join(""):src(p).map(v=>`<td class="lc lc${v}">${LV[v-1]}</td>`).join("")}<td>${p.st==="open"?"–":p.goals.map(i=>QSHORT[i]).join(", ")}</td></tr>`).join("")}</table></div>`;
 }
 $("#tCl").onchange=renderTeam;$("#tBron").onchange=renderTeam;
-$$("[data-tframe]").forEach(b=>b.onclick=()=>{tframe=b.dataset.tframe;$$("[data-tframe]").forEach(x=>x.setAttribute("aria-pressed",x===b));renderTeam()});
 
 // ---------------- specificatie ----------------
 const where=[];STAGES.forEach((s,i)=>s.f.forEach(f=>where.push([`${i+1} · ${s.n}`,f.t,f.w,ST[f.st][1]])));
