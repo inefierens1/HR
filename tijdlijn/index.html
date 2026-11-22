@@ -263,6 +263,41 @@ td.lc1{background:color-mix(in srgb,var(--bc) 22%,var(--surface))} td.lc2{backgr
 .vmeta{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px;align-items:start}
 input[type=date]{font:inherit;width:100%;padding:8px 10px;border:1px solid var(--line);border-radius:6px;background:var(--surface);color:var(--fg)}
 .vtab td{font-size:.86rem}
+/* planning coachingsgesprek */
+button.small{padding:5px 10px;font-size:.84rem}
+button[disabled]{opacity:.55;cursor:not-allowed}
+.pgrid{display:grid;grid-template-columns:minmax(0,300px) minmax(0,1fr);gap:18px}
+@media (max-width:820px){.pgrid{grid-template-columns:minmax(0,1fr)}}
+.pcoach{background:var(--surface-2);border-radius:var(--r);padding:14px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.pcoach .av{width:44px;height:50px;background:var(--hex);clip-path:polygon(50% 0,100% 25%,100% 75%,50% 100%,0 75%,0 25%);display:grid;place-items:center;font-weight:700;color:var(--title);flex:none}
+.pcoach .row{display:flex;gap:10px;align-items:center}
+.pcoach label{font-size:.82rem;color:var(--fg-soft);font-weight:600}
+.pcoach select{width:100%}
+.weeknav{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.weeknav b{min-width:0;flex:1}
+.days{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;margin-top:10px}
+@media (max-width:560px){.days{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.day{display:flex;flex-direction:column;gap:6px;min-width:0}
+.day h4{margin:0;font-size:.82rem;color:var(--fg-soft);font-weight:700;text-transform:uppercase;letter-spacing:.03em}
+.slot{padding:6px 4px;font-size:.88rem;font-weight:600;text-align:center;border-radius:6px}
+.slot[disabled]{background:var(--neutral-bg);color:var(--fg-soft);text-decoration:line-through;cursor:not-allowed;border-color:transparent;font-weight:400}
+.slot[aria-pressed="true"]{background:var(--accent);color:var(--accent-fg);border-color:var(--accent)}
+.slot .sx{display:block;font-size:.7rem;font-weight:400;opacity:.8}
+.pconf{border:2px solid var(--ok);background:var(--ok-bg);border-radius:var(--r);padding:16px;display:flex;flex-direction:column;gap:10px}
+.pconf h4{margin:0;color:var(--ok);font-size:1.05rem}
+.pconf ul{margin:0;padding-left:0;list-style:none;display:flex;flex-direction:column;gap:6px}
+.pconf li::before{content:"✓ ";color:var(--ok);font-weight:700}
+.pst{display:inline-block;padding:2px 10px;border-radius:999px;font-size:.8rem;font-weight:600;white-space:nowrap}
+.pst.ok{background:var(--ok-bg);color:var(--ok)}.pst.info{background:var(--info-bg);color:var(--info)}.pst.warn{background:var(--warn-bg);color:var(--warn)}.pst.n{background:var(--neutral-bg);color:var(--fg-soft)}
+.pkpi{display:flex;gap:10px;flex-wrap:wrap}
+.pkpi div{background:var(--surface-2);border-radius:var(--r);padding:10px 14px;min-width:120px}
+.pkpi b{display:block;font-size:1.4rem;color:var(--title)}
+.pkpi span{font-size:.82rem;color:var(--fg-soft)}
+.pflow{margin:0;padding:0;list-style:none;display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px;counter-reset:pf}
+.pflow li{background:var(--surface-2);border-radius:var(--r);padding:12px;counter-increment:pf;font-size:.92rem;min-width:0}
+.pflow li::before{content:counter(pf);display:inline-grid;place-items:center;width:24px;height:27px;margin-right:6px;background:var(--hex);color:var(--title);font-weight:700;clip-path:polygon(50% 0,100% 25%,100% 75%,50% 100%,0 75%,0 25%)}
+.pflow li b{display:block;margin:6px 0 2px;color:var(--title)}
+.pflow li small{display:block;color:var(--fg-soft);margin-top:4px}
 </style>
 
 <header class="top">
@@ -332,7 +367,7 @@ input[type=date]{font:inherit;width:100%;padding:8px 10px;border:1px solid var(-
       <p>Per bouwsteen duid je aan wat voor jou klopt, en je stelt 1 of 2 groeidoelen voor.</p></div>
     <div class="jstep" data-step="gesprek"><span class="jn">2</span><b>Coachingsgesprek</b><span class="jsub">samen kijken</span>
       <dl><dt>Wie</dt><dd>jij en je adjunct of opleidingscoördinator</dd><dt>Wanneer</dt><dd>vóór de herfstvakantie*</dd><dt>Waar</dt><dd>gesprek; je coach vult hetzelfde POP aan</dd><dt>Tijd</dt><dd>± 30 minuten</dd></dl>
-      <p>Jullie leggen de groeidoelen vast en spreken acties en ondersteuning af. Het verslag wordt automatisch aangemaakt en kan naar de HR-tool.</p></div>
+      <p>Je plant het gesprek zelf in de agenda van je coach. Jullie leggen de groeidoelen vast en spreken acties en ondersteuning af. Het verslag wordt automatisch aangemaakt en kan naar de HR-tool.</p></div>
     <div class="jstep"><span class="jn">3</span><b>Aan de slag</b><span class="jsub">doorheen het jaar</span>
       <dl><dt>Wie</dt><dd>jij, met je vakgroep</dd><dt>Wanneer</dt><dd>oktober tot mei</dd><dt>Waar</dt><dd>leerpad van de bouwsteen, vakgroep-intervisie, nascholing</dd></dl>
       <p>Je voert je acties uit. Loopt het vast, dan plan je een kort coachingsmoment.</p></div>
@@ -367,6 +402,18 @@ input[type=date]{font:inherit;width:100%;padding:8px 10px;border:1px solid var(-
   <div id="goals" style="display:flex;flex-direction:column;gap:12px;margin-top:20px"></div>
   <div class="panel" id="verslag" style="margin-top:20px" hidden></div>
   <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:14px"><button class="primary" id="popSave">Bewaar en plan coachingsgesprek</button><span class="hint">Zichtbaar voor jou en je leidinggevende of coach.</span></div>
+  <div class="panel" id="plan" style="margin-top:20px">
+    <div style="display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;align-items:center">
+      <div><h3>Coachingsgesprek plannen</h3><p class="hint" style="margin:2px 0 0">Na het indienen van je POP kies je zelf een moment in de agenda van je coach. De afspraak komt automatisch in beide Outlook-agenda's.</p></div>
+      <div class="seg" role="group" aria-label="Weergave planning"><button data-pview="mw" aria-pressed="true">Als medewerker</button><button data-pview="coach" aria-pressed="false">Als coach</button></div>
+    </div>
+    <div id="planBody"></div>
+  </div>
+  <div class="panel" style="margin-top:20px">
+    <h3>Achter de schermen: zo loopt de planning</h3>
+    <ol class="pflow" id="planFlow"></ol>
+    <p class="hint">Uitgewerkt voor ICT in het tabblad Specificatie, met drie mogelijke routes.</p>
+  </div>
   <section class="vizsec" id="vizOpties" aria-labelledby="vizTitle">
     <div class="intro" style="margin-top:36px">
       <span class="who">Om samen te beslissen</span>
@@ -438,6 +485,7 @@ input[type=date]{font:inherit;width:100%;padding:8px 10px;border:1px solid var(-
           <li><b>Teamnoden op centrumniveau:</b> enkel gemiddelden en verdelingen, nooit namen. Een groep van minder dan 5 ingevulde POP's wordt niet apart getoond.</li>
           <li>De kompassen (vraag × kolom) en de visieteksten in een aparte lijst, zodat bouwsteenteams en directie ze zelf bijwerken. Een bouwsteen zonder kompas toont "kompas in opmaak".</li>
           <li><b>Verslag coachingsgesprek:</b> wordt automatisch opgebouwd uit het POP (zelfreflectie, inschatting na het gesprek, groeidoelen) en aangevuld met gespreksnotities van de coach. Download als Word-bestand. Naar de HR-tool: manueel opladen als bijlage, of automatisch via Power Automate als de HR-tool dat toelaat. Na te vragen bij ICT.</li>
+          <li><b>Planning coachingsgesprek:</b> elke medewerker is in de databank gekoppeld aan één coach (adjunct of opleidingscoördinator). Per coach een boekingslink in Microsoft Bookings (dienst "Coachingsgesprek", 30 min, op campus of Teams). Na het indienen van het POP toont de databank de link van de eigen coach. Bookings zet de afspraak in beide Outlook-agenda's en stuurt de herinnering. Een Power Automate-flow zet de status in de tijdlijn op "gepland" en stuurt een herinnering aan wie na twee weken niet gepland heeft.</li>
           <li>Anonieme optelling per team (aandeel op "nog niet" of "soms" per kompasvraag, gekozen groeidoelen) voedt het professionaliseringsplan (P4).</li>
         </ul>
       </div>
@@ -445,6 +493,7 @@ input[type=date]{font:inherit;width:100%;padding:8px 10px;border:1px solid var(-
     <div class="panel">
       <h3>Open vragen</h3>
       <ul class="hex">
+        <li><b>Planning.</b> Route A (voorstel): één gedeelde Bookings-pagina "Coachingsgesprekken" met elke coach als medewerker en een eigen link per coach. Route B: elke coach gebruikt zijn persoonlijke "Bookings with me"-pagina in Outlook. Route C: een eigen planner in de databank via Power Automate. Na te gaan: laat onze Microsoft 365-licentie Bookings toe, staan de lesroosters in Outlook, en kan Bookings de status terugschrijven naar de databank?</li>
         <li><b>Niveaus.</b> Voorstel: nog niet, soms, vast in mijn praktijk, ik help anderen. Akkoord?</li>
         <li><b>Kompassen.</b> Enkel Kwaliteitsvol is uitgewerkt (eerste voorzet). De andere vijf volgen via de bouwsteenteams.</li>
         <li><b>Visieteksten per functie.</b> Welke visietekst is het minimum voor administratieve medewerkers, ICT, trajectbegeleiders en zorgcoaches? De competenties uit het competentiewoordenboek vallen weg.</li>
@@ -628,7 +677,7 @@ function renderGoals(){
 }
 $("#pFunc").onchange=e=>{pfunc=e.target.value;renderPOP()};
 $$("[data-pbron]").forEach(b=>b.onclick=()=>{pbron=b.dataset.pbron;$$("[data-pbron]").forEach(x=>x.setAttribute("aria-pressed",x===b));renderPOP()});
-$("#popSave").onclick=()=>toast("POP bewaard · uitnodiging voor gesprek verstuurd");
+$("#popSave").onclick=()=>{toast("POP bewaard · kies nu een moment bij je coach");PLAN.view="mw";$$("[data-pview]").forEach(x=>x.setAttribute("aria-pressed",x.dataset.pview==="mw"));renderPlan();$("#plan").scrollIntoView({behavior:"smooth",block:"start"})};
 // ---------------- visualisaties om te kiezen ----------------
 const DEMO={zelf:{"Kwaliteitsvol":[3,2,2,1],"Zorgzaam":[3,3,2,2],"Levensecht":[2,3,3,2],"Betrokken":[2,1,2,1],"Samen":[3,3,4,3],"Innovatief":[1,2,1,2]},
  gesprek:{"Kwaliteitsvol":2.5,"Zorgzaam":2.5,"Levensecht":2.5,"Betrokken":1.8,"Samen":3.3,"Innovatief":1.8},
@@ -833,6 +882,98 @@ function route(){const h=(location.hash||"#tijdlijn").slice(1),v=V.includes(h)?h
   V.forEach(x=>$("#v-"+x).hidden=x!==v);
   $$("nav.tabs a").forEach(a=>a.getAttribute("href")==="#"+v?a.setAttribute("aria-current","page"):a.removeAttribute("aria-current"));
   window.scrollTo(0,0)}
+// ---------------- planning coachingsgesprek ----------------
+const COACHES={
+  lk:[{id:"c1",naam:"Adjunct-directeur NT2",rol:"adjunct",ini:"AD"},{id:"c2",naam:"Opleidingscoördinator NT2",rol:"opleidingscoördinator",ini:"OC"}],
+  oc:[{id:"c3",naam:"Adjunct-directeur Talen",rol:"adjunct",ini:"AD"}],
+  ad:[{id:"c4",naam:"Directeur",rol:"directeur",ini:"DI"}]};
+const WEEKS=[{lbl:"12 – 16 oktober",start:12},{lbl:"19 – 23 oktober",start:19},{lbl:"26 – 30 oktober",start:26}];
+const DAGEN=["ma","di","wo","do","vr"],TIJDEN=["09:00","10:00","11:00","13:30","14:30","16:00","18:30"];
+const PLAN={view:"mw",coach:null,week:0,sel:null,vorm:"campus",booked:null};
+function hsh(s){let h=7;for(const c of s)h=(h*31+c.charCodeAt(0))%9973;return h}
+function slotState(cid,w,d,t){const h=hsh(cid+w+d+t);if(h%5===0)return"les";if(h%4===0)return"bezet";return"vrij"}
+function coachOf(){const L=COACHES[pfunc];return L.find(c=>c.id===PLAN.coach)||L[0]}
+function dagLbl(w,d){return`${["maandag","dinsdag","woensdag","donderdag","vrijdag"][d]} ${WEEKS[w].start+d} oktober`}
+function renderPlan(){const b=$("#planBody");if(!b)return;
+  if(PLAN.view==="coach"){b.innerHTML=coachView();bindCoach();return}
+  const L=COACHES[pfunc],C=coachOf();
+  const coachBox=`<div class="pcoach">
+      <div class="row"><span class="av" aria-hidden="true">${C.ini}</span><div><b>${esc(C.naam)}</b><div class="hint" style="margin:0">jouw coach · ${esc(C.rol)}</div></div></div>
+      ${L.length>1?`<div><label for="pCoach">Coach</label><select id="pCoach">${L.map(c=>`<option value="${c.id}"${c.id===C.id?" selected":""}>${esc(c.naam)}</option>`).join("")}</select><p class="hint" style="margin:4px 0 0">In de databank vooraf gekoppeld door de adjunct. Hier enkel om beide te tonen.</p></div>`:`<p class="hint" style="margin:0">Gekoppeld in de personeelsdatabank.</p>`}
+      <div><label>Waar?</label><div class="seg" role="group" aria-label="Vorm van het gesprek" style="margin-top:4px"><button data-vorm="campus" aria-pressed="${PLAN.vorm==="campus"}">Op campus</button><button data-vorm="teams" aria-pressed="${PLAN.vorm==="teams"}">Via Teams</button></div></div>
+      <p class="hint" style="margin:0">30 minuten · vóór de herfstvakantie. Je ziet enkel de momenten die je coach heeft opengezet en die nog vrij zijn in zijn agenda.</p>
+    </div>`;
+  if(PLAN.booked){const k=PLAN.booked;
+    b.innerHTML=`<div class="pgrid">${coachBox}<div class="pconf" role="status">
+      <h4>Afspraak vastgelegd: ${dagLbl(k.w,k.d)} om ${k.t}</h4>
+      <ul>
+        <li>Staat in jouw Outlook-agenda en in die van je coach (${esc(C.naam)}).</li>
+        <li>${k.vorm==="teams"?"Met Teams-link in de uitnodiging.":"Op campus, lokaal volgt in de uitnodiging."}</li>
+        <li>Je coach krijgt een link naar je POP, zodat hij je zelfreflectie vooraf kan lezen.</li>
+        <li>Herinnering de dag ervoor, met de link naar je POP.</li>
+        <li>In de tijdlijn staat stap 2 nu op "gepland".</li>
+      </ul>
+      <div style="display:flex;gap:10px;flex-wrap:wrap"><button id="pMove">Verzetten</button><button id="pCancel">Annuleren</button></div>
+      <p class="hint" style="margin:0">Verzetten of annuleren kan ook rechtstreeks vanuit de uitnodiging in Outlook. De agenda's worden dan mee aangepast.</p>
+    </div></div>`;
+    $("#pMove").onclick=()=>{PLAN.sel={w:k.w,d:k.d,t:k.t};PLAN.week=k.w;PLAN.booked=null;renderPlan()};
+    $("#pCancel").onclick=()=>{PLAN.booked=null;PLAN.sel=null;renderPlan();toast("Afspraak geannuleerd · je coach is verwittigd")};
+    bindPlanCommon();return}
+  const w=PLAN.week;
+  const days=DAGEN.map((dn,d)=>`<div class="day"><h4>${dn} ${WEEKS[w].start+d}/10</h4>${TIJDEN.map(t=>{const st=slotState(C.id,w,d,t),on=PLAN.sel&&PLAN.sel.w===w&&PLAN.sel.d===d&&PLAN.sel.t===t;
+      return st==="vrij"?`<button class="slot" data-slot="${d}|${t}" aria-pressed="${!!on}">${t}</button>`:`<button class="slot" disabled aria-label="${t} niet beschikbaar">${t}<span class="sx">${st==="les"?"les":"bezet"}</span></button>`}).join("")}</div>`).join("");
+  b.innerHTML=`<div class="pgrid">${coachBox}<div style="min-width:0">
+    <div class="weeknav"><button class="small" id="wPrev" ${w===0?"disabled":""} aria-label="Vorige week">←</button><b>Week van ${WEEKS[w].lbl}</b><button class="small" id="wNext" ${w===WEEKS.length-1?"disabled":""} aria-label="Volgende week">→</button></div>
+    <div class="days">${days}</div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:14px">
+      <button class="primary" id="pBook" ${PLAN.sel?"":"disabled"}>${PLAN.sel?`Bevestig ${dagLbl(PLAN.sel.w,PLAN.sel.d)} om ${PLAN.sel.t}`:"Kies een moment"}</button>
+      <span class="hint">Ook avondmomenten, voor wie 's avonds lesgeeft.</span></div>
+  </div></div>`;
+  $$("[data-slot]").forEach(x=>x.onclick=()=>{const[d,t]=x.dataset.slot.split("|");PLAN.sel={w,d:+d,t};renderPlan()});
+  $("#wPrev").onclick=()=>{PLAN.week--;renderPlan()};$("#wNext").onclick=()=>{PLAN.week++;renderPlan()};
+  $("#pBook").onclick=()=>{if(!PLAN.sel)return;PLAN.booked={...PLAN.sel,vorm:PLAN.vorm};PLAN.sel=null;renderPlan();toast("Uitnodiging verstuurd naar jou en je coach")};
+  bindPlanCommon();
+}
+function bindPlanCommon(){
+  const s=$("#pCoach");if(s)s.onchange=e=>{PLAN.coach=e.target.value;PLAN.sel=null;PLAN.booked=null;renderPlan()};
+  $$("[data-vorm]").forEach(x=>x.onclick=()=>{PLAN.vorm=x.dataset.vorm;if(PLAN.booked)PLAN.booked.vorm=PLAN.vorm;renderPlan()});
+}
+const TEAM=[
+  ["Sofie Van Damme","NT2 · avond","gepland","do 15 okt · 18:30 · campus"],
+  ["Lesgever B","NT2 · dag","ingediend",""],
+  ["Lesgever C","NT2 · avond","gepland","di 20 okt · 10:00 · Teams"],
+  ["Lesgever D","NT2 · dag","niet",""],
+  ["Lesgever E","NT2 · avond","gehad","ma 12 okt · verslag klaar"],
+  ["Lesgever F","NT2 · dag","ingediend",""],
+  ["Lesgever G","NT2 · dag","gepland","wo 21 okt · 13:30 · campus"],
+  ["Lesgever H","NT2 · avond","niet",""]];
+const TST={niet:["n","POP nog niet ingediend"],ingediend:["warn","POP ingediend · nog niet gepland"],gepland:["info","gepland"],gehad:["ok","gesprek gehad"]};
+function coachView(){const n=k=>TEAM.filter(r=>r[2]===k).length;
+  return`<div style="display:flex;flex-direction:column;gap:14px">
+  <div class="pkpi"><div><b>${TEAM.length}</b><span>lesgevers bij jou</span></div><div><b>${n("gepland")}</b><span>gepland</span></div><div><b>${n("gehad")}</b><span>gesprek gehad</span></div><div><b>${n("ingediend")}</b><span>wachten op planning</span></div><div><b>${n("niet")}</b><span>POP nog niet ingediend</span></div></div>
+  <div class="scroll"><table class="simple"><tr><th>Medewerker</th><th>Groep</th><th>Status</th><th>Moment</th><th></th></tr>
+  ${TEAM.map((r,i)=>`<tr><td>${esc(r[0])}</td><td>${esc(r[1])}</td><td><span class="pst ${TST[r[2]][0]}">${TST[r[2]][1]}</span></td><td>${esc(r[3])}</td><td>${r[2]==="ingediend"||r[2]==="niet"?`<button class="small" data-rem="${i}">Stuur herinnering</button>`:r[2]==="gepland"?`<button class="small" data-pop="${i}">Open POP</button>`:`<button class="small" data-pop="${i}">Open verslag</button>`}</td></tr>`).join("")}
+  </table></div>
+  <div class="two">
+    <div class="pcoach"><b>Mijn beschikbaarheid</b><p class="hint" style="margin:0">Eén keer instellen in Microsoft Bookings, bv. di 9:00 – 12:00, do 13:30 – 19:00. Je lessen en andere afspraken in Outlook worden automatisch geblokkeerd.</p><p class="hint" style="margin:0"><b>Let op:</b> staat je lesrooster niet in Outlook, blokkeer die momenten dan zelf.</p></div>
+    <div class="pcoach"><b>Wat je automatisch krijgt</b><p class="hint" style="margin:0">Een uitnodiging in je agenda per geboekt gesprek, met link naar het POP. Een overzicht als iemand na twee weken nog niet gepland heeft.</p></div>
+  </div></div>`}
+function bindCoach(){
+  $$("[data-rem]").forEach(x=>x.onclick=()=>{toast(`Herinnering verstuurd naar ${TEAM[+x.dataset.rem][0]}`);x.disabled=true;x.textContent="Verstuurd"});
+  $$("[data-pop]").forEach(x=>x.onclick=()=>toast("Opent het POP van deze medewerker (enkel in de databank)"));
+}
+$$("[data-pview]").forEach(b=>b.onclick=()=>{PLAN.view=b.dataset.pview;$$("[data-pview]").forEach(x=>x.setAttribute("aria-pressed",x===b));renderPlan()});
+$("#pFunc").addEventListener("change",()=>{PLAN.coach=null;PLAN.sel=null;PLAN.booked=null;renderPlan()});
+$("#planFlow").innerHTML=[
+  ["Coach zet beschikbaarheid open","Eén keer per schooljaar in Microsoft Bookings. Lessen en afspraken in Outlook worden automatisch weggefilterd.","adjunct of coördinator"],
+  ["Medewerker dient POP in","De knop 'Bewaar en plan' toont meteen de boekingslink van de eigen coach. Die koppeling staat in de personeelsdatabank.","medewerker"],
+  ["Medewerker kiest een moment","Enkel vrije momenten van de eigen coach, op campus of via Teams.","medewerker"],
+  ["Afspraak in beide agenda's","Bookings stuurt een Outlook-uitnodiging naar medewerker en coach, met Teams-link indien gekozen.","automatisch"],
+  ["Link naar POP en herinnering","De uitnodiging bevat de link naar het POP. De dag vooraf volgt een herinnering.","automatisch"],
+  ["Status in tijdlijn en coachoverzicht","Stap 2 komt op 'gepland'. Wie na twee weken niet gepland heeft, krijgt een herinnering.","Power Automate"]
+].map(r=>`<li><b>${r[0]}</b>${r[1]}<small>${r[2]}</small></li>`).join("");
+renderPlan();
+
 renderTimeline();renderAll();renderTeam();
 window.addEventListener("hashchange",route);route();
 })();
