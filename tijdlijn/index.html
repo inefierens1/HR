@@ -298,6 +298,37 @@ button[disabled]{opacity:.55;cursor:not-allowed}
 .pflow li::before{content:counter(pf);display:inline-grid;place-items:center;width:24px;height:27px;margin-right:6px;background:var(--hex);color:var(--title);font-weight:700;clip-path:polygon(50% 0,100% 25%,100% 75%,50% 100%,0 75%,0 25%)}
 .pflow li b{display:block;margin:6px 0 2px;color:var(--title)}
 .pflow li small{display:block;color:var(--fg-soft);margin-top:4px}
+
+/* routes, terugkeer, coaches */
+.routes{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px}
+.route{border:1px solid var(--line);border-top:5px solid var(--hex);border-radius:var(--r);padding:14px;display:flex;flex-direction:column;gap:8px;min-width:0}
+.route.r1{border-top-color:#738fb2}.route.r2{border-top-color:#97b4ae}
+.route p{margin:0}
+.rtag{align-self:flex-start;font-size:.74rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--fg-soft)}
+.budget{border-top:1px solid var(--line);padding-top:10px}
+.budget summary{cursor:pointer;color:var(--title)}
+.budget table{margin-top:8px}
+.subblock{border:1px solid var(--line);border-radius:var(--r);padding:14px;display:flex;flex-direction:column;gap:12px;background:var(--surface-2)}
+.subblock .flow li{background:var(--surface)}
+table.rub td:first-child{font-weight:700;white-space:nowrap}
+.lvgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px}
+.lvc{border-radius:var(--r);padding:12px;border:1px solid var(--line);min-width:0;display:flex;flex-direction:column;gap:6px}
+.lvc b{color:var(--title)}
+.lvc .tint{height:6px;border-radius:3px}
+.lvc .ask{font-size:.85rem;color:var(--fg-soft);font-style:italic}
+.cases{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:12px}
+.case{border:1px solid var(--line);border-radius:var(--r);padding:14px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.case q{font-style:italic}
+.case .opts{display:flex;flex-wrap:wrap;gap:6px}
+.case .opts button{font-size:.82rem;padding:5px 10px}
+.case .opts button[aria-pressed="true"]{background:var(--accent);color:var(--accent-fg);border-color:var(--accent)}
+.case .res{border-left:4px solid var(--info);background:var(--info-bg);padding:8px 12px;border-radius:4px;font-size:.9rem}
+.case .res.ok{border-left-color:var(--ok);background:var(--ok-bg)}
+.qphases{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px}
+.qph{background:var(--surface-2);border-radius:var(--r);padding:14px;min-width:0}
+.qph b{display:block;color:var(--title);margin-bottom:2px}
+.qph small{display:block;color:var(--fg-soft);margin-bottom:8px}
+.qph ul{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:4px}
 </style>
 
 <header class="top">
@@ -312,7 +343,8 @@ button[disabled]{opacity:.55;cursor:not-allowed}
       <a href="#jaarkalender">2 · Schooljaar</a>
       <a href="#pop">3 · POP</a>
       <a href="#teamnoden">4 · Teamnoden</a>
-      <a href="#specificatie">5 · Specificatie ICT</a>
+      <a href="#coaches">5 · Coaches</a>
+      <a href="#specificatie">6 · Specificatie ICT</a>
     </nav>
   </div>
 </header>
@@ -323,7 +355,7 @@ button[disabled]{opacity:.55;cursor:not-allowed}
 <section id="v-tijdlijn" hidden>
   <div class="intro">
     <span class="who">Zone in de personeelsdatabank · voor medewerkers en leidinggevenden</span>
-    <h2>De loopbaan van een medewerker, van vacature tot afscheid</h2>
+    <h2>De loopbaan van een medewerker, van vacature tot exit</h2>
     <p>De tijdlijn volgt de vijf personeelspraktijken uit onze visietekst. Klik op een stap om de formulieren te zien die erbij horen: waar je ze vindt, wie ze invult en hoe ver ze staan. Kies "Loopbaan van een medewerker" om te zien wat één collega al doorliep.</p>
   </div>
   <div class="vision">
@@ -361,6 +393,29 @@ button[disabled]{opacity:.55;cursor:not-allowed}
     <h2>POP: waar sta ik, waar wil ik naartoe?</h2>
     <p>Het POP is één formulier in de personeelsdatabank dat je het hele schooljaar meeneemt. Je vult het zelf in, bespreekt het in een coachingsgesprek met je adjunct of opleidingscoördinator, en blikt er in juni op terug. Je functie bepaalt welke kolom van het kompas jouw minimum is: in de klas, in de opleiding of in het centrum.</p>
   </div>
+  <div class="panel" style="margin-bottom:18px">
+    <div style="display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;align-items:baseline"><h3>Welke route volg jij?</h3><span class="hint">Voorstel, te beslissen op de directiedag (P4)</span></div>
+    <div class="routes">
+      <div class="route r1"><span class="rtag">Eerste jaar</span><b>Starter of zij-instromer</b>
+        <p>Je werkt in je eerste jaar <b>geen POP</b> uit. Je focus ligt op goed landen, met je mentor uit de aanvangsbegeleiding.</p>
+        <ul class="hex"><li>Twee begeleidingsgesprekken met je mentor (najaar en voorjaar)</li><li>In juni één korte reflectie: welke bouwsteen viel je op, waar wil je volgend jaar aan werken?</li><li>Die reflectie is het vertrekpunt van je eerste POP in jaar 2</li></ul>
+        <p class="hint" style="margin:0">± 20 minuten aan formulieren dit jaar. De begeleiding zelf telt niet als last: die is er voor jou.</p></div>
+      <div class="route r2"><span class="rtag">Vanaf jaar 2</span><b>Iedereen</b>
+        <p>Je volgt het POP in vier stappen hieronder: zelfreflectie, coachingsgesprek, aan de slag en terugblik.</p>
+        <ul class="hex"><li>Je kolom van het kompas hangt af van je functie</li><li>1 of 2 groeidoelen, niet meer</li><li>Je plant het gesprek zelf in de agenda van je coach</li></ul></div>
+    </div>
+    <details class="budget"><summary><b>Tijdsbudget: hoeveel tijd vraagt dit van een lesgever per jaar?</b></summary>
+      <div class="scroll"><table class="simple"><tr><th>Wat</th><th>Wanneer</th><th>Starter, zij-instromer</th><th>Vanaf jaar 2</th></tr>
+        <tr><td>POP: zelfreflectie</td><td>sept – okt</td><td>–</td><td>20 min</td></tr>
+        <tr><td>Coachingsgesprek plannen en voeren</td><td>okt</td><td>–</td><td>35 min</td></tr>
+        <tr><td>POP: terugblik</td><td>juni</td><td>–</td><td>15 min</td></tr>
+        <tr><td>Korte reflectie eerste jaar</td><td>juni</td><td>10 min</td><td>–</td></tr>
+        <tr><td>Desiderata</td><td>maart</td><td>10 min</td><td>10 min</td></tr>
+        <tr><td>Functioneringsgesprek (niet elk jaar)</td><td>mei – juni</td><td>–</td><td>45 min</td></tr>
+        <tr><th>Totaal</th><th></th><th>± 20 min</th><th>± 1 u 20 tot 2 u 05</th></tr></table></div>
+      <p style="margin:8px 0 0"><b>Voorstel bovengrens: maximaal 2 uur per jaar</b> aan HR-formulieren en -gesprekken, zonder de professionalisering zelf. Komt er iets bij, dan moet er iets af of korter.</p>
+    </details>
+  </div>
   <div class="jour" aria-label="Het POP in vier stappen">
     <div class="jstep" data-step="zelf"><span class="jn">1</span><b>Ik vul mijn POP in</b><span class="jsub">zelfreflectie</span>
       <dl><dt>Wie</dt><dd>jij</dd><dt>Wanneer</dt><dd>september tot half oktober*</dd><dt>Waar</dt><dd>dit formulier in de personeelsdatabank</dd><dt>Tijd</dt><dd>± 20 minuten</dd></dl>
@@ -375,7 +430,7 @@ button[disabled]{opacity:.55;cursor:not-allowed}
       <dl><dt>Wie</dt><dd>jij, kort besproken met je coach</dd><dt>Wanneer</dt><dd>juni*</dd><dt>Waar</dt><dd>hetzelfde POP</dd><dt>Tijd</dt><dd>± 15 minuten</dd></dl>
       <p>Je vult de uitspraken opnieuw in. Zo zie je je groei, en heb je een vertrekpunt voor volgend jaar.</p></div>
   </div>
-  <p class="hint" style="margin:-6px 0 18px">* Voorstel, te beslissen op de directiedag van 5 januari (P4). Klik op stap 1 of 2 om te zien wat jij of je coach invult.</p>
+  <p class="hint" style="margin:-6px 0 18px">* Voorstel, te beslissen op de directiedag van 5 januari (P4). Klik op stap 1 of 2 om te zien wat jij of je coach invult. Coaches vinden de rubriek en coachende vragen in het tabblad <a href="#coaches">Coaches</a>.</p>
   <div class="tlbar">
     <div class="f" style="min-width:240px"><label for="pFunc">Mijn functie</label><select id="pFunc"><option value="lk">Lesgever</option><option value="oc">Opleidingscoördinator (geeft ook les)</option><option value="ad">Adjunct-directeur</option></select></div>
     <div class="seg" role="group" aria-label="Welke scores">
@@ -453,6 +508,59 @@ button[disabled]{opacity:.55;cursor:not-allowed}
 </section>
 
 <!-- ============ 5. SPECIFICATIE ============ -->
+<section id="v-coaches" hidden>
+  <div class="intro">
+    <span class="who">Voor adjuncten, opleidingscoördinatoren en mentoren</span>
+    <h2>Coachen met het POP</h2>
+    <p>Een POP is maar zo sterk als het gesprek erover. Hier vind je een rubriek die zegt wat de vier niveaus betekenen, een kalibratie-oefening om samen dezelfde lat te leggen, en coachende vragen per fase van het gesprek.</p>
+  </div>
+  <div style="display:flex;flex-direction:column;gap:20px">
+    <div class="panel">
+      <h3>Rubriek: wat bedoelen we met elk niveau?</h3>
+      <p class="hint" style="margin:0">Geldt voor elke kompasvraag. Vuistregel: <b>geen voorbeeld, dan is het "soms"</b>. "Vast in mijn praktijk" betekent: je kan twee recente voorbeelden geven uit verschillende lessen, en een cursist zou het herkennen.</p>
+      <div class="scroll"><table class="simple rub" id="rubTbl"></table></div>
+    </div>
+    <div class="panel">
+      <div style="display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;align-items:center"><h3>Uitgewerkt voorbeeld: Kwaliteitsvol, in de klas</h3>
+        <div class="seg" role="group" aria-label="Kompasvraag"><button data-rq="0" aria-pressed="true">Vraag 1 · Doel</button><button data-rq="3" aria-pressed="false">Vraag 4 · Volgende stap</button></div></div>
+      <p id="rqTxt" style="margin:0"></p>
+      <div class="lvgrid" id="rqLv"></div>
+      <p class="hint" style="margin:0">Zo'n voorbeelden per niveau ("ankers") maakt het bouwsteenteam bij elk nieuw kompas. Na het kalibratiemoment komen er ankers bij uit jullie eigen praktijk.</p>
+    </div>
+    <div class="panel">
+      <h3>Kalibratie-oefening: scoren jullie hetzelfde?</h3>
+      <p class="hint" style="margin:0">Fictieve uitspraken van lesgevers. Kies eerst zelf een niveau, dan zie je het voorstel volgens de rubriek. In de vorming doet iedereen dit eerst alleen en vergelijkt dan.</p>
+      <div class="cases" id="cases"></div>
+    </div>
+    <div class="two">
+      <div class="panel"><h3>Zo verloopt het kalibratiemoment</h3>
+        <ol class="pflow" style="grid-template-columns:1fr">
+          <li><b>Rubriek overlopen</b>Samen de vier niveaus en de vuistregel lezen.<small>10 minuten</small></li>
+          <li><b>Stil scoren</b>Elke coach scoort de casussen alleen.<small>15 minuten</small></li>
+          <li><b>Vergelijken</b>Waar verschillen we meer dan één niveau? Wat maakt het verschil?<small>30 minuten</small></li>
+          <li><b>Ankers vastleggen</b>Twijfelgevallen worden voorbeelden in de rubriek.<small>15 minuten</small></li></ol>
+        <p class="hint" style="margin:0">Elk jaar in september, vóór de POP-periode. Bij een nieuw kompas opnieuw. Met adjuncten, coördinatoren en mentoren samen.</p></div>
+      <div class="panel"><h3>Houding van de coach</h3>
+        <ul class="hex">
+          <li>Het POP is van de medewerker. Hij kiest de groeidoelen, jij helpt scherpstellen.</li>
+          <li>Luister meer dan je spreekt: richtwaarde 80/20.</li>
+          <li>Vraag naar voorbeelden, niet naar meningen.</li>
+          <li>Praat over de praktijk, nooit over de persoon.</li>
+          <li>Begin bij wat sterk is. Een sterkte is vaak de hefboom voor een groeidoel.</li>
+          <li>Eindig met één kleine, concrete eerste stap.</li></ul></div>
+    </div>
+    <div class="panel">
+      <div style="display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;align-items:center"><h3>Coachende vragen</h3>
+        <div class="seg" role="group" aria-label="Soort gesprek"><button data-qs="pop" aria-pressed="true">Coachingsgesprek POP</button><button data-qs="mentor" aria-pressed="false">Mentor en starter</button><button data-qs="terug" aria-pressed="false">Terugkeergesprek</button></div></div>
+      <div class="qphases" id="qPhases"></div>
+    </div>
+    <div class="panel">
+      <h3>Liever niet, probeer eerder</h3>
+      <div class="scroll"><table class="simple" id="avoidTbl"></table></div>
+    </div>
+  </div>
+</section>
+
 <section id="v-specificatie" hidden>
   <div class="intro">
     <span class="who">Voor de collega ICT</span>
@@ -535,12 +643,24 @@ const STAGES=[
         ["Adjunct beslist","Kort (1 of 2 lessen): verplaatsen, inhalen of een opdracht op afstand. Langer: een vervanger zoeken.",1],
         ["Cursisten verwittigd","Door één vaste persoon, via één vast kanaal, met een standaardbericht: wat gebeurt er met de les?"],
         ["Vervanging en overdracht","Een collega die wil uitbreiden (desiderata) of iemand uit de wervingsreserve. Krijgt planning, materiaal en cursistenlijst."],
-        ["Terugkeer","Overdracht terug naar de lesgever. Bij langdurige afwezigheid volgt re-integratie (stap 7)."]],
+        ["Terugkeer","Overdracht terug naar de lesgever. Na een langdurige afwezigheid volgt een terugkeergesprek (zie hieronder)."]],
+  sub:{t:"Terugkeer na langdurige afwezigheid",intro:"Een warm en praktisch gesprek om de draad weer op te nemen. Het gaat over het werk, niet over de reden van de afwezigheid: medische informatie blijft bij de medewerker en de arbeidsarts. Een formeel re-integratietraject is iets anders en loopt via Team Personeel en de arbeidsarts (stap 7).",
+   flow:[["Contact tijdens de afwezigheid","Vooraf afgesproken en licht: wie houdt contact (bv. de adjunct) en hoe vaak. De medewerker kiest of en hoe. Geen werkvragen."],
+         ["Terugkeer aangekondigd","Team Personeel meldt de datum aan de adjunct. Coördinator en vervanger weten het ook."],
+         ["Terugkeergesprek","Vóór of in de eerste week, 30 minuten, met de adjunct of een vertrouwde collega naar keuze. Samen beslissen over een geleidelijke opstart of een aangepaste opdracht.",1],
+         ["Overdracht door de vervanger","Waar staan de cursisten, wat is er gebeurd in de lessen, waar staat het materiaal? Liefst samen, 15 minuten."],
+         ["Opvolgmoment","Na vier tot zes weken kort: hoe gaat het? Zijn de afspraken nog goed?"],
+         ["Indien nodig: re-integratie","Lukt de hervatting niet zoals gehoopt, dan start een formeel traject via de arbeidsarts en Team Personeel."]],
+   onderwerpen:["Welkom terug: zeggen dat je blij bent dat de collega er weer is.","Wat is er veranderd? Collega's, cursisten, afspraken, systemen, lokalen.","Opdracht en tempo: geleidelijke opstart, tijdelijk minder taken, een vaste collega als aanspreekpunt.","Wat heb je nodig om goed te herstarten?","Wat vertellen we aan collega's en cursisten? De medewerker beslist.","Afspraken noteren en een opvolgmoment vastleggen."],
+   niet:["Doorvragen naar de reden of de diagnose.","Meteen alle gemiste taken inhalen.","Beslissen over de medewerker zonder hem."],
+   vragen:["Vanaf hoeveel weken afwezigheid is een terugkeergesprek standaard (voorstel: 4 weken)?","Wie voert het gesprek, en mag de medewerker iemand anders kiezen?","Wat wordt vastgelegd, en waar? Voorstel: enkel de afspraken, in de HR-tool, nooit medische informatie.","Hoe en hoe vaak houden we contact tijdens de afwezigheid, en wie beslist dat?"]},
+
   vragen:["Via welk kanaal meldt een lesgever een afwezigheid, en tot wanneer (bv. 2 uur voor de les)?","Wie verwittigt de cursisten: secretariaat, opleidingscoördinator of adjunct? En via Teams, sms of Athenasoft?","Vanaf hoeveel lessen zoeken we een vervanger in plaats van te verplaatsen of in te halen?","Wie zoekt de vervanger, en in welke volgorde: eigen vakgroep, collega's die willen uitbreiden, wervingsreserve?","Wanneer mag een les online doorgaan of vervangen worden door een opdracht?","Welke overdracht krijgt een vervanger minimaal, en waar staat die?"],
   f:[{t:"Afwezigheid melden",st:"todo",w:"Personeelsdatabank (voorstel)",who:"Lesgever",d:"Eén meldformulier in plaats van losse mails en telefoons. Verwittigt automatisch de juiste mensen.",me:["done","1 melding (ziekte, 6 okt)"]},
      {t:"Cursisten verwittigen",st:"todo",w:"Nog te bepalen",who:"Secretariaat of opleidingscoördinator",d:"Standaardbericht: les vervalt, wordt vervangen, verplaatst of gaat online.",me:["done","Cursisten verwittigd op 6 okt"]},
      {t:"Vervanging zoeken",st:"proto",w:"Personeelsdatabank",who:"Adjunct",d:"Zoeken bij collega's die willen uitbreiden (desiderata) en in de wervingsreserve.",link:"wervingsreserve/",me:["na","Niet nodig: les ingehaald"]},
      {t:"Overdracht aan vervanger",st:"todo",w:"Teams of opleidingssite",who:"Lesgever of coördinator, vervanger",d:"Planning, lesmateriaal en cursistenlijst op één vaste plek.",me:["na","–"]},
+     {t:"Terugkeergesprek",st:"todo",w:"HR-tool (enkel de afspraken)",who:"Medewerker, adjunct",d:"Na een langdurige afwezigheid: welkom, wat is veranderd, opstart en afspraken. Geen medische informatie.",me:["na","Niet van toepassing"]},
      {t:"Procedure afwezigheden en vervangingen",st:"dev",w:"SharePoint",who:"Directie",d:"Bestaande procedure herwerken. Principes: kwaliteit, talenten, samenwerking, eerlijke verdeling, continuïteit.",own:"Voorbereiding directiedag",me:["na","–"]}]},
  {n:"Functioneren en coaching",pr:"Praktijk 3 · P2",why:"Formele gesprekken én een actieve feedbackcultuur, met tweerichtingsverkeer. Evaluaties zijn geen momentopname maar een kans om te groeien.",
   f:[{t:"Functioneringsgesprek",st:"dev",w:"HR-tool",who:"Medewerker, leidinggevende",d:"Formulier in de HR-tool; uitwerking op de directiedag P2 (24 nov).",me:["plan","Gepland mei 2027"]},
@@ -554,8 +674,8 @@ const STAGES=[
      {t:"Feedback op het traject",st:"dev",w:"Forms (eindscherm leerpad)",who:"Deelnemers, anoniem",d:"Max. 3 vragen; voedt de jaarlijkse zelfscan van de directie.",me:["plan","Einde traject"]}]},
  {n:"Waardering en welzijn",pr:"Praktijk 5 · P2",why:"Waarderen van prestaties, inzet en betrokkenheid. Aandacht voor welzijn, deconnectie en re-integratie.",
   f:[{t:"Waarderingsmomenten",st:"todo",w:"Nog te bepalen",who:"Directie",d:"Bv. jubilea, bedankmoment einde schooljaar. Uitwerking op directiedag P2.",me:["na","–"]},
-     {t:"Re-integratie na langdurige afwezigheid",st:"todo",w:"Nog te bepalen",who:"Medewerker, directie, Team Personeel",d:"Afsprakenkader volgens P2.",me:["na","Niet van toepassing"]}]},
- {n:"Afscheid",pr:"Praktijk 3 · P2",why:"Exitgesprekken leveren waardevolle inzichten op om ons personeelsbeleid te verbeteren.",
+     {t:"Re-integratie na langdurige afwezigheid",st:"todo",w:"Nog te bepalen",who:"Medewerker, directie, Team Personeel",d:"Formeel traject via arbeidsarts en Team Personeel, volgens P2. Het terugkeergesprek zelf staat bij stap 4.",me:["na","Niet van toepassing"]}]},
+ {n:"Exit",pr:"Praktijk 3 · P2",why:"Exitgesprekken leveren waardevolle inzichten op om ons personeelsbeleid te verbeteren.",
   f:[{t:"Exitgesprek",st:"todo",w:"HR-tool",who:"Vertrekkende medewerker, directie",d:"Vaste vragen, anoniem samengevat voor het beleid.",me:["na","–"]}]}];
 let view="centrum",cur=0;
 function renderTimeline(){
@@ -575,6 +695,11 @@ function renderTimeline(){
      <div class="d"><b>Wie:</b> ${esc(f.who)}${f.own?` · <b>uitwerking:</b> ${esc(f.own)}`:""}</div>
      ${f.link?(f.link==="tijdlijn/#pop"?`<a class="link" href="#pop">Open het POP →</a>`:`<a class="link" href="${GH+f.link}" target="_blank" rel="noopener">Open het prototype →</a>`):""}
      ${view==="mw"?`<div class="mine ${f.me[0]}">${f.me[0]==="done"?"✓ ":f.me[0]==="plan"?"◷ ":""}${esc(f.me[1])}</div>`:""}</div>`).join("")}</div>
+   ${s.sub?`<div class="subblock"><h4 class="subh">${esc(s.sub.t)}</h4><p style="margin:0">${esc(s.sub.intro)}</p>
+     <ol class="flow">${s.sub.flow.map((x,i)=>`<li class="${x[2]?"dec":""}"><span class="fn">${i+1}</span><div><b>${esc(x[0])}</b><span class="d">${esc(x[1])}</span></div></li>`).join("")}</ol>
+     <div class="two"><div><h4 class="subh">Waarover praat je?</h4><ul class="hex">${s.sub.onderwerpen.map(q=>`<li>${esc(q)}</li>`).join("")}</ul><p class="hint" style="margin:8px 0 0">Coachende vragen voor dit gesprek staan in het tabblad <a href="#coaches">Coaches</a>.</p></div>
+     <div><h4 class="subh">Liever niet</h4><ul class="hex">${s.sub.niet.map(q=>`<li>${esc(q)}</li>`).join("")}</ul></div></div>
+     <div class="qbox"><h4 class="subh" style="margin:0">Te beslissen voor het terugkeergesprek</h4><ul class="hex">${s.sub.vragen.map(q=>`<li>${esc(q)}</li>`).join("")}</ul></div></div>`:""}
    ${s.vragen?`<div class="qbox"><h4 class="subh" style="margin:0">Te beslissen bij het herwerken van de procedure</h4><ul class="hex">${s.vragen.map(q=>`<li>${esc(q)}</li>`).join("")}</ul></div>`:""}`;
 }
 $$("[data-view]").forEach(b=>b.onclick=()=>{view=b.dataset.view;$$("[data-view]").forEach(x=>x.setAttribute("aria-pressed",x===b));renderTimeline()});
@@ -877,7 +1002,7 @@ const where=[];STAGES.forEach((s,i)=>s.f.forEach(f=>where.push([`${i+1} · ${s.n
 $("#whereTbl").innerHTML=`<tr><th>Stap</th><th>Formulier</th><th>Waar</th><th>Status</th></tr>`+where.map(r=>`<tr><td>${esc(r[0])}</td><td>${esc(r[1])}</td><td>${esc(r[2])}</td><td>${esc(r[3])}</td></tr>`).join("");
 
 // ---------------- routing ----------------
-const V=["tijdlijn","jaarkalender","pop","teamnoden","specificatie"];
+const V=["tijdlijn","jaarkalender","pop","teamnoden","coaches","specificatie"];
 function route(){const h=(location.hash||"#tijdlijn").slice(1),v=V.includes(h)?h:"tijdlijn";
   V.forEach(x=>$("#v-"+x).hidden=x!==v);
   $$("nav.tabs a").forEach(a=>a.getAttribute("href")==="#"+v?a.setAttribute("aria-current","page"):a.removeAttribute("aria-current"));
@@ -974,6 +1099,60 @@ $("#planFlow").innerHTML=[
 ].map(r=>`<li><b>${r[0]}</b>${r[1]}<small>${r[2]}</small></li>`).join("");
 renderPlan();
 
+
+// ---------------- coaches ----------------
+const RUB=[
+ ["Nog niet","Ik ken het idee, maar het komt nog niet voor in mijn lessen.","Er is geen voorbeeld te geven.","Hoe zou het eruitzien als je het zou proberen?"],
+ ["Soms","Ik doe het af en toe, bij bepaalde groepen of lessen. Het is nog niet gepland.","Eén voorbeeld, maar het hangt af van de situatie of van de tijd.","Wanneer lukt het wel, en wanneer niet?"],
+ ["Vast in mijn praktijk","Ik doe het bewust, in bijna elke les of module waar het past. Het zit in mijn planning of materiaal.","Twee recente voorbeelden uit verschillende lessen. Een cursist zou het herkennen.","Wat zou een cursist zeggen als ik het hem vraag?"],
+ ["Ik help anderen","Het zit vast én ik deel het: ik geef tips, toon materiaal of trek iets in de vakgroep.","Een collega gebruikt iets van jou, of kan bevestigen dat je hielp.","Wie heeft er al iets van overgenomen?"]];
+$("#rubTbl").innerHTML=`<tr><th>Niveau</th><th>Betekenis</th><th>Hoe herken je het?</th><th>Vraag om het te checken</th></tr>`+RUB.map(r=>`<tr><td>${esc(r[0])}</td><td>${esc(r[1])}</td><td>${esc(r[2])}</td><td><i>${esc(r[3])}</i></td></tr>`).join("");
+const ANK={0:[["De doelen staan in de modulefiche, maar ik bespreek ze niet met de cursisten.","Waar kunnen cursisten nu de doelen terugvinden?"],
+  ["Bij de start van de module overloop ik de doelen. Bij losse lessen meestal niet, en vaak in de taal van de fiche.","Wat stond er vorige week bij de start van je les?"],
+  ["Elke les start met 'Vandaag kan je …' in cursistentaal, en op het einde kom ik erop terug.","Als ik een cursist vraag waaraan hij werkt, wat zegt hij?"],
+  ["Ik deelde mijn sjabloon 'doel van de les' in de vakgroep en hielp een collega zijn doelen herschrijven.","Wie gebruikt het sjabloon nu ook?"]],
+ 3:[["Cursisten krijgen feedback bij de eindevaluatie.","Wanneer horen cursisten voor het eerst hoe ze ervoor staan?"],
+  ["Ik geef tussentijds feedback als er tijd is, vooral mondeling en aan wie erom vraagt.","Krijgt ook de stille cursist achteraan feedback?"],
+  ["Twee geplande feedbackmomenten in mijn planning, op een moment dat cursisten er nog iets mee kunnen. Elke cursist krijgt ze.","Wat deden cursisten met de feedback van het eerste moment?"],
+  ["Ik maakte met de vakgroep een feedbackformat dat collega's nu ook gebruiken.","Wat merk je in de vakgroep sinds dat format er is?"]]};
+let rq=0;
+function renderRQ(){const K=KOMPAS.Kwaliteitsvol,c=BC["Kwaliteitsvol"];
+  $("#rqTxt").innerHTML=`<b>${esc(K.q[rq].t)}</b> Minimum in de klas: ${esc(K.cells.klas[rq])}`;
+  const tints=["color-mix(in srgb,"+c.c+" 22%,transparent)","color-mix(in srgb,"+c.c+" 55%,transparent)",c.c,c.t];
+  $("#rqLv").innerHTML=ANK[rq].map((a,i)=>`<div class="lvc"><div class="tint" style="background:${tints[i]}"></div><b>${LV[i]}</b><span>${esc(a[0])}</span><span class="ask">${esc(a[1])}</span></div>`).join("")}
+$$("[data-rq]").forEach(b=>b.onclick=()=>{rq=+b.dataset.rq;$$("[data-rq]").forEach(x=>x.setAttribute("aria-pressed",x===b));renderRQ()});
+const CASES=[
+ {n:"Nadia, lesgever ICT",q:0,t:"Ik toon in de eerste les de modulefiche met alle doelen. Daarna ga ik er niet meer op in, want de cursisten weten het dan.",a:[1],u:"Soms. De doelen komen enkel bij de start aan bod, niet per les, en in de taal van de fiche. Doorvraag: 'Wat weten cursisten in week 6 nog van die doelen?'"},
+ {n:"Tom, lesgever NT2",q:0,t:"Elke les begint met 'Vandaag kan je …' op het bord. Op het einde vraag ik: lukt het? Vorige maand deelde ik dat in de vakgroep; twee collega's doen het nu ook.",a:[3],u:"Ik help anderen. Het zit vast in elke les, en collega's hebben het overgenomen."},
+ {n:"Els, lesgever Koken",q:3,t:"Ze krijgen feedback tijdens de praktijk, ik loop altijd rond. Een geplande tussentijdse feedback heb ik niet.",a:[1,2],u:"Twijfelgeval, hier verschillen coaches vaak. Voorstel: 'vast' als elke cursist het merkt en het op tijd komt; anders 'soms'. Doorvraag: 'Krijgt elke cursist twee keer feedback waar hij nog iets mee kan?' Leg jullie afspraak vast als anker."},
+ {n:"Ahmed, lesgever Techniek",q:3,t:"Na hoofdstuk 2 is er een proefopdracht met een feedbackformulier, en halfweg de module een kort gesprekje met elke cursist.",a:[2],u:"Vast in mijn praktijk. Twee geplande momenten, voor elke cursist, op tijd."}];
+const CSEL={};
+function renderCases(){$("#cases").innerHTML=CASES.map((c,i)=>{const s=CSEL[i];
+  return`<div class="case"><div><b>${esc(c.n)}</b><div class="hint" style="margin:0">Vraag ${c.q+1} · ${esc(KOMPAS.Kwaliteitsvol.q[c.q].t)}</div></div><q>${esc(c.t)}</q>
+   <div class="opts" role="group" aria-label="Kies een niveau">${LV.map((l,j)=>`<button data-c="${i}|${j}" aria-pressed="${s===j}">${l}</button>`).join("")}</div>
+   ${s!==undefined?`<div class="res ${c.a.includes(s)?"ok":""}" role="status"><b>${c.a.includes(s)?"Zelfde als de rubriek.":"Anders dan de rubriek."}</b> ${esc(c.u)}</div>`:""}</div>`}).join("");
+  $$("[data-c]").forEach(b=>b.onclick=()=>{const[i,j]=b.dataset.c.split("|");CSEL[i]=+j;renderCases()})}
+const QS={
+ pop:[["Openen","2 minuten",["Hoe was het om je POP in te vullen?","Wat wil je dat we vandaag zeker bespreken?"]],
+  ["Sterktes","5 minuten",["Waar ben je trots op in je lessen?","Wat zouden je cursisten zeggen dat je goed doet?","Wie in je vakgroep zou daar iets van kunnen leren?"]],
+  ["Verkennen","8 minuten",["Kan je een voorbeeld geven van de voorbije weken?","Wat doe je dan precies?","Wat merken cursisten ervan?","Wanneer lukt het minder goed?"]],
+  ["Verschil in inschatting","5 minuten",["Ik zie het iets anders. Mag ik zeggen waarom?","Wat maakte dat je voor 'soms' koos?","Wat zou er moeten gebeuren om het 'vast' te noemen?"]],
+  ["Groeidoel kiezen","5 minuten",["Als je één ding kiest dat het verschil maakt voor je cursisten, wat is het?","Hoe ziet het eruit in juni, als het gelukt is?","Wat is een eerste kleine stap deze maand?"]],
+  ["Ondersteuning en afsluiten","5 minuten",["Wie of wat kan je daarbij helpen: een leerpad, een collega, de vakgroep?","Wat heb je van mij nodig?","Wat neem je mee uit dit gesprek?","Wat was nuttig, en wat mag de volgende keer anders?"]]],
+ mentor:[["Landen","najaar",["Hoe voel je je na de eerste weken?","Wat verraste je, positief of negatief?","Bij wie kan je terecht met praktische vragen?"]],
+  ["Lessen","najaar en voorjaar",["Welke les liep goed, en waaraan merkte je dat?","Welke situatie in de klas wil je eens samen bekijken?","Wil je eens bij een collega gaan kijken? Bij wie?"]],
+  ["Cursisten","voorjaar",["Welke cursist houdt je bezig?","Wat werkt bij deze groep, wat niet?"]],
+  ["Vooruitkijken","juni",["Welke bouwsteen viel je dit jaar op?","Waar wil je volgend jaar aan werken? Dat wordt je eerste POP."]]],
+ terug:[["Welkom","start",["Fijn dat je er weer bent. Hoe is het om terug te zijn?","Hoe wil je dat we het aanpakken vandaag?"]],
+  ["Bijpraten","10 minuten",["Wat wil je weten over wat er veranderd is?","Wat heb je nodig over je cursisten en de lessen?"]],
+  ["Opstart","10 minuten",["Hoe zie jij de eerste weken?","Wat zou het makkelijker maken om te herstarten?","Is er iets wat je liever (nog) niet doet?"]],
+  ["Afspraken","5 minuten",["Wat vertellen we aan collega's en cursisten? Wat wil jij daarover?","Wanneer zien we elkaar kort terug om te kijken hoe het gaat?"]]]};
+let qs="pop";
+function renderQS(){$("#qPhases").innerHTML=QS[qs].map(p=>`<div class="qph"><b>${esc(p[0])}</b><small>${esc(p[1])}</small><ul>${p[2].map(q=>`<li>${esc(q)}</li>`).join("")}</ul></div>`).join("")}
+$$("[data-qs]").forEach(b=>b.onclick=()=>{qs=b.dataset.qs;$$("[data-qs]").forEach(x=>x.setAttribute("aria-pressed",x===b));renderQS()});
+const AVOID=[["Waarom doe je dat niet?","Wat maakt het moeilijk?"],["Je moet eens … proberen.","Wat heb je al geprobeerd? Mag ik een idee geven?"],["Dat is toch vast in je praktijk?","Wat maakt dat je twijfelt?"],["Lukt het?","Waaraan merk je dat het lukt?"],["Ik zou als groeidoel … nemen.","Welk doel zou voor jouw cursisten het meeste verschil maken?"],["Je bent niet zo goed in evalueren.","Bij evaluatie zie ik nog ruimte. Herken je dat?"]];
+$("#avoidTbl").innerHTML=`<tr><th>Liever niet</th><th>Probeer eerder</th></tr>`+AVOID.map(r=>`<tr><td>${esc(r[0])}</td><td>${esc(r[1])}</td></tr>`).join("");
+renderRQ();renderCases();renderQS();
 renderTimeline();renderAll();renderTeam();
 window.addEventListener("hashchange",route);route();
 })();
